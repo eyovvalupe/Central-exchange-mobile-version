@@ -2,8 +2,8 @@
 <template>
     <div class="page-marketinfo2">
         <div class="left-icon" @click="openMenu">
-            <div class="w-[0.48rem] h-[0.48rem]">
-                <img v-lazy="getStaticImgUrl('/static/img/trade/open.svg')" alt="" />
+            <div class="w-[0.44rem] h-[0.44rem]">
+                <img v-lazy="getStaticImgUrl('/static/img/trade/trade-menu.svg')" alt="" />
             </div>
         </div>
 
@@ -710,7 +710,7 @@ const openMenu = () => {
         display: flex;
         align-items: center;
         position: absolute;
-        left: 0.1rem;
+        left: 0.2rem;
         top: 0rem;
         z-index: 99;
     }

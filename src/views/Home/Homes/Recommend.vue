@@ -3,6 +3,12 @@
         <Tabs :type="from == 'trade' ? 'line-card-trade' : 'sub'" :color="'var(--ex-primary-color)'" @change="tabChange"
             v-if="props.activated" v-model:active="activeTab" :animated="from != 'home'" shrink>
             <Tab :name="0" v-if="from != 'home'" :title="t('trade.left_mine')">
+                <template #title>
+                    <div style="width: 0.44rem;height: 0.44rem;">
+                        <img v-if="activeTab == 0" v-lazy="getStaticImgUrl('/static/img/trade/star.svg')" alt="">
+                        <img v-else v-lazy="getStaticImgUrl('/static/img/trade/unstar.svg')" alt="">
+                    </div>
+                </template>
                 <div :class="['home-tab-box-' + props.from, 'mt-[0.24rem]']"
                     :style="{ borderTop: '1px solid var(--ex-border-color)' }">
                     <div v-if="token">
@@ -247,10 +253,23 @@ const filterList = list => {
 .home-tabs-box-trade {
     :deep(.van-tabs--line-card-trade) {
         &>.van-tabs__wrap {
+            position: relative;
+
+            &::after {
+                content: "";
+                width: 1rem;
+                height: 100%;
+                position: absolute;
+                right: 1rem;
+                top: 0;
+                background: linear-gradient(90deg, rgba(14, 15, 24, 0.00) 0%, #0E0F18 100%);
+            }
+
             &>.van-tabs__nav {
                 padding-left: 0.2rem;
-                padding-right: 1.2rem;
+                margin-right: 1.1rem;
                 height: 0.4rem;
+
             }
         }
     }
