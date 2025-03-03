@@ -4,7 +4,7 @@
  *  颜色_日期_字母 
  *  wb  白底蓝色
  */
-export const VERSION = 'lorna_0222_a'
+export const VERSION = 'lorna_0303_a'
 
 
 /* 首页模板 */

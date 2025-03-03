@@ -46,7 +46,7 @@
       <div class="mt-[0.2rem] pt-[0.3rem] p-[0.12rem] rounded-[0.32rem] bg-color3" v-if="offset == 'sell'">
         <div class="flex items-center justify-between px-[0.2rem] h-[0.36rem]">
           <div class="text-[0.32rem] font-bold text-color">
-            收款账户
+            地址簿
           </div>
           <span class="text-primary" @click="showAccountDialog = true;" v-if="currentAccount.channel">{{
             t('withdraw.change')
@@ -63,7 +63,8 @@
               户主姓名：{{ currentAccount.accountName }}</div>
             <div class="flex items-center">
               <div class="card_icon">
-                <CryptoIcon v-if="currentAccount.channel === 'crypto'" class="rounded-50" :name="currentAccount.symbol?.toUpperCase()" />
+                <CryptoIcon v-if="currentAccount.channel === 'crypto'" class="rounded-50"
+                  :name="currentAccount.symbol?.toUpperCase()" />
                 <img v-else class="!size-[0.44rem]" v-lazy="getStaticImgUrl('/static/img/bank/card_icon.svg')"
                   alt="img" />
               </div>
@@ -93,7 +94,7 @@
       <div class="pt-[0.6rem] pb-[0.32rem]">
         <Button size="large" round :loading="loading" @click="submit" type="primary">
           <span style="color: var(--ex-white);">{{ t('trade.stock_opening_confirm')
-            }}</span></Button>
+          }}</span></Button>
       </div>
     </div>
 
@@ -135,7 +136,7 @@ const emit = defineEmits(['submit', ''])
 
 const submit = () => {
   if (props.offset == 'sell' && !currentAccount.value.id) {
-    return showToast("请选择收款账户");
+    return showToast("请选择收款地址");
   }
   if (!safeword.value) {
     return showToast(t("assets.safety_trade_no_password"));

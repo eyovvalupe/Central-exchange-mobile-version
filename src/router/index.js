@@ -192,7 +192,7 @@ const routes = [
       keepAlive: false,
       pageType: "child",
       pageDeep: 1,
-      title: '收款账户'
+      title: '地址簿'
     },
   },
   {
