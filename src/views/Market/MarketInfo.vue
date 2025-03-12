@@ -483,14 +483,15 @@ const item = computed(() => {
   let it = {};
   const type = route.query.type || props.type;
   switch (type) {
+    case "spot":
+      it = store.state.currSpot || {};
+      break;
     case 'constract': // 合约
       it = store.state.currConstact || {};
       break;
     case 'ai': // 合约
       it = store.state.currAi || {};
       break;
-    default:
-      it = store.state.currStockItem || {};
   }
   return it;
 });

@@ -89,7 +89,7 @@
 </template>
 
 <script setup>
-import { ref, computed } from "vue"
+import { ref, computed, watch } from "vue"
 import AreaChart from "@/components/KlineCharts/AreaChart.vue";
 import KlineChart from "@/components/KlineCharts/KlineChart.vue";
 import { getStaticImgUrl } from "@/utils/index.js"
@@ -97,6 +97,7 @@ import { Icon, Popup, showToast } from "vant";
 import BottomPopup from "@/components/BottomPopup.vue";
 import store from "@/store";
 import { formatTimestamp } from "@/utils/time";
+import { _setTitle } from "@/utils/index"
 
 const props = defineProps({
   type: {
@@ -126,17 +127,39 @@ const item = computed(() => {
   let it = {};
   const type = props.type;
   switch (type) {
+    case "spot":
+      it = store.state.currSpot || {};
+      break;
     case "constract": // 合约
       it = store.state.currConstact || {};
       break;
     case "ai": // 合约
       it = store.state.currAi || {};
       break;
-    default:
-      it = store.state.currStockItem || {};
   }
   return it;
 });
+watch(
+  item,
+  (val, oldVal) => {
+    if (val.price && val.name) {
+      _setTitle(`${val.price} | ${val.name}  ${{
+        'spot': '现货交易',
+        'constract': '合约交易',
+        'crypto': '合约交易',
+        'ai': '交易机器人交易',
+      }[periodType.value]}`)
+    } else if (val.name) {
+      _setTitle(`${val.name}  ${{
+        'spot': '现货交易',
+        'constract': '合约交易',
+        'crypto': '合约交易',
+        'ai': '交易机器人交易',
+      }[periodType.value]}`)
+    }
+  },
+  { immediate: true }
+);
 
 // 图表信息  Time 1m 5m 10m 15m 30m 1h 4h 1D 1W 1M 1Y
 const timeType = ref("1h");

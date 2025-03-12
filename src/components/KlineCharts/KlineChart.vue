@@ -259,28 +259,6 @@ defineExpose({
 })
 
 
-const setCurrData = (item) => {
-    let obj = {}
-    switch (route.query.type) {
-        case 'constract':
-            obj = {
-                ...store.state.currConstact,
-                ...item,
-                price: item.close
-            }
-            console.error('---这里提交', obj)
-            store.commit('setCurrConstract', obj)
-            break
-        default:
-            obj = {
-                ...store.state.currStockItem,
-                ...item,
-                price: item.close
-            }
-            store.commit('setCurrStockItem', obj)
-            break
-    }
-}
 </script>
 
 <style lang="less" scoped>

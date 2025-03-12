@@ -862,17 +862,8 @@ const percentTagClick = (percent) => {
 const currStock = computed(() => {
   let obj = {};
   switch (props.type) {
-    case "constract":
-      obj = store.state.currConstact || [];
-      break;
     case "spot":
-      obj = store.state.currConstact || [];
-      break;
-    case "foreign":
-      obj = store.state.currForeign || [];
-      break;
-    case "commodities":
-      obj = store.state.currCommodities || [];
+      obj = store.state.currSpot || [];
       break;
   }
   return obj;

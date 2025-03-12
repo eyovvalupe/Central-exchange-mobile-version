@@ -131,7 +131,7 @@ const routes = [
     meta: {
       keepAlive: false,
       pageType: "child",
-      pageDeep: 1,
+      pageDeep: 2,
       title: '谷歌验证码'
     },
   },
@@ -143,7 +143,7 @@ const routes = [
     meta: {
       keepAlive: false,
       pageType: "child",
-      pageDeep: 2,
+      pageDeep: 3,
       title: '谷歌验证码'
     },
   },
@@ -862,24 +862,6 @@ router.beforeEach((to, from) => {
   if (from.meta.pageType == "login") {
     store.commit("setTransitionName", "slide-top");
     return;
-  }
-  if (to.name == "registerSuccess") {
-    store.commit("setTransitionName", "slide-right");
-  }
-  if (from.name == "registerSuccess") {
-    store.commit("setTransitionName", "slide-left");
-  }
-  if (to.name == "googleCode") {
-    store.commit("setTransitionName", "slide-right");
-  }
-  if (from.name == "googleCode") {
-    store.commit("setTransitionName", "slide-left");
-  }
-  if (from.name == "safety" && to.name == "google") {
-    store.commit("setTransitionName", "slide-right");
-  }
-  if (from.name == "google" && to.name == "safety") {
-    store.commit("setTransitionName", "slide-left");
   }
   if (to.query.inviteCode && to.path === "/") {
     const isBrowser =

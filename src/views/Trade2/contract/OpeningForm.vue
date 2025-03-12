@@ -890,12 +890,6 @@ const currStock = computed(() => {
     case 'constract':
       obj = store.state.currConstact || [];
       break;
-    case 'foreign':
-      obj = store.state.currForeign || [];
-      break;
-    case 'commodities':
-      obj = store.state.currCommodities || [];
-      break;
   }
   return obj;
 }); // 当前
