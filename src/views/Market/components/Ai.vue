@@ -2,14 +2,19 @@
 <template>
   <div class="page_ai">
     <div class="list" v-if="props.page != 'home'">
-      <Loaidng :type="'circular'"  :loading="page == 'trade' && (propsLoading || !list.length) || page != 'trade' && loading" v-if="(page == 'trade' && propsLoading && !list.length) || (page != 'trade' && !marketAiList.length || loading)" />
-      <AiItem :handleClick="props.handleClick" v-if="(page == 'trade' && !propsLoading && list.length) || (page != 'trade' && marketAiList.length && !loading)"  v-for="(item, i) in page == 'trade' ? list : marketAiList" :key="i" :item="item" />
+      <Loaidng :type="'circular'"
+        :loading="page == 'trade' && (propsLoading || !list.length) || page != 'trade' && loading"
+        v-if="(page == 'trade' && propsLoading && !list.length) || (page != 'trade' && !marketAiList.length || loading)" />
+      <AiItem :handleClick="props.handleClick"
+        v-if="(page == 'trade' && !propsLoading && list.length) || (page != 'trade' && marketAiList.length && !loading)"
+        v-for="(item, i) in page == 'trade' ? list : marketAiList" :key="i" :item="item" />
       <NoData v-if="!loading && marketAiList.length == 0" />
     </div>
 
     <div class="list" v-if="props.page == 'home'">
       <Loaidng :loading="loading" v-if="!marketAiList.length && loading" />
-      <AiItem :handleClick="props.handleClick" :class="[props.from == 'home' ? 'wow fadeInUp': '']" :data-wow-delay="(0.03 * i) + 's'"  v-for="(item, i) in marketAiList" :key="i" :item="item" :page="props.page" />
+      <AiItem :handleClick="props.handleClick" :class="[props.from == 'home' ? 'wow fadeInUp' : '']"
+        :data-wow-delay="(0.03 * i) + 's'" v-for="(item, i) in marketAiList" :key="i" :item="item" :page="props.page" />
       <NoData v-if="!loading && marketAiList.length == 0" />
     </div>
   </div>
@@ -19,7 +24,7 @@
 import { ref, onMounted, computed } from "vue";
 import { Tabs, Tab } from "vant";
 import AiItem from "./AiItem.vue";
-import { _aiquant } from "@/api/api";
+import { _aiquant2 } from "@/api/api";
 import Loaidng from "@/components/Loaidng.vue";
 import NoData from "@/components/NoData.vue";
 import store from "@/store/index";
@@ -75,8 +80,10 @@ const loading = ref(false);
 const getList = () => {
   loading.value = true;
   const by = orderby.value;
-  _aiquant({
+  _aiquant2({
     orderby: by,
+    page: 1,
+    name: ""
   })
     .then((res) => {
       const list = res.data || [];

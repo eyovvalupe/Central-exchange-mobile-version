@@ -12,7 +12,7 @@ import { getStaticImgUrl } from "@/utils/index.js"
 import { useSocket } from '@/utils/ws'
 
 // 这几个数据需要缓存 但不缓存其中的 points 字段
-const onlySaveSymbols = ['currStock', 'currConstact', 'currAi', 'currForeign', 'currCommodities']
+const onlySaveSymbols = ['currStockItem', 'currConstact', 'currAi', 'currForeign', 'currCommodities']
 const onlySaveSymbolsList = ['realtimeData']
 
 const store = createStore({
@@ -235,7 +235,7 @@ const store = createStore({
   plugins: [
     createPersistedState({
       key: "sunx",
-      paths: ['token', 'userInfo', ...onlySaveSymbols, ...onlySaveSymbolsList],
+      paths: ['token', 'userInfo'],
       // storage: window.localStorage,
       // setState: (path, state) => {
       //   onlySaveSymbols.forEach(key => { // 这几个数据只缓存symbol字段

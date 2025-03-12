@@ -77,7 +77,7 @@
 
   <!-- 订单详情 -->
   <Popup v-model:show="showInfo" position="right" style="width: 100%; height: 100%" teleport="body">
-    <OrderInfo :curr-stock="currStock" @back="showInfo = false" />
+    <OrderInfo :curr-stock="currStockItem" @back="showInfo = false" />
   </Popup>
 </template>
 
@@ -186,9 +186,9 @@ const getList = () => {
 
 // 详情
 const showInfo = ref(false);
-const currStock = ref({});
+const currStockItem = ref({});
 const OpeningForm = (item) => {
-  currStock.value = item;
+  currStockItem.value = item;
   showInfo.value = true;
 };
 

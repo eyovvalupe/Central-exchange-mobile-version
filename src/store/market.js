@@ -5,75 +5,25 @@ import router from "@/router"
 import { _watchlist } from '@/api/api'
 const { startSocket } = useSocket()
 
+// 主组件的所有key
+const recommendArr = ['marketStockList', 'spotList', 'marketWatchList', 'contractList', 'marketForeignList', 'marketCommoditiesList', 'marketAiList', 'marketStockDataList', 'marketStockUsDataList', 'marketStockIndiaDataList', 'marketStockJapanDataList', 'marketStockKoreaDataList', 'marketStockGermanyDataList', 'marketStockUkDataList', 'marketStockSingaporeDataList', 'marketStockHongkongDataList', 'marketStockMalaysiaDataList']
 // 不同页面对应的监听列表 key
 const pageKeys = {
     'home': [
-        'marketRecommndList',
-        'marketRecommndContractList',
-        'contractList',
-        'marketRecommndStockList',
-        'marketVolumeList',
-        'marketAiList',
-        'marketWatchList',
-        'marketSrockRecommendList',
-        'marketContractRecommendList',
-
-        'marketStockUsIndexList',
-        'marketStockIndiaIndexList',
-        'marketStockJapanIndexList',
-        'marketStockKoreaIndexList',
-        'marketStockGermanyIndexList',
-        'marketStockUkIndexList',
-        'marketStockSingaporeIndexList',
-        'marketStockHongkongIndexList',
-        'marketStockMalaysiaIndexList',
-        'marketStockUsDataList',
-        'marketStockIndiaDataList',
-        'marketStockJapanDataList',
-        'marketStockKoreaDataList',
-        'marketStockGermanyDataList',
-        'marketStockUkDataList',
-        'marketStockSingaporeDataList',
-        'marketStockHongkongDataList',
-        'marketStockMalaysiaDataList'
+        ...recommendArr
     ],
     'market': [
-        'marketWatchList',
-        'marketVolumeList',
-        'marketUpList',
-        'marketDownList',
-        'marketSrockRecommendList',
-        'marketContractRecommendList',
-        'contractList',
-        'marketAiList',
-        'marketAiHisList',
-        'marketAi24List',
-        'marketAiGridList',
-        'marketStockUsIndexList',
-        'marketStockIndiaIndexList',
-        'marketStockJapanIndexList',
-        'marketStockKoreaIndexList',
-        'marketStockGermanyIndexList',
-        'marketStockUkIndexList',
-        'marketStockSingaporeIndexList',
-        'marketStockHongkongIndexList',
-        'marketStockMalaysiaIndexList',
-        'marketStockUsDataList',
-        'marketStockIndiaDataList',
-        'marketStockJapanDataList',
-        'marketStockKoreaDataList',
-        'marketStockGermanyDataList',
-        'marketStockUkDataList',
-        'marketStockSingaporeDataList',
-        'marketStockHongkongDataList',
-        'marketStockMalaysiaDataList'
+        ...recommendArr
     ],
-    'trade': ['marketWatchList', 'marketSearchList', 'futuresSearchList', 'aiquantSearchList', 'forexSearchList', 'marketAiList', 'marketForeignList', 'marketCommoditiesList', 'contractList', 'searchList'],
+    'trade': [...recommendArr],
+    'tradeInfo': [...recommendArr],
     'search': ['marketSearchList']
 }
 
 
+
 const setCurr = (keyName, state, data) => {
+    data = JSON.parse(JSON.stringify(data))
     if (!data.symbol) { // 只更新部分数据
         for (let key in data) {
             if (data[key] === null) delete data[key]
@@ -89,6 +39,10 @@ const setCurr = (keyName, state, data) => {
         }
     }
     state[keyName] = Object.assign({}, state[keyName], data);
+
+    setTimeout(() => {
+        sessionStorage.setItem('market_' + keyName, JSON.stringify(state[keyName]))
+    }, 200)
 }
 
 export default {
@@ -98,7 +52,7 @@ export default {
         checkCryptoList: [],
         marketType: "all",
 
-        currStock: {}, // 当前股票的数据
+        currStockItem: sessionStorage.getItem('market_currStockItem') ? JSON.parse(sessionStorage.getItem('market_currStockItem')) : {}, // 当前股票的数据
         marketSearchStr: '', // 当前搜索的文本
         marketSearchTextList: [],
         marketSearchList: [], // 当前搜索的结果-股票
@@ -107,7 +61,7 @@ export default {
         forexSearchList: [], // 当前搜索的结果-外汇
 
         // marketWatchList: [], // 当前订阅的列表数据
-        marketWatchList: sessionStorage.getItem('market_watch_list') ? JSON.parse(sessionStorage.getItem('market_watch_list')) : [], // 当前订阅的列表数据
+        marketWatchList: [], // 当前订阅的列表数据
         marketVolumeList: [], // 首页活跃列表
         marketUpList: [], // 首页涨幅列表
         marketDownList: [], // 首页跌幅列表
@@ -122,19 +76,22 @@ export default {
 
         marketWatchKeys: [], // 除了主列表，还需要额外监听的股票 symbol数组
 
-        currConstact: {}, // 当前合约的数据
+        currConstact: sessionStorage.getItem('market_currConstact') ? JSON.parse(sessionStorage.getItem('market_currConstact')) : {}, // 当前合约的数据
         contractList: [], // 合约列表
 
-        currAi: {}, // 当前ai量化数据
+        currSpot: sessionStorage.getItem('market_currSpot') ? JSON.parse(sessionStorage.getItem('market_currSpot')) : {}, // 当前现货数据
+        spotList: [], // 现货列表
+
+        currAi: sessionStorage.getItem('market_currAi') ? JSON.parse(sessionStorage.getItem('market_currAi')) : {}, // 当前ai量化数据
         marketAiList: [], // ai量化默认列表
         marketAiHisList: [], // ai量化历史收益率列表
         marketAi24List: [], // ai量化24小时收益率列表
         marketAiGridList: [], // ai量化最大网格(杠杆)列表
 
-        currForeign: {}, // 当前外汇数据
+        currForeign: sessionStorage.getItem('market_currForeign') ? JSON.parse(sessionStorage.getItem('market_currForeign')) : {}, // 当前外汇数据
         marketForeignList: [], // 外汇默认列表
 
-        currCommodities: {}, // 当前大宗交易
+        currCommodities: sessionStorage.getItem('market_currCommodities') ? JSON.parse(sessionStorage.getItem('market_currCommodities')) : {}, // 当前大宗交易
         marketCommoditiesList: [], // 大宗交易默认列表
 
 
@@ -164,6 +121,7 @@ export default {
         marketStockMalaysiaIndexList: [],
 
         //股票
+        marketStockDataList: [],
         marketStockUsDataList: [],
         marketStockIndiaDataList: [],
         marketStockJapanDataList: [],
@@ -224,6 +182,9 @@ export default {
         },
 
         //更新市场股票
+        setMarketStockDataList(state, data) {
+            state.marketStockDataList = data
+        },
         setMarketStockUsDataList(state, data) {
             state.marketStockUsDataList = data
         },
@@ -337,6 +298,9 @@ export default {
         setContractList(state, data) {
             state.contractList = data
         },
+        setSpotList(state, data) {
+            state.spotList = data
+        },
         setMarketWatchKeys(state, data) {
             state.marketWatchKeys = data;
         },
@@ -402,13 +366,17 @@ export default {
         setMarketAiGridList(state, data) {
             state.marketAiGridList = data || [];
         },
-        setCurrStock(state, data) {
-            sessionStorage.setItem('currStock', JSON.stringify(data))
-            setCurr('currStock', state, data)
+        setCurrStockItem(state, data) {
+            sessionStorage.setItem('currStockItem', JSON.stringify(data))
+            setCurr('currStockItem', state, data)
         },
         setCurrConstract(state, data) {
             sessionStorage.setItem('currConstact', JSON.stringify(data))
             setCurr('currConstact', state, data)
+        },
+        setCurrSpot(state, data) {
+            sessionStorage.setItem('currSpot', JSON.stringify(data))
+            setCurr('currSpot', state, data)
         },
         setCurrAi(state, data) {
             sessionStorage.setItem('currAi', JSON.stringify(data))
@@ -456,39 +424,39 @@ export default {
             }
 
             //先从已获取过的实时数据里拿数据
-            (pageKeys[router.currentRoute?.value?.name] || []).forEach(ck => {
-                const arr = state[ck].map(item => {
-                    const target = state.realtimeData.find(a => a.symbol == item.symbol)
-                    if (target) {
-                        return {
-                            ...item,
-                            ...target,
-                            name: item.name || target.name
-                        }
-                    }
-                    return item
-                })
-                state[ck] = arr
-                if (ck == 'marketWatchList') {
-                    sessionStorage.setItem('market_watch_list', JSON.stringify(arr))
-                }
-            })
+            // (pageKeys[router.currentRoute?.value?.name] || []).forEach(ck => {
+            //     const arr = state[ck].map(item => {
+            //         const target = state.realtimeData.find(a => a.symbol == item.symbol)
+            //         if (target) {
+            //             return {
+            //                 ...item,
+            //                 ...target,
+            //                 name: item.name || target.name
+            //             }
+            //         }
+            //         return item
+            //     })
+            //     state[ck] = arr
+            //     if (ck == 'marketWatchList') {
+            //         sessionStorage.setItem('market_watch_list', JSON.stringify(arr))
+            //     }
+            // })
 
             const socket = startSocket(() => {
                 const keys = Array.from(new Set([
                     ...proxyKeys,
                     ...state.marketWatchKeys,
                 ]))
-                // console.error('订阅', keys)
+                console.error('订阅', keys)
                 socket && socket.off('realtime')
                 socket && socket.emit('realtime', keys.join(',')) // 价格变化
                 socket && socket.on('realtime', res => {
                     if (res.code == 200) {
-                        if (res.data && res.data.length) {
-                            res.data.map(_item => {
-                                commit("setRealtimeItemData", _item)
-                            })
-                        }
+                        // if (res.data && res.data.length) {
+                        //     res.data.map(_item => {
+                        //         commit("setRealtimeItemData", _item)
+                        //     })
+                        // }
                         // 根据不同页面，同步页面内模块的数据
                         (pageKeys[router.currentRoute?.value?.name] || []).forEach(ck => {
                             const arr = state[ck].map(item => { // 数据和观察列表里的数据融合
@@ -506,11 +474,11 @@ export default {
                         })
 
                         // 同步到当前 股票
-                        const cStock = res.data.find(a => a.symbol == state.currStock.symbol)
+                        const cStock = res.data.find(a => a.symbol == state.currStockItem.symbol)
                         if (cStock) {
                             let obj = JSON.parse(JSON.stringify(cStock))
                             delete obj.symbol
-                            commit('setCurrStock', obj)
+                            commit('setCurrStockItem', obj)
                         }
                         // 同步到当前 合约
                         const cConstract = res.data.find(a => a.symbol == state.currConstact.symbol)
@@ -535,15 +503,15 @@ export default {
                 socket && socket.emit('snapshot', keys.join(',')) // 快照数据
                 socket && socket.on('snapshot', res => {
                     if (res.code == 200) {
-                        let points = ''
+                        let points = '';
                         if (res.data) {
                             points = _getSnapshotLine(res.data)
-                            commit('setRealtimeItemData', {
-                                symbol: res.symbol,
-                                points
-                            })
+                            // commit('setRealtimeItemData', {
+                            //     symbol: res.symbol,
+                            //     points
+                            // })
                         }
-                        // // 根据不同页面，同步页面内模块的数据
+                        // // 根据不同页面，同步页面内模块的数据2
                         (pageKeys[router.currentRoute?.value?.name] || []).forEach(ck => {
                             const target = state[ck].find(item => item.symbol == res.symbol)
                             if (target) {
@@ -575,6 +543,8 @@ export default {
     getters: {
         getMarketStockCurrentList(state) {
             switch (state.marketCurrent) {
+                case 'all':
+                    return state.marketStockDataList
                 case 'us':
                     return state.marketStockUsDataList
                 case 'india':
@@ -594,7 +564,7 @@ export default {
                 case 'malaysia':
                     return state.marketStockMalaysiaDataList
             }
-            return []
+            return state.marketStockDataList
         },
         getMarketType(state) {
             return state.marketType;

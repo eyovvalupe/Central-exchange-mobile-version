@@ -59,10 +59,12 @@
             <template #right-con>
               <!-- 市价/限价 -->
               <div class="pricetype-modes">
-                <div class="pricetype-mode tab_ani" @click="priceMode = 1" :class="{ 'pricetype-mode-active': priceMode == 1 }">
+                <div class="pricetype-mode tab_ani" @click="priceMode = 1"
+                  :class="{ 'pricetype-mode-active': priceMode == 1 }">
                   {{
                     t("trade.stock_opening_price_market") }}</div>
-                <div class="pricetype-mode tab_ani" @click="priceMode = 2" :class="{ 'pricetype-mode-active': priceMode == 2 }">
+                <div class="pricetype-mode tab_ani" @click="priceMode = 2"
+                  :class="{ 'pricetype-mode-active': priceMode == 2 }">
                   {{
                     t("trade.stock_opening_price_limit") }}</div>
               </div>
@@ -124,7 +126,7 @@
         <img v-lazy="getStaticImgUrl('/static/img/trade/blue-stock.svg')" />
       </div>
     </div> -->
-    
+
 
     <!-- 保证金模式 -->
     <div class="item_box">
@@ -191,8 +193,8 @@
 
 
     <!-- 按钮 -->
-    <Button v-if="token" :loading="configLoading || submitLoading" size="large" @click="submit1" class="submit ripple-btn"
-      :color="activeType == 1 ? 'var(--ex-primary-color)' : 'var(--ex-down-color)'" round>
+    <Button v-if="token" :loading="configLoading || submitLoading" size="large" @click="submit1"
+      class="submit ripple-btn" :color="activeType == 1 ? 'var(--ex-primary-color)' : 'var(--ex-down-color)'" round>
       <span style="color:var(--ex-white);">{{
         activeType == 1
           ? t("trade.stock_open_long")
@@ -201,16 +203,20 @@
 
     <div v-if="!token" style="margin-top: 0.6rem;" class="unlogin-box">
       <div class="flex justify-between mb-[0.32rem]">
-        <div class="w-[3.22rem] h-[0.8rem]   rounded-[0.4rem] flex items-center justify-center text-[0.3rem] btn ripple-primary"
+        <div
+          class="w-[3.22rem] h-[0.8rem]   rounded-[0.4rem] flex items-center justify-center text-[0.3rem] btn ripple-primary"
           @click="store.commit('setIsLoginOpen', true)">
           {{ t("trade.stock_opening_token_login") }}
         </div>
-        <div class="w-[3.22rem] h-[0.8rem]  rounded-[0.4rem] flex items-center justify-center  text-[0.3rem] btn ripple-primary"
+        <div
+          class="w-[3.22rem] h-[0.8rem]  rounded-[0.4rem] flex items-center justify-center  text-[0.3rem] btn ripple-primary"
           @click="jump('register')">
           {{ t("trade.stock_opening_token_register") }}
         </div>
       </div>
-      <div class="w-full h-[0.8rem]   rounded-[0.4rem] flex items-center justify-center text-[0.3rem] btn ripple-primary" @click="() => router.push({ name: 'register', query: { guest: 'guest' } })
+      <div
+        class="w-full h-[0.8rem]   rounded-[0.4rem] flex items-center justify-center text-[0.3rem] btn ripple-primary"
+        @click="() => router.push({ name: 'register', query: { guest: 'guest' } })
         ">
         {{ t("trade.contract_create_guest_btn") }}
       </div>
@@ -330,7 +336,8 @@
         <img v-else v-lazy="getStaticImgUrl('/static/img/common/open_eye.svg')" alt="open"
           @click="showPassword = false" />
       </div>
-      <Button class="ripple-btn" :loading="submitLoading" @click="submitFormDialog" size="large" color="var(--ex-primary-color)" round>
+      <Button class="ripple-btn" :loading="submitLoading" @click="submitFormDialog" size="large"
+        color="var(--ex-primary-color)" round>
         <span style="color: var(--ex-white);">{{ t("trade.stock_open") }}</span>
       </Button>
     </div>

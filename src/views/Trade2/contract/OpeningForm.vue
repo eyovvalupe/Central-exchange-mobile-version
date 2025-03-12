@@ -583,11 +583,6 @@ const props = defineProps({
     type: String,
     default: '',
   },
-  mode: {
-    // constract-加密货币 foreign-外汇 commodities-大宗交易
-    type: String,
-    default: 'constract',
-  },
   tradeType: {
     type: [String, Number],
     default: '',
@@ -613,7 +608,7 @@ const tipZ = () => {
 //搜索
 // const marketSearchList = computed(() => {
 //   let arr = [];
-//   switch (props.mode) {
+//   switch (props.type) {
 //     case "constract":
 //       arr = store.state.contractList || [];
 //       break;
@@ -646,7 +641,7 @@ const goDialogSearch = (market) => {
     _futures({
       name: s,
       type: '',
-      // type: searchMap[props.mode] || "",
+      // type: searchMap[props.type] || "",
     })
       .then((res) => {
         if (searchDialogStr.value == s) {
@@ -661,7 +656,7 @@ const goDialogSearch = (market) => {
               };
             return item;
           });
-          // switch (props.mode) {
+          // switch (props.type) {
           //   case 'constract':
           //     store.commit("setContractList", arr);
           //     break
@@ -674,7 +669,7 @@ const goDialogSearch = (market) => {
           // }
 
           // setTimeout(() => {
-          //   switch (props.mode) {
+          //   switch (props.type) {
           //     case 'constract':
           //       store.dispatch("subList", {
           //         commitKey: "setContractList",
@@ -891,7 +886,7 @@ const percentTagClick = (percent) => {
 // 市价
 const currStock = computed(() => {
   let obj = {};
-  switch (props.mode) {
+  switch (props.type) {
     case 'constract':
       obj = store.state.currConstact || [];
       break;
@@ -1200,7 +1195,7 @@ const initParam = () => {
 };
 
 const setCurrStockFunc = (item) => {
-  switch (props.mode) {
+  switch (props.type) {
     case 'constract':
       sessionStorage.setItem('currConstract', JSON.stringify(item));
       store.commit('setCurrConstract', item);
@@ -1215,7 +1210,7 @@ const setCurrStockFunc = (item) => {
       break;
   }
   sessionStorage.setItem('currConstract', JSON.stringify(item));
-  store.commit('setCurrConstractItem', item);
+  store.commit('setCurrConstract', item);
 };
 
 const handleClick = (item) => {
@@ -1254,7 +1249,7 @@ if (props.tradeType == 2) {
   } else {
     let obj = {};
     try {
-      switch (props.mode) {
+      switch (props.type) {
         case 'constract':
           obj = JSON.parse(sessionStorage.getItem('currConstract') || '{}');
           break;

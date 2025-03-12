@@ -1,6 +1,6 @@
 <template>
   <div class="w-full h-full">
-    <div class="page-trade3">
+    <div class="page-trade3" :style="{ paddingBottom: props.innerPage ? '0' : '' }">
       <div class="z-[1]  pt-[0.4rem] pb-[0.4rem] bg-color" v-if="props.innerPage">
         <div
           class="transition flex justify-between  px-[0.32rem] py-[0.18rem] rounded-[1rem] gap-[0.2rem] h-[0.8rem] mx-[0.4rem] items-center border-[0.02rem]"
@@ -38,8 +38,7 @@
     margin-left: 0.32rem;
     margin-right: 0.32rem;
     padding-left: 0;
-    padding-right: 0;
-    min-height: calc(var(--vh) * 100 - 4rem);">
+    padding-right: 0;">
           <StockTable :from="'trade'" :showIcon="true" theme="classic" :handleClick="goInfo" :loading="searchLoading"
             :key="'search'" :list="searchList" />
         </div>
@@ -239,7 +238,7 @@ defineExpose({
 <style lang="less" scoped>
 .search_dialog_trade {
   .lists {
-    height: calc(var(--vh) * 60);
+    height: calc(var(--vh) * 60) !important;
     overflow-y: auto;
     margin-top: 0.32rem;
   }
@@ -281,7 +280,7 @@ defineExpose({
   background-color: var(--ex-bg-color);
 
   .lists {
-    height: calc(var(--vh) * 60);
+    height: calc(var(--vh) * 100 - 2.5rem);
     overflow-y: auto;
     margin-top: 0.32rem;
     padding: 0 0.32rem;

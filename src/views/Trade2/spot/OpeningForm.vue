@@ -118,9 +118,11 @@
           { label: `${t('trade.stock_opening_price_label')}`, value: 0 },
         ]
         " @percentTagClick="percentTagClick" v-if="props.activeTab == 1" />
-    <FormItem class="mb-[0.2rem]" v-else input-type="number" :placeholder="$t('trade.spot_trade_market_price')" :tip="''" :disabled="true" />
+    <FormItem class="mb-[0.2rem]" v-else input-type="number" :placeholder="$t('trade.spot_trade_market_price')"
+      :tip="''" :disabled="true" />
 
-    <FormItem class="mb-[0.2rem]" input-type="number" :placeholder="`${t('market.market_marketinfo_value')}(${currName.split('/')[1]})`" :tip="''"
+    <FormItem class="mb-[0.2rem]" input-type="number"
+      :placeholder="`${t('market.market_marketinfo_value')}(${currName.split('/')[1]})`" :tip="''"
       v-model="form1.amount" @input="changeAmount" />
 
 
@@ -578,7 +580,7 @@ const safeRef = ref();
 //搜索
 // const marketSearchList = computed(() => {
 //   let arr = [];
-//   switch (props.mode) {
+//   switch (props.type) {
 //     case "constract":
 //       arr = store.state.contractList || [];
 //       break;
@@ -611,7 +613,7 @@ const goDialogSearch = (market) => {
     _futures({
       name: s,
       type: "",
-      // type: searchMap[props.mode] || "",
+      // type: searchMap[props.type] || "",
     })
       .then((res) => {
         if (searchDialogStr.value == s) {
@@ -626,7 +628,7 @@ const goDialogSearch = (market) => {
               };
             return item;
           });
-          // switch (props.mode) {
+          // switch (props.type) {
           //   case 'constract':
           //     store.commit("setContractList", arr);
           //     break
@@ -639,7 +641,7 @@ const goDialogSearch = (market) => {
           // }
 
           // setTimeout(() => {
-          //   switch (props.mode) {
+          //   switch (props.type) {
           //     case 'constract':
           //       store.dispatch("subList", {
           //         commitKey: "setContractList",
@@ -859,7 +861,7 @@ const percentTagClick = (percent) => {
 // 市价
 const currStock = computed(() => {
   let obj = {};
-  switch (props.mode) {
+  switch (props.type) {
     case "constract":
       obj = store.state.currConstact || [];
       break;
@@ -1158,7 +1160,7 @@ const initParam = () => {
 
 const setCurrStockFunc = (item) => {
 
-  switch (props.mode) {
+  switch (props.type) {
     case "spot":
       sessionStorage.setItem("currConstract", JSON.stringify(item));
       store.commit("setCurrConstract", item);
@@ -1173,7 +1175,7 @@ const setCurrStockFunc = (item) => {
       break;
   }
   sessionStorage.setItem("currConstract", JSON.stringify(item))
-  store.commit('setCurrConstractItem', item)
+  store.commit('setCurrConstract', item)
 };
 
 const handleClick = (item) => {
@@ -1212,7 +1214,7 @@ if (props.tradeType == 2) {
   } else {
     let obj = {};
     try {
-      switch (props.mode) {
+      switch (props.type) {
         case "constract":
           obj = JSON.parse(sessionStorage.getItem("currConstract") || "{}");
           break;
