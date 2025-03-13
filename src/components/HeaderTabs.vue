@@ -1,7 +1,7 @@
 <template>
-    <div ref="headerTabRef" class="header_tabs" :class="['header_tabs--' + type]">
+    <div ref="headerTabRef" class="header_tabs" :class="['header_tabs--' + type, 'header_from--' + from]">
         <slot name="before" />
-        <div class="tabs"  ref="tabScroller">
+        <div class="tabs" ref="tabScroller">
             <div class="tab_body">
                 <div class="tab" v-for="(tabName, i) in tabs" :key="i"
                     :class="{ 'active_tab': active == i, 'tab--last': i == tabs.length - 1 }"
@@ -108,6 +108,7 @@ onMounted(() => {
     align-items: center;
     justify-content: space-between;
     height: 0.92rem;
+
     .tabs {
         flex: 1;
         display: flex;
@@ -139,7 +140,7 @@ onMounted(() => {
             .tab-name {
                 position: relative;
                 z-index: 1;
-                
+
             }
 
         }
@@ -149,6 +150,7 @@ onMounted(() => {
             opacity: 1;
             font-size: 0.36rem;
             font-weight: 500;
+
             &::after {
                 opacity: 1;
                 transform: scale(1);
@@ -176,13 +178,14 @@ onMounted(() => {
             color: var(--ex-text-color2);
             background: var(--ex-bg-color3);
             color: var(--ex-text-color2);
-            
+
         }
 
         .active_tab {
             font-weight: normal;
             color: var(--ex-black);
             background-color: var(--ex-white);
+
             .tab-name {
                 font-weight: 600;
                 font-size: 0.32rem;
@@ -199,15 +202,17 @@ onMounted(() => {
 .header_tabs--line {
     height: 0.94rem;
     position: relative;
-    &::after{
+
+    &::after {
         content: '';
         width: 100%;
         height: 1px;
         position: absolute;
         bottom: 0;
-        left:0;
+        left: 0;
         background: rgba(255, 255, 255, 0.06);
     }
+
     .tabs {
         .tab_body {
             margin: 0 0.16rem;
@@ -226,6 +231,7 @@ onMounted(() => {
             cursor: pointer;
             white-space: nowrap;
             position: relative;
+
             .tab-name {
                 position: relative;
                 z-index: 1;
@@ -266,6 +272,37 @@ onMounted(() => {
         .active_tab {
             .tab-name {
                 font-size: 0.3rem;
+            }
+        }
+    }
+}
+
+.header_from--tradeInfo {
+    .tabs {
+        height: 0.86rem;
+        border-bottom: 1px solid var(--ex-border-color);
+
+        .tab {
+            font-size: 0.32rem;
+            height: 0.86rem;
+            margin: 0 0.14rem 0 0.2rem;
+            padding: 0 0 0.02rem 0;
+        }
+
+        .active_tab {
+            font-size: 0.32rem;
+            position: relative;
+            font-weight: 600;
+
+            &::after {
+                content: "";
+                width: 0.52rem;
+                height: 0.52rem;
+                position: absolute;
+                left: 50%;
+                transform: translateX(-50%);
+                bottom: -0.16rem;
+                background-size: 100% 100%;
             }
         }
     }

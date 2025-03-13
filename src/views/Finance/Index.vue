@@ -2,7 +2,7 @@
 <template>
     <div class="page page_finance">
         <!-- 头部 -->
-        <HeaderTabs v-model:active="activeTab" :tabs="[
+        <HeaderTabs :from="props.from" v-model:active="activeTab" :tabs="[
             t('copy.title'),
             t('finance.defi_borrow'),
             t('finance.portfolio_title'),
@@ -42,6 +42,12 @@ const { t } = useI18n();
 
 const route = useRoute();
 
+const props = defineProps({
+    from: {
+        type: String,
+        default: ''
+    }
+})
 const activeTab = ref(route.query.activeTab ? Number(route.query.activeTab) : Number(localStorage.getItem('financeActiveTab')) || 0);
 const initialSwipe = ref(activeTab.value);
 const loadedTab = ref([activeTab.value]);

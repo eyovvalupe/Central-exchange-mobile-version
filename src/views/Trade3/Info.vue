@@ -1,163 +1,188 @@
 <!-- 交易页 -->
 <template>
-    <div class="page-marketinfo2">
-        <div class="left-icon" @click="openMenu">
-            <div class="w-[0.44rem] h-[0.44rem]">
-                <img v-lazy="getStaticImgUrl('/static/img/trade/trade-menu.svg')" alt="" />
-            </div>
-        </div>
-
-        <div v-if="!item.symbol">
-            <div style="height: 2rem"></div>
-            <Loaidng :loading="true" />
-        </div>
-        <div class="market-trade-body" v-if="item.symbol && !chartLoading">
-            <Tabs @change="changeTab2" :key="'main'" class="van-tabs--top" :sticky="true"
-                :color="'var(--ex-primary-color)'" v-model:active="activeTab" animated shrink>
-                <!-- 现货 -->
-                <Tab :name="1" :title="$t('common.spot')">
-                    <div class="dialog-market-box" v-if="activeTab == 1 && !chartLoading">
-                        <div class="top-box">
-                            <!-- 标题 -->
-                            <div class="title" @click="showSearchDialog = true">
-                                <div class="title_name">
-                                    {{ item.name || '--' }}
-                                    <Icon name="arrow-down" />
-                                </div>
-                            </div>
-                            <div style="flex: 1"></div>
-                            <div @click="goMaret">
-                                <div class="size-[0.48rem] mr-[0.24rem]">
-                                    <img v-lazy="getStaticImgUrl('/static/img/market/market.svg')" alt="" />
-                                </div>
-                            </div>
-                            <!-- 详情 -->
-                            <div class="search star" @click="addCollect(activeTab)"
-                                :style="{ opacity: loading ? '0.5' : '1' }">
-                                <div class="size-[0.48rem]">
-                                    <img v-if="item.watchlist == 1"
-                                        v-lazy="getStaticImgUrl('/static/img/market/star.svg')" alt="" />
-                                    <img v-else v-lazy="getStaticImgUrl('/static/img/market/unstar.svg')" alt="" />
-                                </div>
-                            </div>
-                        </div>
-                        <div class="charts-box" :class="[hideChart ? 'hide-charts-box' : '']" v-if="!showInfoDialog">
-                            <Chart @switch="e => hideChart = e" :type="'spot'" :mini="true" />
-                        </div>
-                        <!-- 内容1 -->
-                        <div style="
-                margin: 0.1rem;
-                background-color: var(--ex-bg-color3);
-                border-radius: 0.32rem;
-              ">
-                            <Tabs :key="'sub'" class="van-tabs--sub_line van-tabs--sub_bg van-tabs--market2"
-                                :color="'var(--ex-primary-color)'" v-model:active="activeTab2" animated shrink>
-                                <Tab :name="11" :title="$t('trade.stock_open')">
-                                    <OpeningSpot :item="item" ref="openingRef2" :from="'trade'" :type="'spot'" />
-                                </Tab>
-                                <Tab :name="22" :title="$t('market.market_item_order')" v-if="item.type == 'crypto'">
-                                    <div style="height: 0.08rem"></div>
-                                    <div class="market-box">
-                                        <OrderingSpot :tradeType="'spot'" v-if="activeTab2 == 22" :key="'o'"
-                                            type="nomal" />
-                                    </div>
-                                </Tab>
-                                <Tab :name="33" :title="$t('market.market_item_news')" v-if="item.type == 'crypto'">
-                                    <div class="market-box">
-                                        <OrderingSpot :tradeType="'spot'" v-if="activeTab2 == 33" :key="'n'"
-                                            type="news" />
-                                    </div>
-                                </Tab>
-                                <Tab :title="t('trade.trade_orders_current')" :name="44">
-                                    <div style="height: 0.2rem"></div>
-                                    <div class="dialog-market-bg" v-if="activeTab2 == 44">
-                                        <PositionsSpot :type="'constract'" />
-                                    </div>
-                                </Tab>
-                                <Tab :title="t('trade.trade_order_history')" :name="55">
-                                    <div style="height: 0.2rem"></div>
-                                    <div class="dialog-market-bg" v-if="activeTab2 == 55">
-                                        <InquireSpot :scrollDom="'.dialog-market-box'" :type="'constract'"
-                                            ref="InquireRef" />
-                                    </div>
-                                </Tab>
-                            </Tabs>
-                        </div>
-                        <div style="height: 0.4rem"></div>
+    <div>
+        <!-- 头部 -->
+        <HeaderTabs @change="changeTab" v-model:active="headActiveTab" :tabs="[t('交易'), t('理财')]">
+            <template #after>
+                <div class="flex items-center gap-[0.16rem] mr-[0.34rem]">
+                    <div class="size-[0.64rem]"
+                        style="background-color: var(--ex-bg-white1);border-radius: 50%;padding: 0.12rem;">
+                        <img class="img transition" v-lazy="getStaticImgUrl('/static/img/common/right_order.svg')"
+                            alt="" />
                     </div>
-                </Tab>
-                <Tab :name="2" :title="$t('common.crypto')">
-                    <div class="dialog-market-box" v-if="activeTab == 2 && !chartLoading">
-                        <div class="top-box">
-                            <!-- 标题 -->
-                            <div class="title" @click="showSearchDialog = true">
-                                <div class="title_name">
-                                    {{ item.name || '--' }}
-                                    <Icon name="arrow-down" />
+                    <div class="size-[0.64rem]" @click="openRightMenu"
+                        style="background-color: var(--ex-bg-white1);border-radius: 50%;padding: 0.12rem;"
+                        :style="{ border: showRightMenu ? '1px solid var(--ex-primary-color)' : '' }">
+                        <img class="img transition" v-lazy="getStaticImgUrl('/static/img/common/right_menu.svg')"
+                            alt="" />
+                    </div>
+                </div>
+            </template>
+        </HeaderTabs>
+
+        <div class="page-marketinfo2" v-if="headActiveTab == 0">
+            <!-- <div class="left-icon" @click="openMenu">
+                <div class="w-[0.44rem] h-[0.44rem]">
+                    <img v-lazy="getStaticImgUrl('/static/img/trade/trade-menu.svg')" alt="" />
+                </div>
+            </div> -->
+
+            <div v-if="!item.symbol">
+                <div style="height: 2rem"></div>
+                <Loaidng :loading="true" />
+            </div>
+            <div class="market-trade-body" v-if="item.symbol && !chartLoading">
+                <Tabs @change="changeTab2" :key="'main'" class="van-tabs--top" :sticky="true"
+                    :color="'var(--ex-primary-color)'" v-model:active="activeTab" animated shrink>
+                    <!-- 现货 -->
+                    <Tab :name="1" :title="$t('common.spot')">
+                        <div class="dialog-market-box" v-if="activeTab == 1 && !chartLoading">
+                            <div class="top-box">
+                                <!-- 标题 -->
+                                <div class="title" @click="showSearchDialog = true">
+                                    <div class="title_name">
+                                        {{ item.name || '--' }}
+                                        <Icon name="arrow-down" />
+                                    </div>
+                                </div>
+                                <div style="flex: 1"></div>
+                                <div @click="goMaret">
+                                    <div class="size-[0.48rem] mr-[0.24rem]">
+                                        <img v-lazy="getStaticImgUrl('/static/img/market/market.svg')" alt="" />
+                                    </div>
+                                </div>
+                                <!-- 详情 -->
+                                <div class="search star" @click="addCollect(activeTab)"
+                                    :style="{ opacity: loading ? '0.5' : '1' }">
+                                    <div class="size-[0.48rem]">
+                                        <img v-if="item.watchlist == 1"
+                                            v-lazy="getStaticImgUrl('/static/img/market/star.svg')" alt="" />
+                                        <img v-else v-lazy="getStaticImgUrl('/static/img/market/unstar.svg')" alt="" />
+                                    </div>
                                 </div>
                             </div>
-                            <div style="flex: 1"></div>
-                            <div @click="goMaret">
-                                <div class="size-[0.48rem] mr-[0.24rem]">
-                                    <img v-lazy="getStaticImgUrl('/static/img/market/market.svg')" alt="" />
-                                </div>
+                            <div class="charts-box" :class="[hideChart ? 'hide-charts-box' : '']"
+                                v-if="!showInfoDialog">
+                                <Chart @switch="e => hideChart = e" :type="'spot'" :mini="true" />
                             </div>
-                            <!-- 详情 -->
-                            <div class="search star" @click="addCollect(activeTab)"
-                                :style="{ opacity: loading ? '0.5' : '1' }">
-                                <div class="size-[0.48rem]">
-                                    <img v-if="item.watchlist == 1"
-                                        v-lazy="getStaticImgUrl('/static/img/market/star.svg')" alt="" />
-                                    <img v-else v-lazy="getStaticImgUrl('/static/img/market/unstar.svg')" alt="" />
-                                </div>
-                            </div>
-                        </div>
-                        <div class="charts-box" :class="[hideChart ? 'hide-charts-box' : '']"
-                            v-if="!showInfoDialog && !openInfoStatus">
-                            <Chart @switch="e => hideChart = e" :from="'constract'" :type="'constract'" :mini="true" />
-                        </div>
-                        <!-- 内容1 -->
-                        <div style="
+                            <!-- 内容1 -->
+                            <div style="
                 margin: 0.1rem;
                 background-color: var(--ex-bg-color3);
                 border-radius: 0.32rem;
               ">
-                            <Tabs :key="'sub'" class="van-tabs--sub_line van-tabs--sub_bg van-tabs--market2"
-                                :color="'var(--ex-primary-color)'" v-model:active="activeTab2" animated shrink>
-                                <Tab :name="11" :title="$t('trade.stock_open')">
-                                    <OpeningContract :item="item" ref="openingRef2" :from="'trade'" :type="'crypto'" />
-                                </Tab>
-                                <Tab :name="22" :title="$t('market.market_item_order')" v-if="item.type == 'crypto'">
-                                    <div style="height: 0.08rem"></div>
-                                    <div class="market-box">
-                                        <OrderingSpot :tradeType="'crypto'" v-if="activeTab2 == 22" :key="'o'"
-                                            type="nomal" />
-                                    </div>
-                                </Tab>
-                                <Tab :name="33" :title="$t('market.market_item_news')" v-if="item.type == 'crypto'">
-                                    <div class="market-box">
-                                        <OrderingSpot :tradeType="'crypto'" v-if="activeTab2 == 33" :key="'n'"
-                                            type="news" />
-                                    </div>
-                                </Tab>
-                                <Tab :title="t('trade.trade_orders_current')" :name="44">
-                                    <div style="height: 0.2rem"></div>
-                                    <div class="dialog-market-bg" v-if="activeTab2 == 44">
-                                        <PositionsContract :type="'constract'" />
-                                    </div>
-                                </Tab>
-                                <Tab :title="t('trade.trade_order_history')" :name="55">
-                                    <div style="height: 0.2rem"></div>
-                                    <div class="dialog-market-bg" v-if="activeTab2 == 55">
-                                        <InquireContract :scrollDom="'.dialog-market-box'" :type="'constract'"
-                                            ref="InquireRef" />
-                                    </div>
-                                </Tab>
-                            </Tabs>
+                                <Tabs :key="'sub'" class="van-tabs--sub_line van-tabs--sub_bg van-tabs--market2"
+                                    :color="'var(--ex-primary-color)'" v-model:active="activeTab2" animated shrink>
+                                    <Tab :name="11" :title="$t('trade.stock_open')">
+                                        <OpeningSpot :item="item" ref="openingRef2" :from="'trade'" :type="'spot'" />
+                                    </Tab>
+                                    <Tab :name="22" :title="$t('market.market_item_order')"
+                                        v-if="item.type == 'crypto'">
+                                        <div style="height: 0.08rem"></div>
+                                        <div class="market-box">
+                                            <OrderingSpot :tradeType="'spot'" v-if="activeTab2 == 22" :key="'o'"
+                                                type="nomal" />
+                                        </div>
+                                    </Tab>
+                                    <Tab :name="33" :title="$t('market.market_item_news')" v-if="item.type == 'crypto'">
+                                        <div class="market-box">
+                                            <OrderingSpot :tradeType="'spot'" v-if="activeTab2 == 33" :key="'n'"
+                                                type="news" />
+                                        </div>
+                                    </Tab>
+                                    <Tab :title="t('trade.trade_orders_current')" :name="44">
+                                        <div style="height: 0.2rem"></div>
+                                        <div class="dialog-market-bg" v-if="activeTab2 == 44">
+                                            <PositionsSpot :type="'constract'" />
+                                        </div>
+                                    </Tab>
+                                    <Tab :title="t('trade.trade_order_history')" :name="55">
+                                        <div style="height: 0.2rem"></div>
+                                        <div class="dialog-market-bg" v-if="activeTab2 == 55">
+                                            <InquireSpot :scrollDom="'.dialog-market-box'" :type="'constract'"
+                                                ref="InquireRef" />
+                                        </div>
+                                    </Tab>
+                                </Tabs>
+                            </div>
+                            <div style="height: 0.4rem"></div>
                         </div>
+                    </Tab>
+                    <Tab :name="2" :title="$t('common.crypto')">
+                        <div class="dialog-market-box" v-if="activeTab == 2 && !chartLoading">
+                            <div class="top-box">
+                                <!-- 标题 -->
+                                <div class="title" @click="showSearchDialog = true">
+                                    <div class="title_name">
+                                        {{ item.name || '--' }}
+                                        <Icon name="arrow-down" />
+                                    </div>
+                                </div>
+                                <div style="flex: 1"></div>
+                                <div @click="goMaret">
+                                    <div class="size-[0.48rem] mr-[0.24rem]">
+                                        <img v-lazy="getStaticImgUrl('/static/img/market/market.svg')" alt="" />
+                                    </div>
+                                </div>
+                                <!-- 详情 -->
+                                <div class="search star" @click="addCollect(activeTab)"
+                                    :style="{ opacity: loading ? '0.5' : '1' }">
+                                    <div class="size-[0.48rem]">
+                                        <img v-if="item.watchlist == 1"
+                                            v-lazy="getStaticImgUrl('/static/img/market/star.svg')" alt="" />
+                                        <img v-else v-lazy="getStaticImgUrl('/static/img/market/unstar.svg')" alt="" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="charts-box" :class="[hideChart ? 'hide-charts-box' : '']"
+                                v-if="!showInfoDialog && !openInfoStatus">
+                                <Chart @switch="e => hideChart = e" :from="'constract'" :type="'constract'"
+                                    :mini="true" />
+                            </div>
+                            <!-- 内容1 -->
+                            <div style="
+                margin: 0.1rem;
+                background-color: var(--ex-bg-color3);
+                border-radius: 0.32rem;
+              ">
+                                <Tabs :key="'sub'" class="van-tabs--sub_line van-tabs--sub_bg van-tabs--market2"
+                                    :color="'var(--ex-primary-color)'" v-model:active="activeTab2" animated shrink>
+                                    <Tab :name="11" :title="$t('trade.stock_open')">
+                                        <OpeningContract :item="item" ref="openingRef2" :from="'trade'"
+                                            :type="'crypto'" />
+                                    </Tab>
+                                    <Tab :name="22" :title="$t('market.market_item_order')"
+                                        v-if="item.type == 'crypto'">
+                                        <div style="height: 0.08rem"></div>
+                                        <div class="market-box">
+                                            <OrderingSpot :tradeType="'crypto'" v-if="activeTab2 == 22" :key="'o'"
+                                                type="nomal" />
+                                        </div>
+                                    </Tab>
+                                    <Tab :name="33" :title="$t('market.market_item_news')" v-if="item.type == 'crypto'">
+                                        <div class="market-box">
+                                            <OrderingSpot :tradeType="'crypto'" v-if="activeTab2 == 33" :key="'n'"
+                                                type="news" />
+                                        </div>
+                                    </Tab>
+                                    <Tab :title="t('trade.trade_orders_current')" :name="44">
+                                        <div style="height: 0.2rem"></div>
+                                        <div class="dialog-market-bg" v-if="activeTab2 == 44">
+                                            <PositionsContract :type="'constract'" />
+                                        </div>
+                                    </Tab>
+                                    <Tab :title="t('trade.trade_order_history')" :name="55">
+                                        <div style="height: 0.2rem"></div>
+                                        <div class="dialog-market-bg" v-if="activeTab2 == 55">
+                                            <InquireContract :scrollDom="'.dialog-market-box'" :type="'constract'"
+                                                ref="InquireRef" />
+                                        </div>
+                                    </Tab>
+                                </Tabs>
+                            </div>
 
-                        <!-- 内容2 -->
-                        <!-- <div style="padding: 0 0.1rem;background-color:var(--ex-bg-color);margin-top: 0.1rem;">
+                            <!-- 内容2 -->
+                            <!-- <div style="padding: 0 0.1rem;background-color:var(--ex-bg-color);margin-top: 0.1rem;">
                             <Tabs :key="'sub'" class="van-tabs--sub_line van-tabs--sub_bg"
                                 :color="'var(--ex-primary-color)'" v-model:active="activeTab3" animated shrink>
                                 <Tab :title="t('trade.trade_orders_current')" :name="44">
@@ -174,114 +199,122 @@
                                 </Tab>
                             </Tabs>
                         </div> -->
-                        <div style="height: 0.4rem"></div>
-                    </div>
-                </Tab>
-                <Tab :name="3" :title="$t('trade.left_bot')">
-                    <div class="dialog-market-box" v-if="activeTab == 3 && !chartLoading">
-                        <div class="top-box">
-                            <!-- 标题 -->
-                            <div class="title" @click="showSearchDialog = true">
-                                <div class="title_name">
-                                    {{ item.name || '--' }}
-                                    <Icon name="arrow-down" />
-                                </div>
-                            </div>
-                            <div style="flex: 1"></div>
-                            <div @click="goMaret">
-                                <div class="size-[0.48rem] mr-[0.24rem]">
-                                    <img v-lazy="getStaticImgUrl('/static/img/market/market.svg')" alt="" />
-                                </div>
-                            </div>
-                            <!-- 详情 -->
-                            <div class="search star" @click="addCollect(activeTab)"
-                                :style="{ opacity: loading ? '0.5' : '1' }">
-                                <div class="size-[0.48rem]">
-                                    <img v-if="item.watchlist == 1"
-                                        v-lazy="getStaticImgUrl('/static/img/market/star.svg')" alt="" />
-                                    <img v-else v-lazy="getStaticImgUrl('/static/img/market/unstar.svg')" alt="" />
-                                </div>
-                            </div>
+                            <div style="height: 0.4rem"></div>
                         </div>
-                        <div class="charts-box" :class="[hideChart ? 'hide-charts-box' : '']" v-if="!showInfoDialog">
-                            <Chart @switch="e => hideChart = e" :type="'ai'" :mini="true" />
-                        </div>
-                        <!-- 内容1 -->
-                        <div style="
+                    </Tab>
+                    <Tab :name="3" :title="$t('trade.left_bot')">
+                        <div class="dialog-market-box" v-if="activeTab == 3 && !chartLoading">
+                            <div class="top-box">
+                                <!-- 标题 -->
+                                <div class="title" @click="showSearchDialog = true">
+                                    <div class="title_name">
+                                        {{ item.name || '--' }}
+                                        <Icon name="arrow-down" />
+                                    </div>
+                                </div>
+                                <div style="flex: 1"></div>
+                                <div @click="goMaret">
+                                    <div class="size-[0.48rem] mr-[0.24rem]">
+                                        <img v-lazy="getStaticImgUrl('/static/img/market/market.svg')" alt="" />
+                                    </div>
+                                </div>
+                                <!-- 详情 -->
+                                <div class="search star" @click="addCollect(activeTab)"
+                                    :style="{ opacity: loading ? '0.5' : '1' }">
+                                    <div class="size-[0.48rem]">
+                                        <img v-if="item.watchlist == 1"
+                                            v-lazy="getStaticImgUrl('/static/img/market/star.svg')" alt="" />
+                                        <img v-else v-lazy="getStaticImgUrl('/static/img/market/unstar.svg')" alt="" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="charts-box" :class="[hideChart ? 'hide-charts-box' : '']"
+                                v-if="!showInfoDialog">
+                                <Chart @switch="e => hideChart = e" :type="'ai'" :mini="true" />
+                            </div>
+                            <!-- 内容1 -->
+                            <div style="
                 margin: 0.1rem;
                 background-color: var(--ex-bg-color3);
                 border-radius: 0.32rem;
               ">
-                            <Tabs :key="'sub'" class="van-tabs--sub_line van-tabs--sub_bg van-tabs--market2"
-                                :color="'var(--ex-primary-color)'" v-model:active="activeTab2" animated shrink>
-                                <Tab :name="11" :title="$t('trade.stock_open')">
-                                    <div style="height: 0.32rem"></div>
-                                    <OpeningAi :tradeType="'ai'" ref="openingRef2" :type="'ai'" />
-                                </Tab>
-                                <Tab :title="t('trade.trade_orders_current')" :name="44">
-                                    <div style="height: 0.2rem"></div>
-                                    <div class="dialog-market-bg" v-if="activeTab2 == 44">
-                                        <PositionsAi />
-                                    </div>
-                                </Tab>
-                                <Tab :title="t('trade.trade_order_history')" :name="55">
-                                    <div style="height: 0.2rem"></div>
-                                    <div class="dialog-market-bg" v-if="activeTab2 == 55">
-                                        <InquireAi :scrollDom="'.dialog-market-box'" ref="InquireRef" />
-                                    </div>
-                                </Tab>
-                            </Tabs>
-                        </div>
+                                <Tabs :key="'sub'" class="van-tabs--sub_line van-tabs--sub_bg van-tabs--market2"
+                                    :color="'var(--ex-primary-color)'" v-model:active="activeTab2" animated shrink>
+                                    <Tab :name="11" :title="$t('trade.stock_open')">
+                                        <div style="height: 0.32rem"></div>
+                                        <OpeningAi :tradeType="'ai'" ref="openingRef2" :type="'ai'" />
+                                    </Tab>
+                                    <Tab :title="t('trade.trade_orders_current')" :name="44">
+                                        <div style="height: 0.2rem"></div>
+                                        <div class="dialog-market-bg" v-if="activeTab2 == 44">
+                                            <PositionsAi />
+                                        </div>
+                                    </Tab>
+                                    <Tab :title="t('trade.trade_order_history')" :name="55">
+                                        <div style="height: 0.2rem"></div>
+                                        <div class="dialog-market-bg" v-if="activeTab2 == 55">
+                                            <InquireAi :scrollDom="'.dialog-market-box'" ref="InquireRef" />
+                                        </div>
+                                    </Tab>
+                                </Tabs>
+                            </div>
 
-                        <div style="height: 0.4rem"></div>
+                            <div style="height: 0.4rem"></div>
+                        </div>
+                    </Tab>
+                </Tabs>
+            </div>
+
+            <!-- 搜索列表 -->
+            <BottomPopup @opened="openedList" @close="closeList" round v-model:show="showSearchDialog" position="bottom"
+                closeable teleport="body">
+                <div class="van-popup-custom-title">
+                    {{ titleMap[activeTab] }}
+                </div>
+                <div class="search_dialog_trade">
+                    <!-- 搜索 -->
+                    <div class="item search_box">
+                        <div class="search_icon">
+                            <img v-lazy="getStaticImgUrl('/static/img/common/search.svg')" alt="🔍" />
+                        </div>
+                        <input v-model.trim="searchDialogStr" @keyup="initTabList" type="text" class="ipt"
+                            style="width: 100%" :placeholder="t('trade.stock_opening_search')" />
                     </div>
-                </Tab>
-            </Tabs>
+
+                    <div class="lists search_dialog_list" v-if="showSearchCon">
+                        <StockTable :key="activeTab" :showIcon="[1, 2, 5, 6].includes(activeTab)" theme="classic"
+                            :handleClick="handleClick" :type="route.query.tradeType" :loading="false"
+                            :list="showList" />
+
+                        <LoadingMore :style="{ 'margin-bottom': finish ? '0.4rem' : '1.6rem' }"
+                            :loading="searchLoading2" :finish="finish" v-if="(finish && showList.length) || !finish" />
+                    </div>
+                </div>
+            </BottomPopup>
+
+            <!-- 详情 -->
+            <BottomPopup round v-model:show="showInfoDialog" position="bottom" closeable teleport="body">
+                <div class="page_trade_info" style="max-height: calc(var(--vh) * 90);overflow-y: auto;"
+                    v-if="showInfoDialog && !openInfoStatus">
+                    <div
+                        style="text-align: center;color: var(--ex-text-color);font-size: 0.32rem;padding: 0.1rem 0 0.2rem 0;font-weight: bold;">
+                        {{
+                            activeTab == 4 ? item.symbol : item.name }}</div>
+                    <MarketInfo2 :innerPage="true" />
+                </div>
+            </BottomPopup>
+
+            <!-- 菜单 -->
+            <Popup round v-model:show="showNavDialog" position="left" :style="{ width: '85%', height: '100%' }">
+                <Index @handleClick="handleClickIndex" ref="IndexRef" :innerPage="true" />
+            </Popup>
         </div>
 
-        <!-- 搜索列表 -->
-        <BottomPopup @opened="openedList" @close="closeList" round v-model:show="showSearchDialog" position="bottom"
-            closeable teleport="body">
-            <div class="van-popup-custom-title">
-                {{ titleMap[activeTab] }}
-            </div>
-            <div class="search_dialog_trade">
-                <!-- 搜索 -->
-                <div class="item search_box">
-                    <div class="search_icon">
-                        <img v-lazy="getStaticImgUrl('/static/img/common/search.svg')" alt="🔍" />
-                    </div>
-                    <input v-model.trim="searchDialogStr" @keyup="initTabList" type="text" class="ipt"
-                        style="width: 100%" :placeholder="t('trade.stock_opening_search')" />
-                </div>
-
-                <div class="lists search_dialog_list" v-if="showSearchCon">
-                    <StockTable :key="activeTab" :showIcon="[1, 2, 5, 6].includes(activeTab)" theme="classic"
-                        :handleClick="handleClick" :type="route.query.tradeType" :loading="false" :list="showList" />
-
-                    <LoadingMore :style="{ 'margin-bottom': finish ? '0.4rem' : '1.6rem' }" :loading="searchLoading2"
-                        :finish="finish" v-if="(finish && showList.length) || !finish" />
-                </div>
-            </div>
-        </BottomPopup>
-
-        <!-- 详情 -->
-        <BottomPopup round v-model:show="showInfoDialog" position="bottom" closeable teleport="body">
-            <div class="page_trade_info" style="max-height: calc(var(--vh) * 90);overflow-y: auto;"
-                v-if="showInfoDialog && !openInfoStatus">
-                <div
-                    style="text-align: center;color: var(--ex-text-color);font-size: 0.32rem;padding: 0.1rem 0 0.2rem 0;font-weight: bold;">
-                    {{
-                        activeTab == 4 ? item.symbol : item.name }}</div>
-                <MarketInfo2 :innerPage="true" />
-            </div>
-        </BottomPopup>
-
-        <!-- 菜单 -->
-        <Popup round v-model:show="showNavDialog" position="left" :style="{ width: '85%', height: '100%' }">
-            <Index @handleClick="handleClickIndex" ref="IndexRef" :innerPage="true" />
-        </Popup>
+        <div v-if="headActiveTab == 1">
+            <FinanceIndex :from="'tradeInfo'" />
+        </div>
     </div>
+
 </template>
 
 <script setup>
@@ -299,6 +332,9 @@ import BottomPopup from '@/components/BottomPopup.vue';
 import Loaidng from '@/components/Loaidng.vue';
 import router from '@/router';
 import LoadingMore from "@/components/LoadingMore.vue";
+import HeaderTabs from "@/components/HeaderTabs.vue";
+import FinanceIndex from "../Finance/Index.vue";
+
 // 公共
 import StockTable from '@/components/StockTable.vue';
 import OrderingSpot from '@/views/Market/OrderingSpot.vue';
@@ -328,6 +364,7 @@ const props = defineProps({
     },
 });
 
+const headActiveTab = ref(Number(sessionStorage.getItem("tradeType")));
 const openInfoStatus = computed(() => store.state.openInfoStatus);
 const { t } = useI18n();
 const route = useRoute();
@@ -367,6 +404,11 @@ const tradeTypeMap = {
 };
 
 
+const changeTab = (val) => {
+    // store.commit("setTradeTabType", val);
+    sessionStorage.setItem('tradeType', val);
+    headActiveTab.value = val;
+};
 const changeTab2 = (e) => {
     searchDialogStr.value = ''
     hideChart.value = false
@@ -735,6 +777,12 @@ const closeList = () => {
 };
 
 
+//打开菜单弹窗
+const showRightMenu = computed(() => store.state.showRightMenu);
+const openRightMenu = () => {
+    // rightMenu.value = true
+    store.commit("setShowRightMenu", !showRightMenu.value);
+};
 // 侧边弹框
 const showNavDialog = ref(false);
 const IndexRef = ref();
@@ -833,13 +881,6 @@ onDeactivated(() => {
 
     .market-trade-body {
 
-        :deep(.van-tabs--top) {
-            .van-sticky {
-                .van-tabs__wrap {
-                    padding-left: 0.68rem;
-                }
-            }
-        }
 
         .dialog-market-box {
             margin-top: 0.1rem;

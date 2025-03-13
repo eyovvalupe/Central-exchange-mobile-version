@@ -3,54 +3,6 @@
         :class="['home-tabs-box-' + props.from, 'home-tabs-box-' + (props.innerPage ? 'inner' : '')]">
         <Tabs :type="from == 'trade' ? 'line-card-trade' : 'sub'" :color="'var(--ex-primary-color)'" @change="tabChange"
             v-if="props.activated" v-model:active="activeTab" :animated="from != 'home'" shrink>
-            <Tab :name="0" v-if="from != 'home'" :title="t('trade.left_mine')">
-                <template #title>
-                    <div style="width: 0.44rem;height: 0.44rem;">
-                        <img v-if="activeTab == 0" v-lazy="getStaticImgUrl('/static/img/trade/star.svg')" alt="">
-                        <img v-else v-lazy="getStaticImgUrl('/static/img/trade/unstar.svg')" alt="">
-                    </div>
-                </template>
-                <div :class="['home-tab-box-' + props.from, 'mt-[0.24rem]']"
-                    :style="{ borderTop: '1px solid var(--ex-border-color)' }">
-                    <div v-if="token">
-                        <Loaidng v-if="watchListLoading" :loading="watchListLoading" />
-                        <div style="padding-bottom: 0.2rem;overflow: visible;"
-                            v-if="activeTab == 0 && !watchListLoading">
-                            <StockItem :handleClick="props.innerPage ? handleClick : null"
-                                :page="from == 'home' ? 'home' : ''" :padding="true"
-                                :class="[props.from == 'home' ? 'wow fadeInUp' : '']" :data-wow-delay="(0.03 * i) + 's'"
-                                :showIcon="true" :item=item v-for="(item, i) in (watchList)" :key="'c_' + i"
-                                menuType="option" marketType="crypto" />
-                        </div>
-                        <NoData v-if="!watchListLoading && !watchList.length" />
-                    </div>
-                    <div v-if="!token" class="flex flex-col pt-[0.32rem] pb-[0.32rem]">
-
-
-                        <div
-                            class="w-full flex justify-between border-b-[0.02rem] pb-[0.2rem] mb-[0.6rem] px-[0.32rem] border-b-color2">
-                            <div class="text-color2">{{ $t('copy.copy_order_name') }}</div>
-                            <div class="text-color2">{{ $t('market.market_optional_crypto_price') + ' / ' +
-                                $t('copy.copy_belong_pl_rate') }}</div>
-                        </div>
-
-                        <div
-                            style="width: 100%;text-align: center;margin: 0.6rem 0 0.4rem 0;color: var(--ex-placeholder-color);">
-                            <div style="width:1.12rem;height:1.12rem;margin: 0 auto 0.2rem auto;">
-                                <img v-lazy="getStaticImgUrl('/static/img/user/unlogin-user.png')" alt="">
-                            </div>
-                            <div>{{ $t('market.market_login_first') }}</div>
-                        </div>
-                        <div class="flex justify-center gap-[0.4rem]">
-                            <div style="min-width: 2rem;"
-                                class="px-[0.28rem] h-[0.8rem] rounded-[0.4rem] bg-[var(--ex-bg-white1)] flex items-center justify-center text-[0.32rem] text-white ripple-primary"
-                                @click="jump('login')">{{ $t('trade.stock_opening_token_login') }}</div>
-                            <!-- <div class="w-[3rem] h-[0.8rem] rounded-[0.4rem] bg-primary flex items-center justify-center text-[0.32rem] text-white ripple-btn"
-                                @click="jump('register')">{{ $t('trade.stock_opening_token_register') }}</div> -->
-                        </div>
-                    </div>
-                </div>
-            </Tab>
             <Tab :name="1" :title="t('common.spot')">
                 <div :class="['home-tab-box-' + props.from, 'mt-[0.24rem]']"
                     :style="{ borderTop: '1px solid var(--ex-border-color)' }" v-if="activeTab == 1">
@@ -108,15 +60,11 @@
 <script setup>
 import { Tab, Tabs } from "vant";
 import { ref, computed, nextTick, onMounted, onBeforeUnmount, watch } from "vue"
-import NoData from "@/components/NoData.vue";
-import Loaidng from "@/components/Loaidng.vue";
-import Ai from "@/views/Market/components/Ai.vue";
 import StockItem from "@/components/StockItem.vue";
 import { _futures, _stock, _watchlist, _trade, _aiquant2 } from "@/api/api";
 import store from "@/store";
 import { useI18n } from "vue-i18n";
 import router from "@/router";
-import { getStaticImgUrl } from "@/utils/index.js"
 import LoadingMore from "@/components/LoadingMore.vue";
 
 const emits = defineEmits(['handleClick'])
@@ -366,40 +314,7 @@ const closeList = (scrollBox) => {
 }
 
 
-// 订阅的数据
 
-const watchList = computed(() => store.state.marketWatchList || []);
-const watchListLoading = ref(false);
-const getWatchList = () => {
-    if (watchListLoading.value) return;
-    watchListLoading.value = true;
-    _watchlist()
-        .then(res => {
-            if (res.code == 200) {
-                const list = res.data.map(item => {
-                    const target = watchList.value.find(a => a.symbol == item.symbol)
-                    if (target) return target;
-                    return item;
-                })
-                store.commit("setMarketWatchList", list || []);
-                sessionStorage.setItem('market_watch_list', JSON.stringify(list || []))
-                setTimeout(() => {
-                    store.dispatch('subList', {
-                        commitKey: 'setMarketWatchList',
-                        listKey: 'marketWatchList'
-                    })
-                }, 50);
-            }
-        })
-        .catch(err => console.error(err))
-        .finally(() => watchListLoading.value = false);
-}
-
-const init = () => {
-    if (token.value) getWatchList();
-}
-
-init()
 
 defineExpose({
     activeTab
@@ -453,9 +368,27 @@ const filterList = list => {
 
             &>.van-tabs__nav {
                 padding-left: 0.2rem;
-                margin-right: 1.1rem;
-                height: 0.4rem;
+                height: 0.88rem;
+                border-bottom: 1px solid var(--ex-border-color) !important;
 
+                &>.van-tab {
+                    font-size: 0.32rem !important;
+                }
+
+                &>.van-tab--active {
+                    font-weight: bold !important;
+
+                    &::after {
+                        content: "";
+                        width: 0.52rem;
+                        height: 0.52rem;
+                        position: absolute;
+                        left: 50%;
+                        transform: translateX(-50%);
+                        bottom: -0.16rem;
+                        background-size: 100% 100%;
+                    }
+                }
             }
         }
     }

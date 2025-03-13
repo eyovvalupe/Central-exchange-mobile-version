@@ -887,7 +887,8 @@ const percentTagClick = (percent) => {
 const currStock = computed(() => {
   let obj = {};
   switch (props.type) {
-    case 'constract':
+    case "constract":
+    case "crypto":
       obj = store.state.currConstact || [];
       break;
   }
@@ -1234,34 +1235,26 @@ setTimeout(() => {
 }, 500);
 
 // url参数处理
-if (props.tradeType == 2) {
-  // 合约
-  if (route.query.symbol) {
-    handleClick({
-      symbol: route.query.symbol,
-    });
+// 合约
+if (route.query.symbol) {
+  handleClick({
+    symbol: route.query.symbol,
+  });
+} else {
+  let obj = {};
+  try {
+    switch (props.type) {
+      case 'constract':
+        obj = JSON.parse(sessionStorage.getItem('currConstract') || '{}');
+        break;
+    }
+  } catch {
+    obj = {};
+  }
+  if (obj.symbol) {
+    handleClick(obj);
   } else {
-    let obj = {};
-    try {
-      switch (props.type) {
-        case 'constract':
-          obj = JSON.parse(sessionStorage.getItem('currConstract') || '{}');
-          break;
-        case 'foreign':
-          obj = JSON.parse(sessionStorage.getItem('currForeign') || '{}');
-          break;
-        case 'commodities':
-          obj = JSON.parse(sessionStorage.getItem('currCommodities') || '{}');
-          break;
-      }
-    } catch {
-      obj = {};
-    }
-    if (obj.symbol) {
-      handleClick(obj);
-    } else {
-      initParam();
-    }
+    initParam();
   }
 }
 

@@ -1,6 +1,8 @@
 <template>
   <div class="w-full h-full">
     <div class="page-trade3" :style="{ paddingBottom: props.innerPage ? '0' : '' }">
+
+      <!-- 作为内页的菜单 -->
       <div class="z-[1]  pt-[0.4rem] pb-[0.4rem] bg-color" v-if="props.innerPage">
         <div
           class="transition flex justify-between  px-[0.32rem] py-[0.18rem] rounded-[1rem] gap-[0.2rem] h-[0.8rem] mx-[0.4rem] items-center border-[0.02rem]"
@@ -15,17 +17,65 @@
           </div>
         </div>
       </div>
-      <div style="height: 0.24rem;" v-else>
-        <div @click="jump('search')"
-          style="width: 0.72rem;height: 0.72rem;border-radius: 50%;background-color: var(--ex-bg-white1);position: absolute;right: 0.24rem;top: 0.08rem;z-index: 99;padding: 0.11rem 0.12rem 0.13rem 0.12rem;">
-          <img v-lazy="getStaticImgUrl('/static/img/common/search.svg')" alt="">
+
+      <!-- 作为完整页面的菜单 -->
+      <HeaderTabs v-else @change="changeTab" v-model:active="headActiveTab" :tabs="[t('自选'), t('行情')]">
+        <template #after>
+          <div class="flex items-center gap-[0.16rem] mr-[0.34rem]">
+            <div class="size-[0.64rem]" @click="jump('search')"
+              style="background-color: var(--ex-bg-white1);border-radius: 50%;padding: 0.12rem;">
+              <img class="img transition" v-lazy="getStaticImgUrl('/static/img/common/search.svg')" alt="" />
+            </div>
+            <div class="size-[0.64rem]" @click="openRightMenu"
+              style="background-color: var(--ex-bg-white1);border-radius: 50%;padding: 0.12rem;"
+              :style="{ border: showRightMenu ? '1px solid var(--ex-primary-color)' : '' }">
+              <img class="img transition" v-lazy="getStaticImgUrl('/static/img/common/right_menu.svg')" alt="" />
+            </div>
+          </div>
+        </template>
+      </HeaderTabs>
+
+
+      <!-- 自选 -->
+      <div v-if="headActiveTab == 0 && !props.innerPage">
+        <div :class="['home-tab-box-' + props.from, 'mt-[0.24rem]']"
+          :style="{ borderTop: '1px solid var(--ex-border-color)' }">
+          <div v-if="token">
+            <Loaidng v-if="watchListLoading" :loading="watchListLoading" />
+            <div style="padding-bottom: 0.2rem;overflow: visible;" v-if="headActiveTab == 0 && !watchListLoading">
+              <StockItem :padding="true" :showIcon="true" :item=item v-for="(item, i) in (watchList)" :key="'c_' + i"
+                menuType="option" marketType="crypto" />
+            </div>
+            <NoData v-if="!watchListLoading && !watchList.length" />
+          </div>
+          <div v-if="!token" class="flex flex-col pt-[0.32rem] pb-[0.32rem]">
+
+
+            <div
+              class="w-full flex justify-between border-b-[0.02rem] pb-[0.2rem] mb-[0.6rem] px-[0.32rem] border-b-color2">
+              <div class="text-color2">{{ $t('copy.copy_order_name') }}</div>
+              <div class="text-color2">{{ $t('market.market_optional_crypto_price') + ' / ' +
+                $t('copy.copy_belong_pl_rate') }}</div>
+            </div>
+
+            <div style="width: 100%;text-align: center;margin: 0.6rem 0 0.4rem 0;color: var(--ex-placeholder-color);">
+              <div style="width:1.12rem;height:1.12rem;margin: 0 auto 0.2rem auto;">
+                <img v-lazy="getStaticImgUrl('/static/img/user/unlogin-user.png')" alt="">
+              </div>
+              <div>{{ $t('market.market_login_first') }}</div>
+            </div>
+            <div class="flex justify-center gap-[0.4rem]">
+              <div style="min-width: 2rem;"
+                class="px-[0.28rem] h-[0.8rem] rounded-[0.4rem] bg-[var(--ex-bg-white1)] flex items-center justify-center text-[0.32rem] text-white ripple-primary"
+                @click="store.commit('setIsLoginOpen', true)">{{ $t('trade.stock_opening_token_login') }}</div>
+              <!-- <div class="w-[3rem] h-[0.8rem] rounded-[0.4rem] bg-primary flex items-center justify-center text-[0.32rem] text-white ripple-btn"
+                                @click="jump('register')">{{ $t('trade.stock_opening_token_register') }}</div> -->
+            </div>
+          </div>
         </div>
       </div>
 
-      <!-- <div class="bill-box" @click="jump('tradeOrder')">
-          <img v-lazy="getStaticImgUrl('/static/img/common/bill.svg')" alt="">
-        </div> -->
-      <div v-if="!focusRef && !searchRef">
+      <div v-if="headActiveTab == 1 && !focusRef && !searchRef">
         <Recommend @handleClick="handleClick" :innerPage="props.innerPage" v-if="activated" ref="recommendRef"
           from="trade" :sticky="false" :activated="activated" />
       </div>
@@ -78,9 +128,12 @@ import { getStaticImgUrl } from "@/utils/index.js"
 import router from "@/router";
 import BottomPopup from "@/components/BottomPopup.vue";
 import StockTable from "@/components/StockTable.vue";
-import { _futures } from "@/api/api";
+import { _futures, _watchlist } from "@/api/api";
 import { useI18n } from "vue-i18n";
 import NoData from "@/components/NoData.vue";
+import HeaderTabs from "@/components/HeaderTabs.vue";
+import Loaidng from "@/components/Loaidng.vue";
+import StockItem from "@/components/StockItem.vue";
 
 const emits = defineEmits(['handleClick'])
 const props = defineProps({
@@ -89,6 +142,20 @@ const props = defineProps({
     default: false
   }
 })
+
+const token = computed(() => store.state.token);
+const headActiveTab = ref(Number(sessionStorage.getItem("tradeMarketType")));
+const changeTab = (val) => {
+  sessionStorage.setItem('tradeMarketType', val);
+  headActiveTab.value = val;
+  if (val == 0) {
+    init()
+  }
+};
+if (props.innerPage || !token.value) {
+  headActiveTab.value = 1
+}
+
 
 const jump = name => router.push(name)
 const { t } = useI18n();
@@ -176,6 +243,13 @@ const goInfo = (item) => { // 作为页面点击元素
   });
 };
 
+
+// 右侧弹窗
+const showRightMenu = computed(() => store.state.showRightMenu);
+const openRightMenu = () => {
+  store.commit("setShowRightMenu", !showRightMenu.value);
+};
+
 // 搜索
 const marketSearchList = computed(() => store.state.futuresSearchList)
 const showSearchDialog = ref(false);
@@ -228,7 +302,40 @@ setTimeout(() => {
 //   }
 // })
 
+// 订阅的数据
 
+const watchList = computed(() => store.state.marketWatchList || []);
+const watchListLoading = ref(false);
+const getWatchList = () => {
+  if (watchListLoading.value) return;
+  watchListLoading.value = true;
+  _watchlist()
+    .then(res => {
+      if (res.code == 200) {
+        const list = res.data.map(item => {
+          const target = watchList.value.find(a => a.symbol == item.symbol)
+          if (target) return target;
+          return item;
+        })
+        store.commit("setMarketWatchList", list || []);
+        sessionStorage.setItem('market_watch_list', JSON.stringify(list || []))
+        setTimeout(() => {
+          store.dispatch('subList', {
+            commitKey: 'setMarketWatchList',
+            listKey: 'marketWatchList'
+          })
+        }, 50);
+      }
+    })
+    .catch(err => console.error(err))
+    .finally(() => watchListLoading.value = false);
+}
+
+const init = () => {
+  if (token.value) getWatchList();
+}
+
+init()
 
 defineExpose({
   act

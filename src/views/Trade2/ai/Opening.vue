@@ -328,10 +328,8 @@ const form1 = ref({
   safeword: "",
 });
 
-if (props.tradeType == 3) { // 机器人
-  form1.value.name = route.query.name || ""
-  form1.value.symbol = route.query.symbol || ""
-}
+form1.value.name = route.query.name || ""
+form1.value.symbol = route.query.symbol || ""
 
 // 缓存
 let obj = {}
