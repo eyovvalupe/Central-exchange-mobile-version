@@ -36,6 +36,13 @@ import RepayConfirm from "./RepayConfirm.vue"
 
 import { computed, onBeforeUnmount, onMounted } from "vue";
 
+const props = defineProps({
+    from: {
+        type: String,
+        default: ''
+    }
+})
+
 const activeTab = ref('open')
 const { t } = useI18n();
 const finish = ref(false)
