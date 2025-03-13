@@ -112,7 +112,7 @@
         </Tab> -->
         <Tab :name="2" :title="$t('market.market_item_detail')">
           <div class="market-box">
-            <Chart ref="chartRef" v-if="!chartLoading" :type="'constract'" />
+            <Chart ref="chartRef" v-if="!chartLoading" :type="type" />
           </div>
         </Tab>
         <Tab :name="3" :title="$t('market.market_item_order')" v-if="item.type == 'crypto' && type != 'ai'">

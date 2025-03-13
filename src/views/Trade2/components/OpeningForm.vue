@@ -549,6 +549,7 @@ import SlideContainer from "@/components/SlideContainer.vue";
 import FormItem from "@/components/Form/FormItem.vue";
 import { useI18n } from "vue-i18n";
 import BottomPopup from "@/components/BottomPopup.vue";
+import eventBus from "@/utils/eventBus.js"
 
 const props = defineProps({
   activeTab: null, // 0-市价 1-限价 2-止盈止损
@@ -1182,6 +1183,14 @@ const submitForm = (s) => {
         emits("success");
         form1.value.volume = "";
         sliderValue.value = 0;
+      }
+    }).catch(err => {
+      if (err.code == 1010) { // 余额不足
+        eventBus.emit('insufficient', {
+          type: 'stock',
+          currency: paramCurrency.value,
+          amount: stockWalletAmount.value,
+        })
       }
     })
     .finally(() => {

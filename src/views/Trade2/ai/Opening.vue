@@ -260,6 +260,7 @@ import AmountPopup from "../AmountPopup.vue";
 import { useI18n } from "vue-i18n";
 import BottomPopup from "@/components/BottomPopup.vue";
 import { getStaticImgUrl } from "@/utils/index.js"
+import eventBus from "@/utils/eventBus";
 
 
 const { t } = useI18n();
@@ -445,6 +446,14 @@ const submitForm = (s) => {
         form1.value.volume = "";
         form1.value.grid = "";
         sliderValue.value = 0;
+      }
+    }).catch(err => {
+      if (err.code == 1010) { // 余额不足
+        eventBus.emit('insufficient', {
+          type: 'spot',
+          currency: 'USDT',
+          amount: usdt.value.amount,
+        })
       }
     })
     .finally(() => {

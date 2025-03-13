@@ -96,6 +96,10 @@
   <LoginDialog />
 
   <SuccessToast :showModal="true" v-if="showSuccessToast" />
+
+  <!--  余额不足弹窗 -->
+  <InsufficientDialog />
+
 </template>
 
 <script setup>
@@ -110,6 +114,7 @@ import SuccessToast from "./views/User/Account/SuccessToast.vue";
 import BottomTabBar from "@/components/BottomTabBar.vue"
 import { useI18n } from "vue-i18n";
 import 'wow.js/css/libs/animate.css';  // 引入动画库样式
+import InsufficientDialog from "@/components/InsufficientDialog.vue"
 
 const { t } = useI18n();
 const showSuccessToast = computed(() => store.state.showSuccessToast);

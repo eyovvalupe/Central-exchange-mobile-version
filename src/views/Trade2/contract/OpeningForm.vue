@@ -1330,6 +1330,14 @@ const submitForm = (s) => {
         // }, 1500);
         emits('success');
       }
+    }).catch(err => {
+      if (err.code == 1010) { // 余额不足
+        eventBus.emit('insufficient', {
+          type: 'crypto',
+          currency: paramCurrency.value,
+          amount: stockWalletAmount.value,
+        })
+      }
     })
     .finally(() => {
       getSessionToken();
