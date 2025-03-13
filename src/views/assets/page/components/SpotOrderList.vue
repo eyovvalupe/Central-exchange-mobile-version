@@ -20,7 +20,7 @@
       v-if="activeTab == 0"
     >
       <div :class="type == 'modal' ? 'h-[11.4rem] overflow-auto' : type == 'full' ? 'h-[10.7rem] overflow-auto' : ''">
-        <Positions :from="from" />
+        <Positions />
       </div>
     </div>
     <div
@@ -30,7 +30,6 @@
     >
       <div :class="type == 'modal' ? 'h-[11.4rem] overflow-auto' : type == 'full' ? 'h-[10.7rem] overflow-auto' : ''">
         <Inquire
-          :from="from"
           ref="InquireRef"
           scrollDom="#assets_order_center_body"
         />
