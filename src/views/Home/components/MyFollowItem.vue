@@ -191,7 +191,7 @@ const goInfo = () => {
     width: 100%;
     // height: 100%;
     border-radius: 0.32rem;
-    background: var(--ex-bg-color3);
+    background: var(--ex-bg-white2);
     flex-shrink: 0;
     padding: 0.12rem;
     position: relative;

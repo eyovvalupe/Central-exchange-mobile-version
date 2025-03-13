@@ -251,7 +251,7 @@ const getC2cOrderInfo = async () => {
     }
   });
 };
-watch(() => scrollData.arrivedState.bottom, scrollHandle);
+watch(() => scrollData && scrollData.arrivedState ? scrollData.arrivedState.bottom : null, scrollHandle);
 init();
 
 onActivated(() => {

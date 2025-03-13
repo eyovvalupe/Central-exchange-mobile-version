@@ -1,7 +1,7 @@
 <template>
     <div class="pledge_order_list_page px-[0.32rem]">
        
-        <Tabs key="form" type="sub-stake" style="margin-top:0.32rem;" v-model:active="activeTab" @click-tab="onTabClick" :swipeable="false" shrink>
+        <Tabs v-if="token" key="form" type="sub-stake" style="margin-top:0.32rem;" v-model:active="activeTab" @click-tab="onTabClick" :swipeable="false" shrink>
             <Tab name="open" style="min-width: 2rem" :title="t('finance.defi_borrow_on')">
             </Tab>
             <Tab name="close" style="min-width: 2rem" :title="t('finance.defi_borrow_repaid')">

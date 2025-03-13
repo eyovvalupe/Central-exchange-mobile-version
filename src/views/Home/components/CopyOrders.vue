@@ -14,25 +14,30 @@
                 </div>
             </div>
         </div>
-        <!-- <div class="flex gap-[0.1rem] mb-[0.2rem]">
+        <div class="flex gap-[0.1rem] mb-[0.2rem]" v-if="token">
             <div class="w-max px-[0.4rem] h-[0.78rem] rounded-[1rem] text-[0.3rem] font-semibold flex items-center justify-center"
                 :class="typeChange == 'option' ? 'bg-white text-black ripple-primary' : 'text-color2 ripple-btn'"
                 @click="typeChange = 'option'"
                 :style="typeChange == 'option' ? '' : 'background-color: var(--ex-bg-white2)'">{{
                     $t('common.option') }}</div>
-        </div> -->
+        </div>
         <div class="list-i" v-if="myFollowList.length" v-for="(item, i) in myFollowList" :key="i">
             <MyFollowItem @openInfo="openInfo" :item="item" :showDetail="false" />
         </div>
-        <NoData v-if="!myFollowList.length" />
+        <NoData v-if="token && !myFollowList.length" />
+        <UnLogin v-if="!token" @loginfinish="getData()" />
+
     </div>
 </template>
 <script setup>
 import store from '@/store'
 import { isEmpty } from "@/utils/isEmpty";
 import MyFollowItem from "../components/MyFollowItem.vue"
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import NoData from '@/components/NoData.vue';
+import UnLogin from "@/components/UnLogin.vue";
+
+const token = computed(() => store.state.token)
 const myFollowList = computed(() => store.state.myCopy)
 const myCopyData = computed(() => store.state.myCopyData)
 
@@ -51,7 +56,7 @@ const openInfo = item => {
 
 .my-total {
     border-radius: 0.32rem;
-    background: var(--ex-bg-color3);
+    background: var(--ex-bg-white2);
     padding: 0.12rem;
     margin-bottom: 0.2rem;
 

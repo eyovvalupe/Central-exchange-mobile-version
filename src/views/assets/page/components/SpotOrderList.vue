@@ -1,5 +1,5 @@
 <template>
-  <div class="crypto_order_list">
+  <div class="spot_order_list">
     <div class="crypto_order_tabs">
       <span
         class="crypto_order_tab mr-[0.6rem]"
@@ -14,26 +14,46 @@
         >{{ t("assets.order_history") }}</span
       >
     </div>
-    <div class="tab" v-if="activeTab == 0">
-      <Positions />
+    <div
+      class="tab"
+      :class="{ '!mt-[0]': from == 'order' }"
+      v-if="activeTab == 0"
+    >
+      <div :class="type == 'modal' ? 'h-[11.4rem] overflow-auto' : type == 'full' ? 'h-[10.7rem] overflow-auto' : ''">
+        <Positions :from="from" />
+      </div>
     </div>
-    <div class="tab" v-if="activeTab == 1">
-      <Inquire ref="InquireRef" scrollDom="#assets_order_center_body" />
+    <div
+      class="tab"
+      :class="{ '!mt-[0]': from == 'order' }"
+      v-if="activeTab == 1"
+    >
+      <div :class="type == 'modal' ? 'h-[11.4rem] overflow-auto' : type == 'full' ? 'h-[10.7rem] overflow-auto' : ''">
+        <Inquire
+          :from="from"
+          ref="InquireRef"
+          scrollDom="#assets_order_center_body"
+        />
+      </div>
     </div>
   </div>
 </template>
 <script setup>
-import Inquire from "@/views/Trade2/contract/Inquire.vue";
-import Positions from "@/views/Trade2/contract/Positions.vue";
+import Inquire from "@/views/Trade2/spot/Inquire.vue";
+import Positions from "@/views/Trade2/spot/Positions.vue";
 import { ref, onMounted } from "vue";
 import { useI18n } from "vue-i18n";
 
 const props = defineProps({
   from: {
     type: String,
-    default: ''
-  }
-})
+    default: "",
+  },
+  type: {
+    type: String,
+    default: "",
+  },
+});
 
 const { t } = useI18n();
 const InquireRef = ref();
@@ -48,9 +68,7 @@ const changeActiveTab = (val) => {
 };
 </script>
 <style lang="less">
-.crypto_order_list {
-  padding: 0 0.32rem;
-
+.spot_order_list {
   .crypto_order_tabs {
     width: 100%;
     height: 0.52rem;
@@ -70,11 +88,10 @@ const changeActiveTab = (val) => {
 
   .tab {
     .positions {
-      padding-top: 0.32rem;
+      padding: 0;
     }
-
     .inquire {
-      padding-top: 0.32rem;
+      padding: 0;
     }
   }
 }

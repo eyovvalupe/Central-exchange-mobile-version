@@ -2,7 +2,7 @@
 <template>
     <div class="page page_finance">
         <!-- 头部 -->
-        <HeaderTabs :from="props.from" v-model:active="activeTab" :tabs="[
+        <HeaderTabs :type="'trade-line'" v-model:active="activeTab" :tabs="[
             t('copy.title'),
             t('finance.defi_borrow'),
             t('finance.portfolio_title'),
@@ -11,17 +11,17 @@
         <Swipe v-if="pageLoaded" :autoplay="0" :initial-swipe="initialSwipe" :show-indicators="false" :touchable="true"
             :loop="false" :duration="300" ref="swipe" @change="swipeChange">
             <SwipeItem>
-                <div style="height: calc(var(--vh) * 100 - 1rem);padding-bottom: 1.4rem;">
+                <div style="height: calc(var(--vh) * 100 - 2rem);">
                     <Follow :from="'finance'" />
                 </div>
             </SwipeItem>
             <SwipeItem>
-                <div style="height: calc(var(--vh) * 100 - 1rem);padding-bottom: 1.4rem;">
+                <div style="height: calc(var(--vh) * 100 - 2rem);">
                     <Pledge />
                 </div>
             </SwipeItem>
             <SwipeItem>
-                <div style="height: calc(var(--vh) * 100 - 1rem);padding-bottom: 1.4rem;">
+                <div style="height: calc(var(--vh) * 100 - 2rem);">
                     <Stake />
                 </div>
             </SwipeItem>
@@ -42,12 +42,6 @@ const { t } = useI18n();
 
 const route = useRoute();
 
-const props = defineProps({
-    from: {
-        type: String,
-        default: ''
-    }
-})
 const activeTab = ref(route.query.activeTab ? Number(route.query.activeTab) : Number(localStorage.getItem('financeActiveTab')) || 0);
 const initialSwipe = ref(activeTab.value);
 const loadedTab = ref([activeTab.value]);
