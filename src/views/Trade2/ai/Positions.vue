@@ -136,7 +136,7 @@ watch(() => store.state.token, () => {
             align-items: center;
             justify-content: center;
             border-radius: 0.24rem;
-            background-color: var(--ex-bg-color);
+            background-color: var(--ex-bg-white2);
 
             img {
                 width: 0.53rem !important;
