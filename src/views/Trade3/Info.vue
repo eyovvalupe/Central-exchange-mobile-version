@@ -7,6 +7,7 @@
       :from="'trade'"
       v-model:active="headActiveTab"
       :tabs="[t('交易'), t('理财')]"
+      @change="changeTab"
     >
       <template #after>
         <div class="flex gap-[0.16rem] mr-[0.3rem]">
@@ -591,7 +592,7 @@
     },
   });
 
-  const headActiveTab = ref(Number(sessionStorage.getItem('tradeType')));
+  const headActiveTab = ref(Number(sessionStorage.getItem('tradeHeadActiveType')));
   const openInfoStatus = computed(() => store.state.openInfoStatus);
   const showOrderList = computed(() => store.state.showOrderList);
 
@@ -633,8 +634,7 @@
   };
 
   const changeTab = (val) => {
-    // store.commit("setTradeTabType", val);
-    sessionStorage.setItem('tradeType', val);
+    sessionStorage.setItem('tradeHeadActiveType', val);
     headActiveTab.value = val;
   };
 

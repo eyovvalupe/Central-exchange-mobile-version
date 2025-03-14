@@ -3,7 +3,9 @@ import { _copyList, _copyMyData, _copyMyList } from '@/api/api'
 
 export default {
   state: {
+    followListLoading:false,
     followList: [], // 跟单列表
+    myCopyLoading:false,
     myCopy: [], // 我的跟单
     copyItem: JSON.parse(sessionStorage.getItem('copyItem')),
     myCopyData: {},
@@ -16,11 +18,17 @@ export default {
     setMyCopyData(state, data) {
       state.myCopyData = data
     },
+    setMyCopyLoading(state,data){
+      state.myCopyLoading = data
+    },
     setCopyItem(state, data) {
       state.copyItem = data
     },
     setFollowList(state, data) {
       state.followList = data || []
+    },
+    setFollowListLoading(state, data) {
+      state.followListLoading = data
     },
     setMyCopy(state, data) {
       state.myCopy = data || []
@@ -30,6 +38,7 @@ export default {
     updateFollowList({ commit }) {
       // 更新跟单列表
       return new Promise(resolve => {
+        commit('setFollowListLoading',true)
         _copyList({ page: 1 })
           .then(res => {
             if (res.code == 200 && res.data) {
@@ -39,12 +48,15 @@ export default {
               resolve(false)
             }
           })
-          .catch(() => resolve(false))
+          .catch(() => resolve(false)).finally(()=>{
+            commit('setFollowListLoading', false)
+          })
       })
     },
     updateMyFollowList({ commit }) {
       // 更新我的跟单列表
       return new Promise(resolve => {
+        commit('setMyCopyLoading', true)
         _copyMyList()
           .then(res => {
             if (res.code == 200 && res.data) {
@@ -54,7 +66,9 @@ export default {
               resolve(false)
             }
           })
-          .catch(() => resolve(false))
+          .catch(() => resolve(false)).finally(()=>{
+            commit('setMyCopyLoading', false)
+          })
       })
     },
     updateMyCopyData({ commit }) {

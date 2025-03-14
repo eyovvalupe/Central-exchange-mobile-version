@@ -2,8 +2,10 @@
 <template>
     <div class="page-follow" :class="from != 'finance' ? 'pt-[1.28rem]' : ''">
         <Top :title="$t('copy.copy_ground')" v-if="from != 'finance'"></Top>
-
-        <div class="pt-[0.32rem] px-[0.32rem] ">
+        <div class="flex items-center justify-center h-[60vh]" v-if="followListLoading">
+            <Loading color="var(--ex-primary-color)" />
+        </div>
+        <div class="pt-[0.32rem] px-[0.32rem]" v-else>
             <NoData v-if="!loading && !showList.length" />
             <div class="list-i" v-for="(item, i) in showList" :key="i">
                 <FollowItem :item="item" :showDetail="true" @follow="onFollow" />
@@ -34,7 +36,7 @@ import FollowSubmit from "../components/FollowSubmit.vue"
 import { _copyMyList, _copyList } from '@/api/api'
 import { ref, computed, onMounted, onBeforeUnmount, watch } from "vue"
 import store from "@/store";
-import { Popup,  showToast } from "vant"
+import { Popup,  showToast, Loading } from "vant"
 import FollowInfo from "../Follow/FollowInfo.vue"
 import { useI18n } from "vue-i18n";
 const { t } = useI18n()
@@ -55,6 +57,7 @@ const onChange = (val) => {
 const token = computed(() => store.state.token)
 // 我的跟单统计
 const followList = computed(() => store.state.followList)
+const followListLoading = computed(() => store.state.followListLoading)
 const followList2 = ref([])
 const showList = computed(() => {
     return [...followList.value, ...followList2.value]
