@@ -28,18 +28,7 @@ const routes = [
       title: '跟单'
     },
   },
-  {
-    // 我的跟单
-    path: "/myfollow",
-    name: "myfollow",
-    component: () => import("../views/Home/Follow/MyFollow.vue"),
-    meta: {
-      keepAlive: false,
-      pageType: "child",
-      pageDeep: 1,
-      title: '跟单'
-    },
-  },
+  
   {
     // 跟单详情
     path: "/followDetail",

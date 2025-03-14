@@ -8,7 +8,6 @@
       shrink
       @change="(e) => onChange(e)"
     >
-      
       <Tab :title="'交易订单'" :name="1">
         <div
           class="order_tabs"
@@ -29,14 +28,14 @@
           />
 
           <div class="trade_order_tab p-[0.32rem]" v-if="activeTab == 0">
-            <SpotOrderList :from="'order'" :type="'modal'" />
+            <SpotOrderList :from="'trade'" />
           </div>
 
-          <div class="trade_order_tab pt-[0.32rem]" v-if="activeTab == 1">
-            <CryptoOrderList :from="'order'" :type="'modal'" />
+          <div class="trade_order_tab py-[0.32rem]" v-if="activeTab == 1">
+            <CryptoOrderList :from="'trade'" />
           </div>
 
-          <div class="trade_order_tab pt-[0.32rem]" v-if="activeTab == 2">
+          <div class="trade_order_tab py-[0.32rem]" v-if="activeTab == 2">
             <AIOrderList :from="'trade'" />
           </div>
         </div>
@@ -63,6 +62,7 @@
           <div class="trade_order_tab" v-if="activeFinanceTab == 2">
             <Order :from="'trade'" />
           </div>
+          
         </div>
       </Tab>
     </Tabs>
@@ -71,11 +71,8 @@
 <script setup>
 import { computed, ref, watch } from "vue";
 import HeaderTabs from "@/components/HeaderTabs.vue";
-import StockOrderList from "../assets/page/components/StockOrderList.vue";
 import CryptoOrderList from "../assets/page/components/CryptoOrderList.vue";
-import IPOStock from "@/views/Trade2/pages/IPOStock.vue";
 import AIOrderList from "../assets/page/components/AIOrderList.vue";
-import List from "@/views/Market/buyCoin/List.vue";
 import { useI18n } from "vue-i18n";
 import { Tabs, Tab } from "vant";
 import CopyOrders from "../Home/components/CopyOrders.vue";
@@ -87,8 +84,8 @@ import store from "@/store";
 const { t } = useI18n();
 const activeTab = ref(0);
 const activeFinanceTab = ref(0);
-const tradeOrderTab = computed(() => store.state.tradeTabType);
-const activeMainTab = ref(tradeOrderTab.value + 1);
+const tradeOrderTab = computed(() => store.state.tradeTypeTab)
+const activeMainTab = ref(Number(tradeOrderTab.value) + 1);
 const IPOStockRef = ref();
 
 const onChange = () => {};
@@ -125,7 +122,7 @@ watch(tradeOrderTab, (val) => {
       height: 0.92rem;
       border-bottom: 0px !important;
       > .van-tabs__nav {
-        background-color: var(--ex-bg-color9);
+        background:none;
         > .van-tab {
           padding: 0 0.2rem;
           position: relative;
@@ -143,10 +140,7 @@ watch(tradeOrderTab, (val) => {
           }
         }
         > .van-tabs__line {
-          width: 0.6rem;
-          height: 0.2rem;
-          border-radius: 1rem;
-          bottom: 0.4rem;
+          display:none;
         }
       }
     }
@@ -165,7 +159,7 @@ watch(tradeOrderTab, (val) => {
     }
   }
   .trade_order_tab2{
-    height:calc(80vh + 0.94rem)
+    height:calc(80vh + 0.96rem)
   }
 }
 </style>

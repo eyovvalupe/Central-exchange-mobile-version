@@ -3,26 +3,12 @@
     <div class="page-follow" :class="from != 'finance' ? 'pt-[1.28rem]' : ''">
         <Top :title="$t('copy.copy_ground')" v-if="from != 'finance'"></Top>
 
-        <!-- Tab -->
-        <!-- <div class="tabs">
-            <div class="tab" :class="{ 'active_tab': active == 1 }" @click="changeTab(1)">{{ $t('copy.copy_portfolio')
-                }}</div>
-            <div class="tab" :class="{ 'active_tab': active == 2 }" @click="changeTab(2)">{{ $t('copy.copy_tab_tab2') }}
+        <div class="pt-[0.32rem] px-[0.32rem] ">
+            <NoData v-if="!loading && !showList.length" />
+            <div class="list-i" v-for="(item, i) in showList" :key="i">
+                <FollowItem :item="item" :showDetail="true" @follow="onFollow" />
             </div>
-        </div> -->
-        <Tabs type="custom-card-stake" @change="onChange" v-model="activeTab" :swipeable="false" animated>
-            <Tab :title="$t('copy.copy_portfolio')" :active="activeTab == 0" :name="'0'">
-                <div class="pt-[0.32rem] px-[0.32rem] ">
-                    <NoData v-if="!loading && !showList.length" />
-                    <div class="list-i" v-for="(item, i) in showList" :key="i">
-                        <FollowItem :item="item" :showDetail="true" />
-                    </div>
-                </div>
-            </Tab>
-            <Tab class="mb-[1.2rem]" :title="$t('copy.copy_tab_tab2')" :active="activeTab == 1" :name="'1'">
-                <CopyOrders />
-            </Tab>
-        </Tabs>
+        </div>
         <LoadingMore :loading="loading" :finish="finish" v-if="(finish && showList.length) || !finish" />
     </div>
 
@@ -30,6 +16,12 @@
     <Popup teleport="body" v-model:show="showInfo" position="right" :style="{ height: '100%', width: '100%' }">
         <FollowInfo v-if="showInfo" @back="showInfo = false" style="width: 100%;height: 100%;" />
     </Popup>
+
+     <!-- 跟单弹窗 -->
+     <BottomPopup v-model:show="showPlus" :title="t('copy.title')" position="bottom" round closeable teleport="body">
+        <FollowSubmit v-if="showPlus" @success="onSuccess" :item="info" :mode="'follow'" />
+    </BottomPopup>
+    
 </template>
 
 <script setup>
@@ -37,13 +29,15 @@ import Top from "@/components/Top.vue";
 import NoData from '@/components/NoData.vue';
 import LoadingMore from "@/components/LoadingMore.vue"
 import FollowItem from "../components/FollowItem.vue"
+import BottomPopup from "@/components/BottomPopup.vue";
+import FollowSubmit from "../components/FollowSubmit.vue"
 import { _copyMyList, _copyList } from '@/api/api'
-import { ref, computed, onMounted, onBeforeUnmount } from "vue"
+import { ref, computed, onMounted, onBeforeUnmount, watch } from "vue"
 import store from "@/store";
-import { Popup, Tabs, Tab } from "vant"
+import { Popup,  showToast } from "vant"
 import FollowInfo from "../Follow/FollowInfo.vue"
-import CopyOrders from '../components/CopyOrders.vue'
-
+import { useI18n } from "vue-i18n";
+const { t } = useI18n()
 const props = defineProps({
     from: {
         type: String,
@@ -52,7 +46,7 @@ const props = defineProps({
 })
 const active = ref(1) // 1-跟单  2-订单
 const showInfo = ref(false)
-
+const info = ref({})
 const activeTab = ref(0)
 
 const onChange = (val) => {
@@ -68,6 +62,23 @@ const showList = computed(() => {
 const loading = ref(false)
 const finish = ref(false)
 
+// 跟单
+const showPlus = ref(false)
+const onFollow = (item) => {
+    if (!token.value) {
+        showToast('请先登录')
+        store.commit("setIsLoginOpen", true);
+        return;
+    }
+    info.value = item
+    showPlus.value = true
+}
+
+
+const onSuccess = ()=>{
+    showPlus.value = false
+    showInfo.value = true
+}
 
 // 获取从第二页开始的数据
 const page = ref(2)
@@ -99,16 +110,25 @@ let moreDom = null;
 const totalHeight = window.innerHeight || document.documentElement.clientHeight;
 const scrolHandle = () => {
     const rect = moreDom.getBoundingClientRect();
+    console.log(666)
     if (rect.top <= totalHeight) {
         // 加载更多
         getMoreData();
     }
 };
-onMounted(() => {
+const init = ()=>{
     store.dispatch('updateFollowList')
     if (token.value) {
         store.dispatch('updateMyFollowList')
     }
+}
+watch(()=>store.state.token,(v)=>{
+    if(v){
+        init()
+    }
+})
+onMounted(() => {
+    init()
     setTimeout(() => {
         try {
             moreDom = document.querySelector(".loading_more");
