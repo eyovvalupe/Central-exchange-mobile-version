@@ -134,7 +134,6 @@ const store = createStore({
         commit("setInquireList", []);
         commit("setContractInquireList", []);
         commit("setAiInquireList", []);
-        commit("setFollowList", []);
         commit("setMyCopy", []);
         commit("setMyCopyData", []);
         commit("setNotifiJoinList", []);
