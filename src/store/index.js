@@ -41,6 +41,7 @@ const store = createStore({
     bottomTabBarValue: "",
     showSuccessToast: false,
     isSentCodeError: false,
+    showRightMenu: false,
     ...market.state,
     ...trade.state,
     ...assets.state,
@@ -49,6 +50,9 @@ const store = createStore({
     ...finance.state,
   },
   mutations: {
+    setShowRightMenu(state, data) {
+      state.showRightMenu = data
+    },
     setNotifiJoinList(state, data) {
       state.notifiJoinList = data
     },

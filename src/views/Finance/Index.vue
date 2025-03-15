@@ -1,32 +1,32 @@
 <!-- 资产页 -->
 <template>
     <div class="page page_finance">
-    <!-- 头部 --> 
+        <!-- 头部 -->
         <HeaderTabs :type="'trade-line'" v-model:active="activeTab" :tabs="[
-        t('copy.title'),
-        t('finance.defi_borrow'),
-        t('finance.portfolio_title'),
-    ]" @change="changeActiveTab(activeTab, true)" />
+            t('copy.title'),
+            t('finance.defi_borrow'),
+            t('finance.portfolio_title'),
+        ]" @change="changeActiveTab(activeTab, true)" />
 
-    <Swipe v-if="pageLoaded" :autoplay="0" :initial-swipe="initialSwipe" :show-indicators="false" :touchable="true"
-        :loop="false" :duration="300" ref="swipe" @change="swipeChange">
-        <SwipeItem>
-            <div style="height: calc(var(--vh) * 100 - 3.24rem);">
-                <Follow :from="'finance'" />
-            </div>
-        </SwipeItem>
-        <SwipeItem>
-            <div style="height: calc(var(--vh) * 100 - 3.24rem);">
-                <Pledge />
-            </div>
-        </SwipeItem>
-        <SwipeItem>
-            <div style="height: calc(var(--vh) * 100 - 3.24rem);">
-                <Stake />
-            </div>
-        </SwipeItem>
-        
-    </Swipe>
+        <Swipe v-if="pageLoaded" :autoplay="0" :initial-swipe="initialSwipe" :show-indicators="false" :touchable="true"
+            :loop="false" :duration="300" ref="swipe" @change="swipeChange">
+            <SwipeItem>
+                <div style="height: calc(var(--vh) * 100 - 3.24rem);">
+                    <Follow :from="'finance'" />
+                </div>
+            </SwipeItem>
+            <SwipeItem>
+                <div style="height: calc(var(--vh) * 100 - 3.24rem);">
+                    <Pledge />
+                </div>
+            </SwipeItem>
+            <SwipeItem>
+                <div style="height: calc(var(--vh) * 100 - 3.24rem);">
+                    <Stake />
+                </div>
+            </SwipeItem>
+
+        </Swipe>
     </div>
 </template>
 
@@ -53,41 +53,48 @@ const swipe = ref(null);
 const ipoRef = ref()
 
 const changeActiveTab = (val, slideSwipe = false) => {
-  // console.log(val)
-  let normalizedVal = val;
-  // Normalize the value for circular navigation
-  if (val >= 4) normalizedVal = 0;
-  if (val < 0) normalizedVal = 3;
-  if (val == 3) ipoRef.value.init();
-  activeTab.value = normalizedVal;
-  if (loadedTab.value.indexOf(normalizedVal) == -1) {
-      loadedTab.value.push(normalizedVal);
-  }
-  store.commit('setFinanceSubType', normalizedVal)
-  localStorage.setItem('financeActiveTab', normalizedVal)
-  if (slideSwipe && swipe.value) {
-      swipe.value.swipeTo(normalizedVal);
-  }
+    // console.log(val)
+    let normalizedVal = val;
+    // Normalize the value for circular navigation
+    if (val >= 4) normalizedVal = 0;
+    if (val < 0) normalizedVal = 3;
+    if (val == 3) ipoRef.value.init();
+    activeTab.value = normalizedVal;
+    if (loadedTab.value.indexOf(normalizedVal) == -1) {
+        loadedTab.value.push(normalizedVal);
+    }
+    store.commit('setFinanceSubType', normalizedVal)
+    localStorage.setItem('financeActiveTab', normalizedVal)
+    if (slideSwipe && swipe.value) {
+        swipe.value.swipeTo(normalizedVal);
+    }
 };
 const swipeChange = (val) => {
-  changeActiveTab(val);
-  if (val == 3) {
-      ipoRef.value.init();
-  }
+    changeActiveTab(val);
+    if (val == 3) {
+        ipoRef.value.init();
+    }
 };
 
 watch(financeType, (val) => {
-  activeTab.value = financeType.value
+    activeTab.value = financeType.value
 })
 
 watch(activeTab, (val) => {
-  changeActiveTab(val, true)
+    changeActiveTab(val, true)
 })
+watch(route, (val) => {
+    if (val.name == "tradeInfo" && val.query.tradeType) {
+        if (['copy', 'borrow', 'stake', 'ipo'].includes(val.query.tradeType)) { // 理财
+            activeTab.value = { 'copy': 0, 'borrow': 1, 'stake': 2 }[val.query.tradeType]
+        }
+    }
+}, { immediate: true })
 
 const pageLoaded = ref(false)
 onMounted(() => {
-  setTimeout(() => {
-      pageLoaded.value = true
-  }, 300)
+    setTimeout(() => {
+        pageLoaded.value = true
+    }, 300)
 })
 </script>

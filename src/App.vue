@@ -99,6 +99,7 @@
 
   <!--  余额不足弹窗 -->
   <InsufficientDialog />
+  <RightMenu class="mx-auto" />
 
 </template>
 
@@ -115,6 +116,7 @@ import BottomTabBar from "@/components/BottomTabBar.vue"
 import { useI18n } from "vue-i18n";
 import 'wow.js/css/libs/animate.css';  // 引入动画库样式
 import InsufficientDialog from "@/components/InsufficientDialog.vue"
+import RightMenu from './components/RightMenu.vue';
 
 const { t } = useI18n();
 const showSuccessToast = computed(() => store.state.showSuccessToast);

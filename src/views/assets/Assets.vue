@@ -9,7 +9,7 @@
 
       <template #after>
         <div class="size-[0.72rem] rounded-full bg-white1 flex items-center justify-center mr-[0.32rem]"
-          @click="LeftRef.open()">
+          @click="openRightMenu">
           <span class="size-[0.4rem]">
             <img :src="getStaticImgUrl('/static/home2/menu.svg')" />
           </span>
@@ -153,6 +153,8 @@ import { fiat } from "@/utils/dataMap";
 import BottomPopup from "@/components/BottomPopup.vue";
 import LeftMenu from "../Home/components/LeftMenu.vue";
 
+
+
 const { t } = useI18n();
 const handle = ref(false);
 const LeftRef = ref()
@@ -170,6 +172,13 @@ const loadedTab = ref([activeTab.value]);
 const swipe = ref(null);
 
 const token = computed(() => store.state.token)
+
+//打开菜单弹窗
+const showRightMenu = computed(() => store.state.showRightMenu);
+const openRightMenu = () => {
+  // rightMenu.value = true
+  store.commit('setShowRightMenu', !showRightMenu.value);
+};
 
 // 跳转
 const jump = (name, needToken, query) => {

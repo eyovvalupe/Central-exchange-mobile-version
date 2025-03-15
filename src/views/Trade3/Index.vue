@@ -19,7 +19,8 @@
       </div>
 
       <!-- 作为完整页面的菜单 -->
-      <HeaderTabs v-else @change="changeTab" v-model:active="headActiveTab" :tabs="[t('自选'), t('行情')]">
+      <HeaderTabs :type="'custom-line'" v-else @change="changeTab" v-model:active="headActiveTab"
+        :tabs="[t('自选'), t('行情')]">
         <template #after>
           <div class="flex items-center gap-[0.16rem] mr-[0.34rem]">
             <div class="size-[0.64rem]" @click="jump('search')"
@@ -35,11 +36,10 @@
         </template>
       </HeaderTabs>
 
-
+      <div style="height: 0.32rem;"></div>
       <!-- 自选 -->
       <div v-if="headActiveTab == 0 && !props.innerPage">
-        <div :class="['home-tab-box-' + props.from, 'mt-[0.24rem]']"
-          :style="{ borderTop: '1px solid var(--ex-border-color)' }">
+        <div :class="['home-tab-box-' + props.from]" :style="{ borderTop: '1px solid var(--ex-border-color)' }">
           <div v-if="token">
             <Loaidng v-if="watchListLoading" :loading="watchListLoading" />
             <div style="padding-bottom: 0.2rem;overflow: visible;" v-if="headActiveTab == 0 && !watchListLoading">
@@ -134,7 +134,9 @@ import NoData from "@/components/NoData.vue";
 import HeaderTabs from "@/components/HeaderTabs.vue";
 import Loaidng from "@/components/Loaidng.vue";
 import StockItem from "@/components/StockItem.vue";
+import { useRoute } from "vue-router";
 
+const route = useRoute();
 const emits = defineEmits(['handleClick'])
 const props = defineProps({
   innerPage: {
@@ -155,6 +157,20 @@ const changeTab = (val) => {
 if (props.innerPage || !token.value) {
   headActiveTab.value = 1
 }
+watch(route, (val) => {
+  if (val.name == "trade" && val.query.marketType) {
+    switch (val.query.marketType) {
+      case 'optional':
+        changeTab(0)
+        break
+      case 'spot':
+      case 'futures':
+      case 'ai':
+        changeTab(1)
+        break
+    }
+  }
+}, { immediate: true })
 
 
 const jump = name => router.push(name)

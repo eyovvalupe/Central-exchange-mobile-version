@@ -1,8 +1,9 @@
 <template>
     <div class="home-tabs-box"
         :class="['home-tabs-box-' + props.from, 'home-tabs-box-' + (props.innerPage ? 'inner' : '')]">
-        <Tabs :type="from == 'trade' ? 'line-card-trade' : 'sub'" :color="'var(--ex-primary-color)'" @change="tabChange"
-            v-if="props.activated" v-model:active="activeTab" :animated="from != 'home'" shrink>
+        <Tabs :type="from == 'trade' ? '' : 'sub'" :class="[from == 'trade' ? 'van-tabs--top' : '']"
+            :color="'var(--ex-primary-color)'" @change="tabChange" v-if="props.activated" v-model:active="activeTab"
+            :animated="from != 'home'" shrink>
             <Tab :name="1" :title="t('common.spot')">
                 <div :class="['home-tab-box-' + props.from, 'mt-[0.24rem]']"
                     :style="{ borderTop: '1px solid var(--ex-border-color)' }" v-if="activeTab == 1">
@@ -39,18 +40,6 @@
                     </div>
                 </div>
             </Tab>
-            <Tab :name="4" :title="'ETF'">
-                <div :class="['home-tab-box-' + props.from, 'mt-[0.24rem]']"
-                    :style="{ borderTop: '1px solid var(--ex-border-color)' }" v-if="activeTab == 4">
-                    <div style="padding-bottom: 0.2rem;">
-                        <StockItem :handleClick="props.innerPage ? handleClick : null"
-                            :page="from == 'home' ? 'home' : ''" :padding="true"
-                            :class="[props.from == 'home' ? 'wow fadeInUp' : '']" :data-wow-delay="(0.03 * i) + 's'"
-                            :showIcon="false" :item="item" v-for="(item, i) in filterList(showList)" :key="'c_' + i"
-                            menuType="ai" marketType="ai" page="home" />
-                    </div>
-                </div>
-            </Tab>
         </Tabs>
         <LoadingMore :classN="'trade-more'" :style="{ 'margin-bottom': finish ? '0.4rem' : '1.6rem' }"
             :loading="searchLoading2" :finish="finish" v-if="(finish && showList.length) || !finish" />
@@ -66,7 +55,9 @@ import store from "@/store";
 import { useI18n } from "vue-i18n";
 import router from "@/router";
 import LoadingMore from "@/components/LoadingMore.vue";
+import { useRoute } from "vue-router"
 
+const route = useRoute()
 const emits = defineEmits(['handleClick'])
 const handleClick = (item, type) => {
     console.error(item, type)
@@ -90,9 +81,21 @@ const props = defineProps({
 })
 
 const activeTab = ref(0);
-if (!token.value) {
-    activeTab.value = 1
+const setTab = () => {
+    if (!token.value) {
+        activeTab.value = 1
+    }
+    if (route.query.marketType == 'spot') {
+        activeTab.value = 1
+    }
+    else if (route.query.marketType == 'futures') {
+        activeTab.value = 2
+    }
+    else if (route.query.marketType == 'ai') {
+        activeTab.value = 3
+    }
 }
+setTab()
 if (sessionStorage.getItem(`rec_tab_${props.from}`)) {
     activeTab.value = Number(sessionStorage.getItem(`rec_tab_${props.from}`))
 }
@@ -286,6 +289,18 @@ const loadMore = () => {
     initTabList(true)
 }
 
+
+watch(route, (val) => {
+    if (val.name == "trade" && val.query.marketType) {
+        setTab()
+        setTimeout(() => {
+            tabChange(activeTab.value)
+        }, 0)
+    } else {
+        tabChange(activeTab.value)
+    }
+}, { immediate: true })
+
 let moreDom = null;
 const totalHeight = window.innerHeight || document.documentElement.clientHeight;
 const scrolHandle = () => {
@@ -351,45 +366,96 @@ const filterList = list => {
 }
 
 .home-tabs-box-trade {
-    :deep(.van-tabs--line-card-trade) {
-        &>.van-tabs__wrap {
-            position: relative;
+    :deep(.van-tabs--top) {
+        .van-tabs__wrap {
+            height: 0.64rem;
 
-            &::after {
-                content: "";
-                width: 1rem;
-                height: 100%;
-                position: absolute;
-                right: 1rem;
-                top: 0;
-                background: linear-gradient(90deg, rgba(14, 15, 24, 0.00) 0%, #0E0F18 100%);
-                pointer-events: none;
-            }
+            .van-tabs__nav {
+                height: 0.64rem;
+                display: flex;
+                align-items: start;
+                overflow: visible;
 
-            &>.van-tabs__nav {
-                padding-left: 0.2rem;
-                height: 0.88rem;
-                border-bottom: 1px solid var(--ex-border-color) !important;
+                .van-tab {
+                    position: relative;
 
-                &>.van-tab {
-                    font-size: 0.32rem !important;
+                    .van-tab__text {
+                        font-size: 0.32rem;
+                        line-height: 0.4rem;
+                    }
                 }
 
-                &>.van-tab--active {
-                    font-weight: bold !important;
+                .van-tab--active {
+                    height: 100%;
+                    display: flex;
+                    align-items: start;
+
+                    .van-tab__text {
+                        font-size: 0.4rem;
+                        font-weight: 600;
+                    }
 
                     &::after {
-                        content: "";
-                        width: 0.52rem;
-                        height: 0.52rem;
+                        content: '';
                         position: absolute;
+                        width: 0.52rem;
+                        height: 0.18rem;
+                        bottom: 1px;
                         left: 50%;
                         transform: translateX(-50%);
-                        bottom: -0.16rem;
-                        background-size: 100% 100%;
+                        background-image: url('static/img/common/active_tab.svg');
                     }
                 }
             }
+        }
+    }
+
+    .dialog-market-box {
+        margin-top: 0.1rem;
+        height: calc(var(--vh) * 100 - 1rem);
+        overflow-y: auto;
+        padding-bottom: 1rem;
+
+        :deep(.van-tabs--market2) {
+            &>.van-tabs__wrap {
+                border-bottom: 1px solid var(--ex-border-color4);
+
+                .van-tabs__nav {
+                    background: var(--ex-none);
+
+                    .van-tab {
+                        span {
+                            font-size: 0.32rem;
+                        }
+                    }
+                }
+            }
+        }
+
+        .top-box {
+            border-radius: 0.32rem;
+            background-color: var(--ex-bg-color3);
+            margin: 0.1rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 0.28rem;
+            height: 0.96rem;
+        }
+
+        .charts-box {
+            padding: 0 0.1rem;
+            height: 5rem;
+        }
+
+        .hide-charts-box {
+            height: 1rem;
+        }
+
+        .dialog-market-bg {
+            background-color: var(--ex-bg-color3);
+            border-radius: 0.32rem;
+            padding: 0 0.24rem 0.24rem 0.24rem;
         }
     }
 }

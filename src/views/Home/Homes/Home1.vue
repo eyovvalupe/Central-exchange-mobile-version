@@ -20,7 +20,7 @@
                 <div @click="jump('language')" class="icon icon2 ripple-btn" style="margin-right: 0.12rem;">
                     <img v-lazy="getStaticImgUrl('/static/home2/lang.svg')" alt="">
                 </div>
-                <div @click="LeftRef.open()" class="icon icon2 ripple-btn">
+                <div @click="openRightMenu" class="icon icon2 ripple-btn">
                     <img v-lazy="getStaticImgUrl('/static/home2/menu.svg')" alt="">
                 </div>
             </div>
@@ -152,27 +152,6 @@
                 <div class="date">10/16 16:10</div>
             </div>
 
-            <!-- 交易机器人 -->
-            <div class="box" id="ai-box" v-show="marketAiList.length">
-                <div class="recommend-title" v-if="pageLoaded">
-                    <div class="wow slideInRight" style="flex: 1;" data-wow-duration="0.6s">交易机器人</div>
-                </div>
-
-                <div class="swiper-row" v-if="pageLoaded">
-                    <Swipe :loop="false" :width="sWidth">
-                        <SwipeItem v-for="(item, i) in marketAiList" :key="i">
-                            <div class="swiper-row-item">
-                                <AiItem :from="'home'" :item="item" style="width: 100%;" />
-                            </div>
-                        </SwipeItem>
-                        <template #indicator="{ active, total }">
-                            <Teleport to="#ai-box">
-                                <div class="custom-indicator2"><span>{{ active + 1 }}</span>/{{ total }}</div>
-                            </Teleport>
-                        </template>
-                    </Swipe>
-                </div>
-            </div>
 
             <!-- 跟单 -->
             <div class="box" id="follow-box" v-show="followList.length">
@@ -226,7 +205,10 @@
                     </div>
                 </div>
 
-                <!-- Tabs -->
+
+            </div>
+            <!-- Tabs -->
+            <div style="padding: 0 0.1rem">
                 <Recommend :from="'home'" :activated="activated" />
             </div>
 
@@ -322,6 +304,14 @@ const { startSocket } = useSocket();
 const { t } = useI18n();
 const notifiOpen = computed(() => store.state.notifiOpen);
 const marketAiList = computed(() => store.state.marketAiList || []); // ai量化默认列表
+
+
+//打开菜单弹窗
+const showRightMenu = computed(() => store.state.showRightMenu);
+const openRightMenu = () => {
+    // rightMenu.value = true
+    store.commit('setShowRightMenu', !showRightMenu.value);
+};
 
 // 跳转
 const jump = (name, needToken, query) => {
