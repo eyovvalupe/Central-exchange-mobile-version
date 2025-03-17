@@ -209,7 +209,7 @@
             </div>
             <!-- Tabs -->
             <div style="padding: 0 0.1rem">
-                <Recommend :from="'home'" :activated="activated" />
+                <Recommend v-if="activated" :from="'home'" :activated="activated" />
             </div>
 
             <!-- ad -->
@@ -348,7 +348,7 @@ let wowObj = {}
 onActivated(() => {
     store.commit("setMarketWatchKeys", []);
     activated.value = true;
-    subs();
+    // subs();
     setTimeout(() => {
         vidRef.value && vidRef.value.play()
     }, 100)
@@ -373,7 +373,7 @@ onMounted(() => {
     setTimeout(() => {
         pageLoaded.value = true
     }, 1000)
-    subs();
+    // subs();
     wowObj = new Wow({
         boxClass: 'wow',
         animateClass: 'animated',

@@ -80,7 +80,7 @@ const props = defineProps({
     }
 })
 
-const activeTab = ref(0);
+const activeTab = ref(1);
 const setTab = () => {
     if (!token.value) {
         activeTab.value = 1
@@ -131,9 +131,6 @@ const jump = (val) => {
 }
 
 const tabChange = (val) => {
-    if (val == 0) {
-        init()
-    }
     // 缓存
     sessionStorage.setItem(`rec_tab_${props.from}`, val)
     setTimeout(() => {
