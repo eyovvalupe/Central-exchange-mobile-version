@@ -186,13 +186,14 @@ watch(price, (newVal, oldVal) => {
 
 const goInfo = (type) => {
   if (props.handleClick) return props.handleClick(props.item, props.menuType);
-  if (type == "stock") {
-    store.commit("setCurrStockItem", props.item);
+  if (type == "stock" || type == "ai") {
+    store.commit("setCurrAi", props.item);
     router.push({
       name: "market_info",
       query: {
         symbol: props.item.symbol,
-        type: "stock",
+        type: "ai",
+        tradeType: 'ai'
       },
     });
   }

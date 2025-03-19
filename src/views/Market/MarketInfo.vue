@@ -489,6 +489,7 @@ const item = computed(() => {
     case 'constract': // 合约
       it = store.state.currConstact || {};
       break;
+    case 'stock':
     case 'ai': // 合约
       it = store.state.currAi || {};
       break;

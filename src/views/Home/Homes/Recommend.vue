@@ -290,7 +290,7 @@ watch(route, (val) => {
         setTimeout(() => {
             tabChange(activeTab.value)
         }, 0)
-    } else {
+    } else if (val.name == "trade") {
         tabChange(activeTab.value)
     }
 }, { immediate: true })

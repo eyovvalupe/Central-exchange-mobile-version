@@ -41,7 +41,7 @@
             <div class="dialog-market-box" v-if="activeTab == 1 && !chartLoading">
               <div class="top-box">
                 <!-- 标题 -->
-                <div class="title" @click="showSearchDialog = true">
+                <div class="title" @click="openSearch">
                   <div class="title_name">
                     {{ item.name || '--' }}
                     <Icon name="arrow-down" />
@@ -107,7 +107,7 @@
             <div class="dialog-market-box" v-if="activeTab == 2 && !chartLoading">
               <div class="top-box">
                 <!-- 标题 -->
-                <div class="title" @click="showSearchDialog = true">
+                <div class="title" @click="openSearch">
                   <div class="title_name">
                     {{ item.name || '--' }}
                     <Icon name="arrow-down" />
@@ -193,7 +193,7 @@
             <div class="dialog-market-box" v-if="activeTab == 3 && !chartLoading">
               <div class="top-box">
                 <!-- 标题 -->
-                <div class="title" @click="showSearchDialog = true">
+                <div class="title" @click="openSearch">
                   <div class="title_name">
                     {{ item.name || '--' }}
                     <Icon name="arrow-down" />
@@ -249,31 +249,7 @@
         </Tabs>
       </div>
 
-      <!-- 搜索列表 -->
-      <BottomPopup @opened="openedList" @close="closeList" round v-model:show="showSearchDialog" position="bottom"
-        closeable teleport="body">
-        <div class="van-popup-custom-title">
-          {{ titleMap[activeTab] }}
-        </div>
-        <div class="search_dialog_trade">
-          <!-- 搜索 -->
-          <div class="item search_box">
-            <div class="search_icon">
-              <img v-lazy="getStaticImgUrl('/static/img/common/search.svg')" alt="🔍" />
-            </div>
-            <input v-model.trim="searchDialogStr" @keyup="initTabList" type="text" class="ipt" style="width: 100%"
-              :placeholder="t('trade.stock_opening_search')" />
-          </div>
 
-          <div class="lists search_dialog_list" v-if="showSearchCon">
-            <StockTable :key="activeTab" :showIcon="[1, 2, 5, 6].includes(activeTab)" theme="classic"
-              :handleClick="handleClick" :type="route.query.tradeType" :loading="false" :list="showList" />
-
-            <LoadingMore :style="{ 'margin-bottom': finish ? '0.4rem' : '1.6rem' }" :loading="searchLoading2"
-              :finish="finish" v-if="(finish && showList.length) || !finish" />
-          </div>
-        </div>
-      </BottomPopup>
 
       <!-- 详情 -->
       <BottomPopup round v-model:show="showInfoDialog" position="bottom" closeable teleport="body">
@@ -306,6 +282,9 @@
         <OrderCenter />
       </div>
     </BottomPopup>
+
+    <!-- 搜索 -->
+    <SearchDialog @click="handleClick" :item="item" :activeTab="activeTab" ref="searchDialogRef" />
   </div>
 </template>
 
@@ -320,12 +299,9 @@ import { _futures, _basic, _add, _del, _aiquant2, _trade } from '@/api/api';
 import BottomPopup from '@/components/BottomPopup.vue';
 import Loaidng from '@/components/Loaidng.vue';
 import router from '@/router';
-import LoadingMore from '@/components/LoadingMore.vue';
 import HeaderTabs from '@/components/HeaderTabs.vue';
 import FinanceIndex from '../Finance/Index.vue';
-
 // 公共
-import StockTable from '@/components/StockTable.vue';
 import OrderingSpot from '@/views/Market/OrderingSpot.vue';
 import Chart from '@/views/Market/Chart.vue';
 // 现货
@@ -344,8 +320,9 @@ import InquireAi from '@/views/Trade2/ai/Inquire.vue';
 import MarketInfo2 from '@/views/Market/MarketInfo2.vue';
 // 导航
 import Index from './Index.vue';
-import StockPopup from '../trade/StockPopup.vue';
 import OrderCenter from './OrderCenter.vue';
+import SearchDialog from "./SearchDialog.vue"
+
 
 const props = defineProps({
   type: {
@@ -362,16 +339,18 @@ const { t } = useI18n();
 const route = useRoute();
 const token = computed(() => store.state.token);
 
+// 搜索弹窗
+const searchDialogRef = ref()
+const openSearch = () => {
+  searchDialogRef.value && searchDialogRef.value.open()
+}
+
 // 详情弹窗
 const showInfoDialog = ref(false);
 const goMaret = () => {
   showInfoDialog.value = true;
 };
-const titleMap = ref({
-  1: '现货',
-  2: '合约',
-  3: 'ETF',
-});
+
 // 分类
 const activeTab = ref(1); // 一级
 const setTab = () => {
@@ -428,7 +407,6 @@ const closeOrderList = () => {
 };
 
 const changeTab2 = (e) => {
-  searchDialogStr.value = '';
   hideChart.value = false;
   activeTab.value = e;
   activeTab2.value = 11;
@@ -442,7 +420,10 @@ const changeTab2 = (e) => {
         tradeType: tradeTypeMap[e],
       },
     });
-    initTabList();
+    if (searchDialogRef.value) {
+      searchDialogRef.value.searchDialogStr = ''
+      searchDialogRef.value.initTabList();
+    }
   }, 100);
 };
 
@@ -509,7 +490,6 @@ onMounted(() => {
 });
 const handleClick = (obj) => {
   obj = JSON.parse(JSON.stringify(obj));
-  showSearchDialog.value = false;
   chartLoading.value = true;
   if (activeTab.value == 1) {
     store.commit('setCurrSpot', obj);
@@ -547,6 +527,7 @@ const handleClickIndex = ({ item, type }) => {
       case 'constract':
         activeTab.value = 2;
         break;
+      case 'stock':
       case 'ai':
         activeTab.value = 3;
         break;
@@ -609,194 +590,6 @@ const addCollect = (tab) => {
   }
 };
 
-// 搜索
-const showList = computed(() => {
-  switch (activeTab.value) {
-    case 1: // 现货
-      return spotList.value;
-    case 3: // ai
-      return marketAiList.value;
-    default:
-      return contractList.value;
-  }
-});
-// 订阅
-const subs = () => {
-  setTimeout(() => {
-    store.dispatch('subList', {
-      allKeys: showList.value.map((item) => item.symbol),
-    });
-  }, 500);
-};
-subs();
-// 列表数据
-const spotList = computed(() => store.state.spotList || []); // 现货列表
-const marketAiList = computed(() => store.state.marketAiList || []); // ai量化默认列表
-const contractList = computed(() => store.state.contractList || []); // 现货/合约
-// 初始化列表数据
-const searchLoading2 = ref(false);
-const showSearchDialog = ref(false);
-const showSearchCon = ref(false);
-watch(
-  () => showSearchDialog.value,
-  (val) => {
-    if (val) {
-      showSearchCon.value = val;
-    } else {
-      setTimeout(() => {
-        showSearchCon.value = val;
-      }, 300);
-    }
-  },
-);
-const searchDialogStr = ref('');
-let searhTimeout = null;
-const page = ref(1);
-const finish = ref(false);
-const handleData = (res, more, tab) => {
-  let arr = [];
-  if (more === true) {
-    arr = [...showList.value, ...res.data];
-    if (!res.data || !res.data.length) {
-      finish.value = true;
-    }
-  } else {
-    arr = (res.data || []).map((item) => {
-      const target = showList.value.find((a) => a.symbol == item.symbol);
-      if (target)
-        return {
-          ...target,
-          ...item,
-        };
-      return item;
-    });
-  }
-  switch (tab) {
-    case 1:
-      store.commit('setSpotList', arr);
-      break;
-    case 2:
-      store.commit('setContractList', arr);
-      break;
-    case 3:
-      arr = arr.map((item) => {
-        item.tradeType = 'ai';
-        return item;
-      });
-      store.commit('setMarketAiList', arr);
-      break;
-  }
-
-  // 这里如果当前没有item的值 就设置下
-  if (!item.value.symbol) {
-    const obj = arr[0];
-    switch (activeTab.value) {
-      case 1:
-        store.commit('setCurrSpot', obj || {});
-        break;
-      case 2:
-        store.commit('setCurrConstract', obj || {});
-        break;
-      case 3:
-        store.commit('setCurrAi', obj || {});
-        break;
-    }
-  }
-  subs();
-};
-const initTabList = (more) => {
-  if (searhTimeout) clearTimeout(searhTimeout);
-  searhTimeout = setTimeout(() => {
-    searchLoading2.value = true;
-    if (more === true) {
-      page.value++;
-    } else {
-      page.value = 1;
-      finish.value = false;
-    }
-    const tab = activeTab.value;
-    if (activeTab.value == 3) {
-      // ai
-      _aiquant2({
-        type: '',
-        name: searchDialogStr.value,
-        page: page.value,
-      })
-        .then((res) => {
-          handleData(res, more, tab);
-        })
-        .finally(() => {
-          searchLoading2.value = false;
-        });
-    } else if (activeTab.value == 1) {
-      // 现货
-      _trade({
-        name: searchDialogStr.value,
-        page: page.value,
-      })
-        .then((res) => {
-          handleData(res, more, tab);
-        })
-        .finally(() => {
-          searchLoading2.value = false;
-        });
-    } else {
-      // 合约下分类
-      let type = '';
-      switch (tab) {
-        case 2:
-          type = 'crypto';
-          break;
-      }
-      _futures({
-        name: searchDialogStr.value,
-        type: type,
-        page: page.value,
-      })
-        .then((res) => {
-          handleData(res, more, tab);
-        })
-        .finally(() => {
-          searchLoading2.value = false;
-        });
-    }
-  }, 600);
-};
-setTimeout(() => {
-  initTabList();
-}, 0);
-// 搜索更多数据
-const loadMore = () => {
-  if (searchLoading2.value || finish.value) return;
-  initTabList(true);
-};
-let moreDom = null;
-const totalHeight =
-  window.innerHeight || document.documentElement.clientHeight;
-const scrolHandle = () => {
-  const rect = moreDom.getBoundingClientRect();
-  if (rect.top <= totalHeight) {
-    // 加载更多
-    loadMore();
-  }
-};
-const openedList = () => {
-  setTimeout(() => {
-    try {
-      moreDom = document.querySelector('.loading_more');
-      document
-        .querySelector('.search_dialog_list')
-        .addEventListener('scroll', scrolHandle);
-    } catch { }
-  }, 500);
-};
-const closeList = () => {
-  try {
-    document
-      .querySelector('.search_dialog_list')
-      .removeEventListener('scroll', scrolHandle);
-  } catch { }
-};
 
 //打开菜单弹窗
 const showRightMenu = computed(() => store.state.showRightMenu);
@@ -845,41 +638,6 @@ watch(() => store.state.isLoginOpen, (v) => {
 </script>
 
 <style lang="less" scoped>
-.search_dialog_trade {
-  .lists {
-    height: calc(var(--vh) * 60);
-    overflow-y: auto;
-    margin-top: 0.32rem;
-  }
-
-  .search_box {
-    height: 1rem;
-    padding: 0 0.32rem;
-    margin: 0.4rem 0.3rem 0 0.3rem;
-    display: flex;
-    align-items: center;
-    background-color: var(--ex-bg-white1);
-    border-radius: 0.6rem;
-    // border: 1px solid var(--ex-border-color2);
-
-    .search_icon {
-      width: 0.48rem;
-      height: 0.48rem;
-      margin-right: 0.24rem;
-    }
-
-    .ipt {
-      height: 100%;
-      font-weight: 400;
-    }
-
-    .ipt::placeholder {
-      color: var(--ex-text-color4);
-    }
-  }
-}
-
-
 .page-marketinfo2 {
   // padding: 1.8rem 0 0 0;
   height: 100%;
