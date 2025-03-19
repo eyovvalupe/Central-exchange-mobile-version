@@ -4,7 +4,7 @@
     <SwipeCell :class="['stock_item_box']" @touchstart.start="" @touchmove.stop="" @touchend.stop="">
       <div class="stock_item_bg"
         :class="[`${' stock_item_' + updownStatus} ${props.page == 'home' ? 'px-[0.2rem]' : 'px-[0.28rem]'}`]"
-        @click="goInfo(props.item.type)">
+        @click="goInfo(props.type || props.item.type)" v-if="props.item">
         <div :class="['stock_item']">
           <div class="size-[0.96rem] mr-[0.2rem] flex justify-center items-center" v-if="showIcon">
             <CryptoIcon :name="item.name.split('/')[0]" />
@@ -141,9 +141,6 @@ const props = defineProps({
     type: Function,
     default: null,
   },
-  marketType: {
-    type: String,
-  },
   showSparkLine: {
     type: Boolean,
     default: true,
@@ -157,7 +154,6 @@ const props = defineProps({
     default: false
   },
   showIcon: Boolean,
-  menuType: String,
 });
 
 const mode = ref(1);
@@ -185,7 +181,8 @@ watch(price, (newVal, oldVal) => {
 });
 
 const goInfo = (type) => {
-  if (props.handleClick) return props.handleClick(props.item, props.menuType);
+  console.error('点击', type)
+  if (props.handleClick) return props.handleClick(props.item, props.type);
   if (type == "stock" || type == "ai") {
     store.commit("setCurrAi", props.item);
     router.push({
@@ -208,7 +205,7 @@ const goInfo = (type) => {
       },
     });
   }
-  if (type == "crypto") {
+  if (type == "crypto" || type == 'constract') {
     store.commit("setCurrConstract", props.item);
     router.push({
       name: "market_info",
