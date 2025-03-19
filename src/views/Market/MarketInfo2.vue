@@ -344,7 +344,7 @@ const getBasic = (obj) => {
       store.commit("setCurrSpot", obj);
       break;
     case "constract": // 合约
-      store.commit("setCurrConstact", obj);
+      store.commit("setCurrConstract", obj);
       break;
     case "stock":
     case "ai":
@@ -389,9 +389,7 @@ onMounted(() => {
   }, 300)
 })
 const handleClick = (obj) => {
-  if (obj.type != 'crypto' && ['3', '4'].includes(activeTab.value)) { // 非加密货币的没有订单薄
-    activeTab.value = 1
-  }
+  activeTab.value = 1
   chartLoading.value = true
   getBasic(obj)
   setTimeout(() => {
