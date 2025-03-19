@@ -147,14 +147,14 @@ watch(
         'spot': '现货交易',
         'constract': '合约交易',
         'crypto': '合约交易',
-        'ai': '交易机器人交易',
+        'ai': 'ETF交易',
       }[periodType.value]}`)
     } else if (val.name) {
       _setTitle(`${val.name}  ${{
         'spot': '现货交易',
         'constract': '合约交易',
         'crypto': '合约交易',
-        'ai': '交易机器人交易',
+        'ai': 'ETF交易',
       }[periodType.value]}`)
     }
   },

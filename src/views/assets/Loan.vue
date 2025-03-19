@@ -48,7 +48,7 @@
                     <div class="item_icon">
                         <img v-lazy="getStaticImgUrl('/static/img/assets/stock_icon.svg')" alt="img">
                     </div>
-                    <span>股票账户</span>
+                    <span>ETF账户</span>
                     <div class="more_icon"><img v-lazy="getStaticImgUrl('/static/img/common/more.svg')" alt="img"></div>
                 </div>
                 <div class="border_item ipt_box" style="background-color: var(--ex-bg-color2)">
@@ -93,7 +93,7 @@
                     <img v-lazy="getStaticImgUrl('/static/img/common/close.svg')" alt="x">
                 </div>
                 <div @click="showDialog = false" class="swap_dialog_item swap_dialog_item_active">
-                    <span>股票账户</span>
+                    <span>ETF账户</span>
                     <Icon class="check_icon" name="success" />
                 </div>
             </div>

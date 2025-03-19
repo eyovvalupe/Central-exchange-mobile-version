@@ -22,12 +22,12 @@
       <HeaderTabs :type="'custom-line'" v-else @change="changeTab" v-model:active="headActiveTab"
         :tabs="[t('自选'), t('行情')]">
         <template #after>
-          <div class="flex items-center gap-[0.16rem] mr-[0.34rem]">
-            <div class="size-[0.64rem]" @click="jump('search')"
+          <div class="flex items-center gap-[0.16rem] mr-[0.3rem]">
+            <div class="size-[0.72rem]" @click="jump('search')"
               style="background-color: var(--ex-bg-white1);border-radius: 50%;padding: 0.12rem;">
               <img class="img transition" v-lazy="getStaticImgUrl('/static/img/common/search.svg')" alt="" />
             </div>
-            <div class="size-[0.64rem]" @click="openRightMenu"
+            <div class="size-[0.72rem]" @click="openRightMenu"
               style="background-color: var(--ex-bg-white1);border-radius: 50%;padding: 0.12rem;"
               :style="{ border: showRightMenu ? '1px solid var(--ex-primary-color)' : '' }">
               <img class="img transition" v-lazy="getStaticImgUrl('/static/img/common/right_menu.svg')" alt="" />
@@ -43,8 +43,8 @@
           <div v-if="token">
             <Loaidng v-if="watchListLoading" :loading="watchListLoading" />
             <div style="padding-bottom: 0.2rem;overflow: visible;" v-if="headActiveTab == 0 && !watchListLoading">
-              <StockItem :padding="true" :showIcon="true" :item=item v-for="(item, i) in (watchList)" :key="'c_' + i"
-                menuType="option" marketType="crypto" />
+              <StockItem :handleClick="() => checkGoTrade(item)" :padding="true" :showIcon="true" :item=item
+                v-for="(item, i) in (watchList)" :key="'c_' + i" menuType="option" marketType="crypto" />
             </div>
             <NoData v-if="!watchListLoading && !watchList.length" />
           </div>
@@ -117,6 +117,8 @@
       </div>
     </div>
   </BottomPopup>
+
+  <CheckJump ref="CheckJumpRef" />
 </template>
 
 <script setup>
@@ -135,6 +137,7 @@ import HeaderTabs from "@/components/HeaderTabs.vue";
 import Loaidng from "@/components/Loaidng.vue";
 import StockItem from "@/components/StockItem.vue";
 import { useRoute } from "vue-router";
+import CheckJump from "@/components/CheckJump.vue"
 
 const route = useRoute();
 const emits = defineEmits(['handleClick'])
@@ -144,6 +147,12 @@ const props = defineProps({
     default: false
   }
 })
+
+// 检测并跳转
+const CheckJumpRef = ref();
+const checkGoTrade = item => {
+  CheckJumpRef.value && CheckJumpRef.value.check(item)
+}
 
 const token = computed(() => store.state.token);
 const headActiveTab = ref(Number(sessionStorage.getItem("tradeMarketType")));

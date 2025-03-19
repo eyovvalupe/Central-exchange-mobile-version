@@ -6,7 +6,7 @@
 
       <div class="detail-box">
         <div class="left-text">
-          股票
+          ETF
         </div>
         <div class="right-text" style="line-height: 0.45rem;">
           <div>

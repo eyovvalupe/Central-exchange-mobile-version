@@ -34,7 +34,7 @@
                   } font-normal whitespace-nowrap text-[0.22rem] rounded-[0.08rem] px-[0.12rem] h-[0.32rem]  flex items-center justify-center ]`">
                 {{
                   item.type == "stock"
-                    ? t("market.market_optional_stock")
+                    ? 'ETF'
                     : item.type == "crypto"
                       ? t("market.market_optional_contract")
                       : item.type == "forex"
@@ -105,7 +105,7 @@ import CryptoIcon from "./CryptoIcon.vue";
 
 const { t } = useI18n();
 const market = {
-  stock: "股票",
+  stock: "ETF",
   crypto: "合约",
   forex: "外汇",
 };

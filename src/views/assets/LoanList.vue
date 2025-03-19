@@ -14,7 +14,7 @@
                     <NoData v-if="!loading && !list.length" />
                     <div class="item" v-for="(item, i) in list" :key="i">
                         <div class="item_box top">
-                            <div class="title">股票账户</div>
+                            <div class="title">ETF账户</div>
                             <div class="status" :class="['status_' + item.status]">{{ _loanStatusMap[item.status ||
                                 'open'] ||
                                 '--' }}</div>

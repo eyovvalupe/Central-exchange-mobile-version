@@ -1,10 +1,10 @@
-<!-- 股票账户 -->
+<!-- ETF账户 -->
 <template>
     <div class="page_assets_stock">
         <!-- 总览 -->
         <OverviewCard>
             <div class="top">
-                <div class="title">股票资产({{ currency }})</div>
+                <div class="title">ETF资产({{ currency }})</div>
                 <div class="eyes" @click="hidden = !hidden">
                     <img v-lazy="getStaticImgUrl('/static/img/common/open_eye_white.svg')" v-show="!hidden" />
                     <img v-lazy="getStaticImgUrl('/static/img/common/close_eye_white.svg')" v-show="hidden" />
@@ -15,12 +15,12 @@
             </div>
             <div class="navs">
                 <div class="nav">
-                    <div class="nav_label">股票账户余额</div>
+                    <div class="nav_label">ETF账户余额</div>
                     <div class="num">{{ hidden ? '********' : assets.stock }}</div>
                 </div>
                 <div class="line"></div>
                 <div class="nav" @click="jump('loanList', { tab: 1 })">
-                    <div class="nav_label">股票持仓金额</div>
+                    <div class="nav_label">ETF持仓金额</div>
                     <!-- <div class="hint" v-if="loanNum">{{ loanNum }}</div> -->
                     <div class="num">{{ hidden ? '********' : assets.stock_value }}</div>
                 </div>

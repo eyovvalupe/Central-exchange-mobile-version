@@ -83,13 +83,13 @@
                             : subItem == 'commodities'
                               ? t('assets.over_view_trade')
                               : subItem == 'stockTrade'
-                                ? t('股票交易')
+                                ? t('ETF交易')
                                 : subItem == 'spotTrade'
                                   ? t('现货交易')
                                   : subItem == 'futuresTrade'
                                     ? t('加密货币合约交易')
                                     : subItem == 'aiTrade'
-                                      ? t('交易机器人交易')
+                                      ? t('ETF交易')
                                       : subItem == 'forexTrade'
                                         ? t('外汇交易')
                                         : subItem == 'commoditiesTrade'

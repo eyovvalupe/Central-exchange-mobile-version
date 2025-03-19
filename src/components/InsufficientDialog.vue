@@ -40,7 +40,7 @@ const jump = name => {
 
 // 接收参数
 const typeMap = ref({
-    'stock': '股票账户',
+    'stock': 'ETF账户',
     'spot': '现金账户',
     'crypto': '合约账户',
 })

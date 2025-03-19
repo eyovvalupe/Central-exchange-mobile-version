@@ -370,7 +370,7 @@ const goMaret = () => {
 const titleMap = ref({
   1: '现货',
   2: '合约',
-  3: '交易机器人',
+  3: 'ETF',
 });
 // 分类
 const activeTab = ref(1); // 一级
