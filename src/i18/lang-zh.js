@@ -12,7 +12,7 @@ export default {
     no_more: "没有更多了",
     no_wallet: "暂无收款地址",
     spot: "现货",
-    option: "ETF",
+    option: "期货",
     second: "秒",
   },
   login: {

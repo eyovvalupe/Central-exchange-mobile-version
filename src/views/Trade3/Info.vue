@@ -189,7 +189,7 @@
               <div style="height: 0.4rem"></div>
             </div>
           </Tab>
-          <Tab :name="3" :title="$t('trade.left_bot')">
+          <Tab :name="3" :title="$t('期货')">
             <div class="dialog-market-box" v-if="activeTab == 3 && !chartLoading">
               <div class="top-box">
                 <!-- 标题 -->
@@ -299,7 +299,7 @@
     </div>
 
     <div v-if="headActiveTab == 1">
-      <FinanceIndex class="mt-[0.32rem]" :from="'tradeInfo'" />
+      <FinanceIndex class="mt-[0.36rem]" :from="'tradeInfo'" />
     </div>
     <BottomPopup round :show="showOrderList" @close="closeOrderList()" closeable>
       <div class="relative">
@@ -912,10 +912,11 @@ watch(() => store.state.isLoginOpen, (v) => {
     :deep(.van-tabs--top) {
       .van-sticky {
         .van-tabs__wrap {
-          height: 0.64rem;
+          height: 0.68rem;
+
 
           .van-tabs__nav {
-            height: 0.64rem;
+            height: 0.68rem;
             display: flex;
             align-items: start;
             overflow: visible;

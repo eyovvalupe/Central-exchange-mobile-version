@@ -30,7 +30,7 @@
                             : item.name == 'order'
                               ? t('assets.header_order')
                               : item.name == 'user'
-                                ? t('common.user')
+                                ? t('home.user')
                                 : item.name == 'referral'
                                   ? t('inviteFriends.invite')
                                   : item.name == 'support'
@@ -75,7 +75,7 @@
                     : subItem == 'spot'
                       ? t('common.spot')
                       : subItem == 'futures'
-                        ? t('common.futures')
+                        ? t('common.crypto')
                         : subItem == 'ai'
                           ? t('common.option')
                           : subItem == 'forex'
@@ -83,13 +83,13 @@
                             : subItem == 'commodities'
                               ? t('assets.over_view_trade')
                               : subItem == 'stockTrade'
-                                ? t('ETF交易')
+                                ? t('股票交易')
                                 : subItem == 'spotTrade'
                                   ? t('现货交易')
                                   : subItem == 'futuresTrade'
                                     ? t('加密货币合约交易')
                                     : subItem == 'aiTrade'
-                                      ? t('ETF交易')
+                                      ? t('期货交易')
                                       : subItem == 'forexTrade'
                                         ? t('外汇交易')
                                         : subItem == 'commoditiesTrade'

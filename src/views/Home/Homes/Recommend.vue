@@ -5,8 +5,7 @@
             :color="'var(--ex-primary-color)'" @change="tabChange" v-if="props.activated" v-model:active="activeTab"
             :animated="from != 'home'" shrink>
             <Tab :name="1" :title="t('common.spot')">
-                <div :class="['home-tab-box-' + props.from, 'mt-[0.24rem]']"
-                    :style="{ borderTop: '1px solid var(--ex-border-color)' }" v-if="activeTab == 1">
+                <div :class="['home-tab-box-' + props.from, 'mt-[0.24rem]']" v-if="activeTab == 1">
                     <div class="" style="padding-bottom: 0.2rem;overflow: visible;">
                         <StockItem :handleClick="props.innerPage ? handleClick : null"
                             :page="from == 'home' ? 'home' : ''" :padding="true"
@@ -17,8 +16,7 @@
                 </div>
             </Tab>
             <Tab :name="2" :title="$t('common.crypto')">
-                <div :class="['home-tab-box-' + props.from, 'mt-[0.24rem]']"
-                    :style="{ borderTop: '1px solid var(--ex-border-color)' }" v-if="activeTab == 2">
+                <div :class="['home-tab-box-' + props.from, 'mt-[0.24rem]']" v-if="activeTab == 2">
                     <div style="padding-bottom: 0.2rem;">
                         <StockItem :handleClick="props.innerPage ? handleClick : null"
                             :page="from == 'home' ? 'home' : ''" :padding="true"
@@ -28,9 +26,8 @@
                     </div>
                 </div>
             </Tab>
-            <Tab :name="3" :title="$t('common.option')">
-                <div :class="['home-tab-box-' + props.from, 'mt-[0.24rem]']"
-                    :style="{ borderTop: '1px solid var(--ex-border-color)' }" v-if="activeTab == 3">
+            <Tab :name="3" :title="$t('期货')">
+                <div :class="['home-tab-box-' + props.from, 'mt-[0.24rem]']" v-if="activeTab == 3">
                     <div style="padding-bottom: 0.2rem;">
                         <StockItem :handleClick="props.innerPage ? handleClick : null"
                             :page="from == 'home' ? 'home' : ''" :padding="true"
@@ -365,10 +362,11 @@ const filterList = list => {
 .home-tabs-box-trade {
     :deep(.van-tabs--top) {
         .van-tabs__wrap {
-            height: 0.64rem;
+            height: 0.68rem;
+            border-bottom: 1px solid var(--ex-border-color);
 
             .van-tabs__nav {
-                height: 0.64rem;
+                height: 0.68rem;
                 display: flex;
                 align-items: start;
                 overflow: visible;
