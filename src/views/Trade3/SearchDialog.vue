@@ -49,7 +49,7 @@ const props = defineProps({
 const titleMap = ref({
     1: '现货',
     2: '合约',
-    3: 'ETF',
+    3: '期货',
 });
 
 const emits = defineEmits(['click'])
