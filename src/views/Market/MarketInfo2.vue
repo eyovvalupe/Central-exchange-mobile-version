@@ -354,7 +354,7 @@ const getBasic = (obj) => {
   _basic({ symbol: obj.symbol }).then((res) => {
     if (res.code == 200) {
       if (res.data.symbol == item.value.symbol) {
-        switch (type) {
+        switch (type.value) {
           case "constract": // 合约
             store.commit("setCurrConstract", {
               ...obj,
