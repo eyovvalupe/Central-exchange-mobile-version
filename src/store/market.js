@@ -15,6 +15,7 @@ const pageKeys = {
     'market': [
         ...recommendArr
     ],
+    'market_info': [...recommendArr],
     'trade': [...recommendArr],
     'tradeInfo': [...recommendArr],
     'search': ['marketSearchList']
