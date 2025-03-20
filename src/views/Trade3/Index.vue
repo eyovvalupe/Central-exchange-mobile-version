@@ -20,7 +20,7 @@
 
       <!-- 作为完整页面的菜单 -->
       <HeaderTabs :type="'custom-line'" v-else @change="changeTab" v-model:active="headActiveTab"
-        :tabs="[t('自选'), t('行情')]">
+        :tabs="[t('home.optional'), t('market.market_item_detail')]">
         <template #after>
           <div class="flex items-center gap-[0.16rem] mr-[0.3rem]">
             <div class="size-[0.72rem]" @click="jump('search')"

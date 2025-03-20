@@ -13,8 +13,8 @@ export const _accountMap = {
 export const _accountMapList = [
   { key: "money", value: t('assets.wallet_header_cash') },
   { key: "stock", value: t('assets.wallet_header_stock') },
-  { key: "futures", value: t('market.market_buy_fast_account_crypto') },
-  { key: "forex", value: t('assets.wallet_header_forex') },
+  { key: "futures", value: t('assets.wallet_header_contract') },
+  // { key: "forex", value: t('assets.wallet_header_forex') },
 ];
 
 // 借贷状态

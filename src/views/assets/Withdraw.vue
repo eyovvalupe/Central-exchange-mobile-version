@@ -174,7 +174,7 @@
       round
       class="submit ripple-btn"
       type="primary"
-      >{{ $t('withdraw.withdraw') }}</Button
+      >{{ $t('assets.withdraw') }}</Button
     >
     <!-- 账户种类选择弹窗 -->
     <BottomPopup

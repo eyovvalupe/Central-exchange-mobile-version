@@ -165,7 +165,7 @@ const AccountCheckRef = ref();
 const toAmount = ref("");
 const route = useRoute();
 const focus = ref(false); // 是否在输入中
-const columnList = ref(['money', 'stock', 'futures', 'forex'])
+const columnList = ref(['money', 'stock', 'futures'])
 const blurInput = () => {
   setTimeout(() => {
     errStatus.value = focus.value = false;

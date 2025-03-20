@@ -26,7 +26,7 @@
                     </div>
                 </div>
             </Tab>
-            <Tab :name="3" :title="$t('期货')">
+            <Tab :name="3" :title="$t('copy.copy_option')">
                 <div :class="['home-tab-box-' + props.from, 'mt-[0.24rem]']" v-if="activeTab == 3">
                     <div style="padding-bottom: 0.2rem;">
                         <StockItem :handleClick="props.innerPage ? handleClick : null"

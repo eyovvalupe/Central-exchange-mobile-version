@@ -1064,7 +1064,7 @@ export default {
   },
   copy: {
     title: "Follow Orders",
-    copy_option: "Optios",
+    copy_option: "Options",
     copy_trade: "Copy",
     total_revenue: "Total Revenue",
     level: "LV.{level}",

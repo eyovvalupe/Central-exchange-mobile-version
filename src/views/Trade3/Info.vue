@@ -2,7 +2,7 @@
 <template>
   <div>
     <!-- 头部 -->
-    <HeaderTabs :type="'custom-line'" :from="'trade'" v-model:active="headActiveTab" :tabs="[t('交易'), t('理财')]"
+    <HeaderTabs :type="'custom-line'" :from="'trade'" v-model:active="headActiveTab" :tabs="[t('home.trade'), t('home.finance')]"
       @change="changeTab">
       <template #after>
         <div class="flex gap-[0.16rem] mr-[0.3rem]">
@@ -189,7 +189,7 @@
               <div style="height: 0.4rem"></div>
             </div>
           </Tab>
-          <Tab :name="3" :title="$t('期货')">
+          <Tab :name="3" :title="$t('copy.copy_option')">
             <div class="dialog-market-box" v-if="activeTab == 3 && !chartLoading">
               <div class="top-box">
                 <!-- 标题 -->
