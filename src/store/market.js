@@ -372,6 +372,9 @@ export default {
             setCurr('currStockItem', state, data)
         },
         setCurrConstract(state, data) {
+            if (data.symbol) {
+                console.error('设置了？？', data)
+            }
             sessionStorage.setItem('currConstact', JSON.stringify(data))
             setCurr('currConstact', state, data)
         },
@@ -475,11 +478,11 @@ export default {
                         })
 
                         // 同步到当前 股票
-                        const cStock = res.data.find(a => a.symbol == state.currStockItem.symbol)
-                        if (cStock) {
-                            let obj = JSON.parse(JSON.stringify(cStock))
+                        const cSpot = res.data.find(a => a.symbol == state.currSpot.symbol)
+                        if (cSpot) {
+                            let obj = JSON.parse(JSON.stringify(cSpot))
                             delete obj.symbol
-                            commit('setCurrStockItem', obj)
+                            commit('setCurrSpot', obj)
                         }
                         // 同步到当前 合约
                         const cConstract = res.data.find(a => a.symbol == state.currConstact.symbol)

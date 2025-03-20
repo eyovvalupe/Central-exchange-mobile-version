@@ -527,6 +527,7 @@
 </template>
 
 <script setup>
+import ciper from "@/utils/ciper.js"
 import { getStaticImgUrl } from "@/utils/index.js";
 import {
   Loading,
@@ -1153,21 +1154,19 @@ const initParam = () => {
 const setCurrStockFunc = (item) => {
 
   switch (props.type) {
-    case "spot":
+    case "constract":
       sessionStorage.setItem("currConstract", JSON.stringify(item));
       store.commit("setCurrConstract", item);
       break;
-    case "foreign":
-      store.commit("setCurrForeign", item);
-      sessionStorage.setItem("currForeign", JSON.stringify(item));
+    case "spot":
+      store.commit("setCurrSpot", item);
+      sessionStorage.setItem("currSpot", JSON.stringify(item));
       break;
-    case "commodities":
-      store.commit("setCurrCommodities", item);
-      sessionStorage.setItem("currCommodities", JSON.stringify(item));
+    case "ai":
+      store.commit("setCurrAi", item);
+      sessionStorage.setItem("currAi", JSON.stringify(item));
       break;
   }
-  sessionStorage.setItem("currConstract", JSON.stringify(item))
-  store.commit('setCurrConstract', item)
 };
 
 const handleClick = (item) => {
@@ -1195,38 +1194,6 @@ setTimeout(() => {
     handleClick(currStock.value)
   }
 }, 500)
-
-// url参数处理
-if (props.tradeType == 2) {
-  // 合约
-  if (route.query.symbol) {
-    handleClick({
-      symbol: route.query.symbol,
-    });
-  } else {
-    let obj = {};
-    try {
-      switch (props.type) {
-        case "constract":
-          obj = JSON.parse(sessionStorage.getItem("currConstract") || "{}");
-          break;
-        case "foreign":
-          obj = JSON.parse(sessionStorage.getItem("currForeign") || "{}");
-          break;
-        case "commodities":
-          obj = JSON.parse(sessionStorage.getItem("currCommodities") || "{}");
-          break;
-      }
-    } catch {
-      obj = {};
-    }
-    if (obj.symbol) {
-      handleClick(obj);
-    } else {
-      initParam();
-    }
-  }
-}
 
 const openTypeDialog = () => {
   if (!levers.value.length) {

@@ -181,7 +181,6 @@ watch(price, (newVal, oldVal) => {
 });
 
 const goInfo = (type) => {
-  console.error('点击', type)
   if (props.handleClick) return props.handleClick(props.item, props.type);
   if (type == "stock" || type == "ai") {
     store.commit("setCurrAi", props.item);

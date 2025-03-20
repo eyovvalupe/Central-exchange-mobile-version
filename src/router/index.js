@@ -28,7 +28,7 @@ const routes = [
       title: '跟单'
     },
   },
-  
+
   {
     // 跟单详情
     path: "/followDetail",
@@ -425,7 +425,7 @@ const routes = [
     name: "tradeInfo",
     component: () => import("../views/Trade3/Info.vue"),
     meta: {
-      keepAlive: false,
+      keepAlive: true,
       pageType: "tab",
       title: '交易'
     },

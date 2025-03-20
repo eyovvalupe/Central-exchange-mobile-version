@@ -106,6 +106,7 @@
 </template>
 
 <script setup>
+import ciper from "@/utils/ciper.js"
 import { getStaticImgUrl } from "@/utils/index.js"
 import SparkLine from "./SparkLine.vue";
 import { ref, computed, watch, onMounted } from "vue";
@@ -174,13 +175,23 @@ watch(price, (newVal, oldVal) => {
 
 const goInfo = (type) => {
   if (props.handleClick) return props.handleClick(props.item);
-  if (type == "stock") {
-    store.commit("setCurrStockItem", props.item);
+  if (type == "spot") {
+    store.commit("setCurrSpot", props.item);
     router.push({
       name: "tradeInfo",
       query: {
-        symbol: props.item.symbol,
-        type: "stock",
+        symbol: ciper.encrypt(props.item.symbol),
+        type: "spot",
+      },
+    });
+  }
+  if (type == "ai") {
+    store.commit("setCurrAi", props.item);
+    router.push({
+      name: "tradeInfo",
+      query: {
+        symbol: ciper.encrypt(props.item.symbol),
+        type: "ai",
       },
     });
   }
@@ -189,7 +200,7 @@ const goInfo = (type) => {
     router.push({
       name: "tradeInfo",
       query: {
-        symbol: props.item.name,
+        symbol: ciper.encrypt(props.item.name),
         type: "constract",
       },
     });

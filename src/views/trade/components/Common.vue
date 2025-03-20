@@ -95,6 +95,7 @@
 </template>
 
 <script setup>
+import ciper from "@/utils/ciper.js"
 import { getStaticImgUrl } from "@/utils/index.js"
 import { ref, computed, onMounted, watch, nextTick, onUpdated, onBeforeUnmount, onDeactivated, reactive } from "vue";
 import { Tab, Tabs, Field, CellGroup, Slider, Button, Loading, Popup, showToast } from "vant";
@@ -609,8 +610,9 @@ const getslide = () => {
 
 onMounted(() => {
   //emit('already');
+  console.error(66666)
   if (route.query.symbol) {
-    matchName.symbol = value.value = route.query.symbol;
+    matchName.symbol = value.value = ciper.decrypt(route.query.symbol);
     handleBlur(4)
   }
   getStockslist()

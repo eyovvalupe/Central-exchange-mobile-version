@@ -533,6 +533,7 @@ const addCollect = () => {
       font-size: 0.32rem;
       padding: 0 0.4rem;
       margin-right: 0.12rem;
+      white-space: nowrap;
     }
 
     .btn {

@@ -249,41 +249,6 @@ onMounted(() => {
   }, 500);
 });
 
-// 查看详情
-const goItem = (item) => {
-  var prevList = [...marketSearchTextList.value];
-  var flag = false;
-  prevList.map((list) => {
-    if (list.toUpperCase() == item.symbol.toUpperCase()) flag = true;
-  });
-
-  if (item.type == "stock") {
-    var newList = flag ? prevList : [...prevList, item.symbol];
-    store.commit("setMarketSearchTextList", newList);
-    store.commit("setCurrStockItem", item);
-    setTimeout(() => {
-      router.push({
-        name: "market_info",
-        query: {
-          symbol: item.symbol,
-          type: "stock",
-        },
-      });
-    }, 100);
-  } else if (item.type == "crypto") {
-    var newList = flag ? prevList : [...prevList, item.name];
-    store.commit("setMarketSearchTextList", newList);
-    store.commit("setCurrConstract", item);
-    router.push({
-      name: "market_info",
-      query: {
-        symbol: item.name,
-        type: "constract",
-      },
-    });
-  }
-};
-
 // 收藏
 const collectLoading = ref(false);
 const reqMap = {

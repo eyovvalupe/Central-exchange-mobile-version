@@ -12,8 +12,8 @@
         </div>
       </div>
 
-      <Tabs key="form" class="van-tabs--sub" animated @change="(e) => (activeTab = e)" v-model="activeTab" :swipeable="false"
-        :color="'var(--ex-primary-color)'" shrink>
+      <Tabs key="form" class="van-tabs--sub" animated @change="(e) => (activeTab = e)" v-model="activeTab"
+        :swipeable="false" :color="'var(--ex-primary-color)'" shrink>
         <Tab :title="t('trade.stock_market_price')" name="0">
           <OpeningForm :tradeType="props.tradeType" @showNavDialog="showNavDialog" @success="onSuccess"
             v-if="activeTab == 0" ref="OpeningForm0Ref" :key="0" :activeTab="activeTab" :activeType="activeType" />
@@ -32,6 +32,7 @@
 </template>
 
 <script setup>
+import ciper from "@/utils/ciper.js"
 import { ref, onMounted, computed } from "vue";
 import { Tab, Tabs, ActionSheet } from "vant";
 import { _search, _basic, _stocksPara, _stocksBuy } from "@/api/api";

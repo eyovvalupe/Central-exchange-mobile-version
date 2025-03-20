@@ -238,6 +238,7 @@
 </template>
 
 <script setup>
+import ciper from "@/utils/ciper.js"
 import { ref, computed } from "vue";
 import {
   Button,
@@ -329,7 +330,8 @@ const form1 = ref({
 });
 
 form1.value.name = route.query.name || ""
-form1.value.symbol = route.query.symbol || ""
+console.error(55555)
+form1.value.symbol = ciper.decrypt(route.query.symbol) || ""
 
 // 缓存
 let obj = {}
@@ -596,9 +598,10 @@ if (!marketAiList.value.length) {
 const init = () => {
   error1.value = false;
   error2.value = false;
+  console.error(44444)
   form1.value = {
     name: route.query.name || "",
-    symbol: route.query.symbol || "",
+    symbol: ciper.decrypt(route.query.symbol) || "",
     grid: "",
     volume: "",
   };

@@ -2,8 +2,8 @@
 <template>
   <div>
     <!-- 头部 -->
-    <HeaderTabs :type="'custom-line'" :from="'trade'" v-model:active="headActiveTab" :tabs="[t('home.trade'), t('home.finance')]"
-      @change="changeTab">
+    <HeaderTabs :type="'custom-line'" :from="'trade'" v-model:active="headActiveTab"
+      :tabs="[t('home.trade'), t('home.finance')]" @change="changeTab">
       <template #after>
         <div class="flex gap-[0.16rem] mr-[0.3rem]">
           <div class="size-[0.72rem] rounded-[50%] bg-white2 flex items-center justify-center ripple-btn"
@@ -195,7 +195,7 @@
                 <!-- 标题 -->
                 <div class="title" @click="openSearch">
                   <div class="title_name">
-                    {{ item.name || '--' }}
+                    {{ (item.type == 'stock' ? item.symbol : item.name) || '--' }}
                     <Icon name="arrow-down" />
                   </div>
                 </div>
@@ -289,6 +289,7 @@
 </template>
 
 <script setup>
+import ciper from "@/utils/ciper.js"
 import { ref, computed, onMounted, onActivated, onDeactivated } from 'vue';
 import { Tabs, Tab, Icon, Popup } from 'vant';
 import { useI18n } from 'vue-i18n';
@@ -415,7 +416,7 @@ const changeTab2 = (e) => {
     router.replace({
       name: 'tradeInfo',
       query: {
-        symbol: item.value.symbol,
+        symbol: ciper.encrypt(item.value.symbol),
         type: tradeTypeMap[e] == 'spot' ? 'constract' : tradeTypeMap[e],
         tradeType: tradeTypeMap[e],
       },
@@ -424,12 +425,13 @@ const changeTab2 = (e) => {
       searchDialogRef.value.searchDialogStr = ''
       searchDialogRef.value.initTabList();
     }
-  }, 100);
+  }, 0);
 };
 
 // 股票信息
 const item = computed(() => {
   let it = {};
+
   switch (activeTab.value) {
     case 1: // 现货
       it = store.state.currSpot || {};
@@ -504,7 +506,7 @@ const handleClick = (obj) => {
     router.replace({
       name: 'tradeInfo',
       query: {
-        symbol: obj.symbol,
+        symbol: ciper.encrypt(obj.symbol),
         type:
           tradeTypeMap[activeTab.value] == 'spot'
             ? 'constract'
@@ -554,6 +556,8 @@ const addCollect = (tab) => {
           store.dispatch('updateMarketWatchList');
           switch (tab) {
             case 1: // 现货
+              store.commit('setCurrSpot', { watchlist: 1 });
+              break;
             case 2: // 合约
               store.commit('setCurrConstract', { watchlist: 1 });
               break;
@@ -575,6 +579,8 @@ const addCollect = (tab) => {
           store.dispatch('updateMarketWatchList');
           switch (tab) {
             case 1: // 现货
+              store.commit('setCurrSpot', { watchlist: 0 });
+              break;
             case 2: // 合约
               store.commit('setCurrConstract', { watchlist: 0 });
               break;
@@ -611,7 +617,6 @@ onActivated(() => {
   setTimeout(() => {
     chartLoading.value = false;
   }, 500);
-
   setTimeout(() => {
     if (!route.query.tradeType) {
       router.replace({

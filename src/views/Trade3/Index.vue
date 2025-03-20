@@ -2,24 +2,9 @@
   <div class="w-full h-full">
     <div class="page-trade3" :style="{ paddingBottom: props.innerPage ? '0' : '' }">
 
-      <!-- 作为内页的菜单 -->
-      <div class="z-[1]  pt-[0.4rem] pb-[0.4rem] bg-color" v-if="props.innerPage">
-        <div
-          class="transition flex justify-between  px-[0.32rem] py-[0.18rem] rounded-[1rem] gap-[0.2rem] h-[0.8rem] mx-[0.4rem] items-center border-[0.02rem]"
-          :class="focusRef ? 'border-white' : ''" style="background-color: var(--ex-bg-white1);">
-          <div class="w-[0.5rem] h-[0.5rem]">
-            <img v-lazy="getStaticImgUrl('/static/img/common/search.svg')" alt="">
-          </div>
-          <div class="text-[0.32rem] text-color2 leading-[0.5rem]  flex-1 px-[0.1rem]">
-            <input style="flex:1;width: 100%;" v-model.trim="searchRef" class="text-white"
-              :placeholder="$t('market.market_input_crypto_set')" @input="inputHandle" @focus="focusRef = true"
-              @blur="focusRef = false" />
-          </div>
-        </div>
-      </div>
 
       <!-- 作为完整页面的菜单 -->
-      <HeaderTabs :type="'custom-line'" v-else @change="changeTab" v-model:active="headActiveTab"
+      <HeaderTabs :type="'custom-line'" @change="changeTab" v-model:active="headActiveTab"
         :tabs="[t('home.optional'), t('market.market_item_detail')]">
         <template #after>
           <div class="flex items-center gap-[0.16rem] mr-[0.3rem]">
@@ -38,7 +23,7 @@
 
       <div style="height: 0.32rem;"></div>
       <!-- 自选 -->
-      <div v-if="headActiveTab == 0 && !props.innerPage">
+      <div v-if="headActiveTab == 0">
         <div :class="['home-tab-box-' + props.from]" :style="{ borderTop: '1px solid var(--ex-border-color)' }">
           <div v-if="token">
             <Loaidng v-if="watchListLoading" :loading="watchListLoading" />
@@ -75,48 +60,14 @@
         </div>
       </div>
 
-      <div v-if="headActiveTab == 1 && !focusRef && !searchRef">
+      <div v-if="headActiveTab == 1">
         <Recommend @handleClick="handleClick" :innerPage="props.innerPage" v-if="activated" ref="recommendRef"
           from="trade" :sticky="false" :activated="activated" />
       </div>
 
-      <div v-if="focusRef || searchRef">
-        <div class=" pl-[0.38rem] pr-[0.32rem] text-[0.28rem] leading-[0.4rem]  pb-[0.08rem]"
-          style="border-bottom: 1px solid var(--ex-border-color5);color:var(--ex-text-color2)">搜索结果</div>
-        <div class="lists" style=" 
-    border-radius: 0.32rem;
-    margin-left: 0.32rem;
-    margin-right: 0.32rem;
-    padding-left: 0;
-    padding-right: 0;">
-          <StockTable :from="'trade'" :showIcon="true" theme="classic" :handleClick="goInfo" :loading="searchLoading"
-            :key="'search'" :list="searchList" />
-        </div>
-      </div>
     </div>
   </div>
 
-  <!-- 搜索列表 -->
-  <BottomPopup round v-model:show="showSearchDialog" position="bottom" closeable teleport="body">
-    <div class="van-popup-custom-title">
-      {{ recommendRef.activeTab == 0 ? $t('common.spot') : $t('common.crypto') }}{{ t("trade.stock_opening_search") }}
-    </div>
-    <div class="search_dialog_trade">
-      <!-- 搜索 -->
-      <div class="item search_box">
-        <div class="search_icon">
-          <img v-lazy="getStaticImgUrl('/static/img/common/search.svg')" alt="🔍" />
-        </div>
-        <input v-model.trim="searchDialogStr" @keyup="goDialogSearch" type="text" class="ipt" style="width: 100%"
-          :placeholder="t('trade.stock_opening_search')" />
-      </div>
-
-      <div class="lists">
-        <StockTable :from="'trade'" :showIcon="true" theme="classic" :handleClick="goInfo" :loading="searchLoading"
-          :key="'search'" :list="marketSearchList" />
-      </div>
-    </div>
-  </BottomPopup>
 
   <CheckJump ref="CheckJumpRef" />
 </template>
@@ -184,9 +135,7 @@ watch(route, (val) => {
 
 const jump = name => router.push(name)
 const { t } = useI18n();
-const focusRef = ref(false)
 const searchList = computed(() => store.state.searchList)
-const contractList = computed(() => store.state.contractList)
 const searchRef = ref('')
 const { startSocket } = useSocket();
 // 订阅 
@@ -196,30 +145,6 @@ const subs = () => {
 };
 
 let timeout = null
-const inputHandle = () => {
-  if (timeout) clearTimeout(timeout)
-  timeout = setTimeout(() => {
-    if (searchRef.value) goSearch()
-  }, 600);
-}
-
-const goSearch = () => {
-  if (!searchRef.value) return;
-  if (searchLoading.value) return;
-  searchList.value = [];
-  searchLoading.value = true;
-  _futures({
-    type: '',
-    name: searchRef.value
-  })
-    .then(res => {
-      store.commit('setSearchList', res.data)
-      store.dispatch('subList', {
-        listKey: 'searchList'
-      })
-    })
-    .finally(() => searchLoading.value = false);
-}
 
 const activated = ref(false);
 const act = () => {
@@ -254,19 +179,6 @@ const handleClick = (obj) => { // 如果作为侧窗点击元素
 }
 
 const recommendRef = ref()
-const goInfo = (item) => { // 作为页面点击元素
-  if (props.innerPage) return handleClick({ item: item })
-  showSearchDialog.value = false
-  store.commit("setCurrConstract", item);
-  router.push({
-    name: "market_info",
-    query: {
-      symbol: item.name,
-      type: "constract",
-      tradeType: recommendRef.value && recommendRef.value.activeTab == 0 ? 'spot' : 'constract'
-    },
-  });
-};
 
 
 // 右侧弹窗

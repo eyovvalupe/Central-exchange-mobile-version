@@ -534,6 +534,7 @@
 </template>
 
 <script setup>
+import ciper from "@/utils/ciper.js"
 import { getStaticImgUrl } from "@/utils/index.js";
 import { Loading, Button, showToast, Popup, ActionSheet, Picker } from "vant";
 import { ref, computed, watch, nextTick } from "vue";
@@ -1114,10 +1115,11 @@ const handleClick = (item) => {
 
 // url参数处理
 if (props.tradeType == 1) {
+  console.error(33333)
   // 股票页
   if (route.query.symbol) {
     handleClick({
-      symbol: route.query.symbol,
+      symbol: ciper.decrypt(route.query.symbol),
     });
   } else {
     try {

@@ -549,6 +549,7 @@
 </template>
 
 <script setup>
+import ciper from "@/utils/ciper.js"
 import { getStaticImgUrl } from '@/utils/index.js';
 import { Button, showToast, Popup, ActionSheet, Picker } from 'vant';
 import { ref, computed, onMounted, onBeforeUnmount } from 'vue';
@@ -1191,21 +1192,19 @@ const initParam = () => {
 
 const setCurrStockFunc = (item) => {
   switch (props.type) {
-    case 'constract':
-      sessionStorage.setItem('currConstract', JSON.stringify(item));
-      store.commit('setCurrConstract', item);
+    case "constract":
+      sessionStorage.setItem("currConstract", JSON.stringify(item));
+      store.commit("setCurrConstract", item);
       break;
-    case 'foreign':
-      store.commit('setCurrForeign', item);
-      sessionStorage.setItem('currForeign', JSON.stringify(item));
+    case "spot":
+      store.commit("setCurrSpot", item);
+      sessionStorage.setItem("currSpot", JSON.stringify(item));
       break;
-    case 'commodities':
-      store.commit('setCurrCommodities', item);
-      sessionStorage.setItem('currCommodities', JSON.stringify(item));
+    case "ai":
+      store.commit("setCurrAi", item);
+      sessionStorage.setItem("currAi", JSON.stringify(item));
       break;
   }
-  sessionStorage.setItem('currConstract', JSON.stringify(item));
-  store.commit('setCurrConstract', item);
 };
 
 const handleClick = (item) => {
@@ -1234,29 +1233,7 @@ setTimeout(() => {
   }
 }, 500);
 
-// url参数处理
-// 合约
-if (route.query.symbol) {
-  handleClick({
-    symbol: route.query.symbol,
-  });
-} else {
-  let obj = {};
-  try {
-    switch (props.type) {
-      case 'constract':
-        obj = JSON.parse(sessionStorage.getItem('currConstract') || '{}');
-        break;
-    }
-  } catch {
-    obj = {};
-  }
-  if (obj.symbol) {
-    handleClick(obj);
-  } else {
-    initParam();
-  }
-}
+
 
 const openTypeDialog = () => {
   if (!levers.value.length) {

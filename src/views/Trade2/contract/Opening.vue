@@ -58,6 +58,7 @@
 </template>
 
 <script setup>
+import ciper from "@/utils/ciper.js"
 import { ref, computed } from "vue";
 import { Tab, Tabs } from "vant";
 import { _search, _basic, _stocksPara, _stocksBuy } from "@/api/api";

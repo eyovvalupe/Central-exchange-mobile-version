@@ -25,6 +25,7 @@
 </template>
 
 <script setup>
+import ciper from "@/utils/ciper.js"
 import { Tab, Tabs } from "vant";
 import { ref, onMounted, computed, watch, nextTick } from "vue";
 import Opening from "../ai/Opening.vue";
