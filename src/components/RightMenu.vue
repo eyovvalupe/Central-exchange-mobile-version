@@ -83,45 +83,45 @@
                             : subItem == 'commodities'
                               ? t('assets.over_view_trade')
                               : subItem == 'stockTrade'
-                                ? t('股票交易')
+                                ? t('trade.stock_trade')
                                 : subItem == 'spotTrade'
-                                  ? t('现货交易')
+                                  ? t('trade.spot_trade')
                                   : subItem == 'futuresTrade'
-                                    ? t('加密货币合约交易')
+                                    ? t('trade.futures_trade')
                                     : subItem == 'aiTrade'
-                                      ? t('期货交易')
+                                      ? t('trade.option_trade')
                                       : subItem == 'forexTrade'
-                                        ? t('外汇交易')
+                                        ? t('trade.forex_trade')
                                         : subItem == 'commoditiesTrade'
-                                          ? t('大宗商品交易')
+                                          ? t('trade.commodities_trade')
                                           : subItem == 'copy'
-                                            ? t('跟单')
+                                            ? t('copy.title')
                                             : subItem == 'borrow'
-                                              ? t('DeFi借币')
+                                              ? t('finance.defi_borrow')
                                               : subItem == 'stake'
-                                                ? t('质押挖矿')
+                                                ? t('finance.portfolio_title')
                                                 : subItem == 'ipo'
                                                   ? t('IPO')
                                                   : subItem == 'assets'
-                                                    ? t('我的资产')
+                                                    ? t('common.assets')
                                                     : subItem == 'deposit'
-                                                      ? t('充值')
+                                                      ? t('assets.recharge')
                                                       : subItem == 'withdraw'
-                                                        ? t('提现')
+                                                        ? t('assets.withdraw')
                                                         : subItem == 'transfer'
-                                                          ? t('划转')
+                                                          ? t('assets.transfer')
                                                           : subItem == 'record'
-                                                            ? t('资金记录')
+                                                            ? t('assets.financialRecords')
                                                             : subItem == 'user'
-                                                              ? t('用户')
+                                                              ? t('inviteFriends.user')
                                                               : subItem == 'account'
-                                                                ? t('收款账户')
+                                                                ? t('user_page.receive_payment')
                                                                 : subItem == 'kyc'
-                                                                  ? t('身份认证')
+                                                                  ? t('user_page.verify_identity')
                                                                   : subItem == 'google'
-                                                                    ? t('谷歌认证')
+                                                                    ? t('user_page.google_authenticate')
                                                                     : subItem == 'safety'
-                                                                      ? t('安全设置')
+                                                                      ? t('user_page.safety_setting')
                                                                       : ''
               }}
             </div>

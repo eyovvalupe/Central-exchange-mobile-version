@@ -14,6 +14,7 @@ export default {
     option: "期貨",
     second: "秒",
     hour: "時",
+    assets: "我的資產",
 
   },
   home: {
@@ -149,7 +150,7 @@ export default {
     btn_text2: "綁定",
   },
   user_page: {
-    login_out: "註冊/登錄",
+    login_out: "登錄/註冊",
     recommended_user: "推薦用戶",
     social_user: "網絡用戶",
     recommend_bonus: "推薦獎金",
@@ -159,7 +160,7 @@ export default {
 
     ad_con1: "模擬投資",
     ad_con2: "收益在售",
-    receive_payment: "收款賬戶",
+    receive_payment: "地址簿",
     verify_identity: "身份認證",
     google_verification: "谷歌驗證器",
     already_verified: "已認證",
@@ -184,6 +185,9 @@ export default {
     support: "客服",
     news: "消息",
     setting: "個人設置",
+    google_authenticate: "谷歌認證",
+    safety_setting: "安全設置",
+
   },
   kyc: {
     page_title: "身份認證",
@@ -771,7 +775,12 @@ export default {
     trade_search_item: "輸入品種名稱/代碼",
     spot_trade_market_price: "以當前市場最優價格下單",
     spot_time: "時間",
-
+    stock_trade: "股票交易",
+    spot_trade: "現貨交易",
+    futures_trade: "加密貨幣合約交易",
+    option_trade: "期貨交易",
+    forex_trade: "外匯交易",
+    commodities_trade: "大宗商品交易",
   },
   inviteFriends: {
     invite: "推薦朋友",

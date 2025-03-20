@@ -14,6 +14,7 @@ export default {
     option: "オプション",
     second: "秒",
     hour: "小时",
+    assets: "私の資産",
 
   },
   login: {
@@ -113,7 +114,7 @@ export default {
     btn_text2: "绑定する",
   },
   user_page: {
-    login_out: "登録/ログイン",
+    login_out: "ログイン/登録",
     recommended_user: "推薦ユーザー",
     social_user: "ネットワークユーザー",
     recommend_bonus: "推薦ボーナス",
@@ -147,6 +148,9 @@ export default {
     support: "カスタマーサポート",
     news: "ニュース",
     setting: "個人設定",
+    google_authenticate: "Google認証",
+    safety_setting: "セキュリティ設定",
+
   },
   kyc: {
     page_title: "本人確認",
@@ -775,6 +779,12 @@ export default {
     trade_search_item: "品種名/コードを入力してください",
     spot_trade_market_price: "現在の市場最良価格で注文",
     spot_time: "時間",
+    stock_trade: "株式取引",
+    spot_trade: "現物取引",
+    futures_trade: "暗号通貨先物取引",
+    option_trade: "先物取引",
+    forex_trade: "外国為替取引",
+    commodities_trade: "商品取引",
   },
   inviteFriends: {
     invite: "友達を招待",

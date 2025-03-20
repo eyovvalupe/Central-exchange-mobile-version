@@ -14,6 +14,7 @@ export default {
     option: "옵션",
     second: "초",
     hour: "시간",
+    assets: "내 자산",
 
   },
   login: {
@@ -111,7 +112,7 @@ export default {
     btn_text2: "연결",
   },
   user_page: {
-    login_out: "회원가입/로그인",
+    login_out: "로그인/회원가입",
     recommended_user: "추천 사용자",
     social_user: "네트워크 사용자",
     recommend_bonus: "추천 보너스",
@@ -145,6 +146,9 @@ export default {
     support: "고객 지원",
     news: "뉴스",
     setting: "개인 설정",
+    google_authenticate: "구글 인증",
+    safety_setting: "보안 설정",
+
   },
   kyc: {
     page_title: "신원 인증",
@@ -773,6 +777,12 @@ export default {
     trade_search_item: "종목명/코드를 입력하세요",
     spot_trade_market_price: "현재 시장 최적 가격으로 주문",
     spot_time: "시간",
+    stock_trade: "주식 거래",
+    spot_trade: "현물 거래",
+    futures_trade: "콘트랙 거래",
+    option_trade: "선물 거래",
+    forex_trade: "외환 거래",
+    commodities_trade: "원자재 거래",
   },
   inviteFriends: {
     invite: "친구 초대",

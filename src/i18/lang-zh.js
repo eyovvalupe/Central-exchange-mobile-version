@@ -14,6 +14,7 @@ export default {
     spot: "现货",
     option: "期货",
     second: "秒",
+    assets: "我的资产",
   },
   login: {
     login: "登录",
@@ -111,7 +112,7 @@ export default {
     btn_text2: "绑定",
   },
   user_page: {
-    login_out: "注册/登录",
+    login_out: "登录/注册",
     recommended_user: "推荐用户",
     social_user: "网络用户",
     recommend_bonus: "推荐奖金",
@@ -146,6 +147,8 @@ export default {
     support: "客服",
     news: "消息",
     setting: "个人设置",
+    google_authenticate: "谷歌认证",
+    safety_setting: "安全设置",
   },
   kyc: {
     page_title: "身份认证",
@@ -773,6 +776,15 @@ export default {
 
     spot_trade_market_price: "以当前市场最优价格下单",
     spot_time: "时间",
+
+    stock_trade: "股票交易",
+    spot_trade: "现货交易",
+    futures_trade: "加密货币合约交易",
+    option_trade: "期货交易",
+    forex_trade: "外汇交易",
+    commodities_trade: "大宗商品交易",
+
+
   },
   inviteFriends: {
     invite: "推荐朋友",

@@ -14,6 +14,7 @@ export default {
     spot: "Spot",
     option: "Option",
     second: "sec",
+    assets: "My Assets",
 
   },
   login: {
@@ -112,7 +113,7 @@ export default {
     btn_text2: "Bind",
   },
   user_page: {
-    login_out: "Log In / Out",
+    login_out: "Log In / Sign Up",
     recommended_user: "Suggested Users",
     social_user: "Social Users",
     recommend_bonus: "Referral Bonus",
@@ -146,6 +147,9 @@ export default {
     support: "Help & Support",
     news: "News",
     setting: "Settings",
+    google_authenticate: "Google Authentication",
+    safety_setting: "Safety Settings",
+
   },
   kyc: {
     page_title: "Identity Verification",
@@ -496,7 +500,7 @@ export default {
     marketRecommend: "Markets",
     selfSelectedRecommend: "Custom Picks",
     notification: "Notice Announcement Content ...",
-    optional: "Pick",
+    optional: "Favorites",
     homepage: "Home",
     market: "Markets",
     trade: "Trade",
@@ -514,7 +518,7 @@ export default {
     secure: "Safe",
     convinient: "Simple",
     reliable: "Reliable",
-    landing_con1: "Tens of Millions of Users",
+    landing_con1: "Millions of Users",
     landing_con2: " have joined",
     landing_con3: " LORNA",
     landing_con4: "Experience Infinite Possibilities",
@@ -785,6 +789,12 @@ export default {
     trade_search_item: "Enter the asset name/code",
     spot_trade_market_price: "Place order at the current market price",
     spot_time: "Time",
+    stock_trade: "Stock Trade",
+    spot_trade: "Spot Trade",
+    futures_trade: "Futures Trade",
+    option_trade: "Options Trade",
+    forex_trade: "Forex Trade",
+    commodities_trade: "Commodities Trade",
   },
   inviteFriends: {
     invite: "Invite",
