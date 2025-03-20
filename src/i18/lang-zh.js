@@ -837,7 +837,7 @@ export default {
     market_marketinfo_amount: "成交量",
     market_marketinfo_close: "昨收",
     market_marketinfo_low: "24h最低",
-    market_marketinfo_value: "成交量",
+    market_marketinfo_value: "成交额",
 
     market_buy_title1: "快捷区",
     market_buy_title2: "自选区",

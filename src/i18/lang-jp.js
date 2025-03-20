@@ -839,7 +839,7 @@ export default {
     market_marketinfo_amount: "取引量",
     market_marketinfo_close: "終値",
     market_marketinfo_low: "24h最安値",
-    market_marketinfo_value: "取引量",
+    market_marketinfo_value: "取引額",
 
     market_buy_title1: "クイックセクション",
     market_buy_title2: "自選セクション",
