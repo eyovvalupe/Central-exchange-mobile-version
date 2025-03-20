@@ -35,7 +35,6 @@ export default {
     updateFollowList({ commit }) {
       // 更新跟单列表
       return new Promise(resolve => {
-        commit('setFollowListLoading', true)
         _copyList({ page: 1 })
           .then(res => {
             if (res.code == 200 && res.data) {
@@ -45,9 +44,7 @@ export default {
               resolve(false)
             }
           })
-          .catch(() => resolve(false)).finally(() => {
-            commit('setFollowListLoading', false)
-          })
+          .catch(() => resolve(false))
       })
     },
     updateMyFollowList({ commit, state }) {
