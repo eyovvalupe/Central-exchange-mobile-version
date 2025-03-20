@@ -378,7 +378,7 @@ const changePercent = () => {
   if (maxStockNum.value == "--" || !form1.value.volume)
     return (sliderValue.value = 0);
   let v = new Decimal(form1.value.volume);
-  form1.value.volume = v.sub(v.mod(step.value));
+  form1.value.volume = v.sub(v.mod(step.value)).toNumber();
   let p = new Decimal(form1.value.volume)
     .div(maxStockNum.value)
     .mul(100)
@@ -403,6 +403,7 @@ const checkForm = () => {
     showToast(t("trade.ai_opening_no_invest_amount"));
     return;
   }
+  console.error(form1.value.volume, minamount.value)
   if (form1.value.volume < minamount.value) {
     error2.value = true;
     showToast(`${t("trade.ai_opening_min_invest_amount")}: ` + minamount.value);
@@ -513,8 +514,8 @@ const getRange = () => {
   let rs = "--";
   try {
     const arr = rangereturn.split(" - ");
-    const start = new Decimal(form1.value.volume).mul(Number(arr[0])).div(100);
-    const end = new Decimal(form1.value.volume).mul(Number(arr[1])).div(100);
+    const start = new Decimal(form1.value.volume).mul(form1.value.grid).mul(Number(arr[0])).div(100);
+    const end = new Decimal(form1.value.volume).mul(form1.value.grid).mul(Number(arr[1])).div(100);
     rs = `${start} - ${end}`;
   } catch { }
 
