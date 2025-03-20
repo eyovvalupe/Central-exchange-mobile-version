@@ -3,33 +3,54 @@ import { _copyList, _copyMyData, _copyMyList } from '@/api/api'
 
 export default {
   state: {
+    followList: [], // 首页跟单列表
     myCopy: [], // 我的跟单
-    myCopyLoading:false,
+    myCopyLoading: false,
     copyItem: JSON.parse(sessionStorage.getItem('copyItem')),
     myCopyData: {},
     copyItemDetail: JSON.parse(sessionStorage.getItem('copyItemDetail'))
   },
   mutations: {
+    setFollowList(state, data) {
+      state.followList = data || []
+    },
     setCopyItemDetail(state, data) {
       state.copyItemDetail = data
     },
     setMyCopyData(state, data) {
       state.myCopyData = data
     },
-    setMyCopyLoading(state,data){
+    setMyCopyLoading(state, data) {
       state.myCopyLoading = data
     },
     setCopyItem(state, data) {
       state.copyItem = data
     },
-   
+
     setMyCopy(state, data) {
       state.myCopy = data || []
     },
   },
   actions: {
-    
-    updateMyFollowList({ commit,state }) {
+    updateFollowList({ commit }) {
+      // 更新跟单列表
+      return new Promise(resolve => {
+        commit('setFollowListLoading', true)
+        _copyList({ page: 1 })
+          .then(res => {
+            if (res.code == 200 && res.data) {
+              commit('setFollowList', res.data || [])
+              resolve(res.data)
+            } else {
+              resolve(false)
+            }
+          })
+          .catch(() => resolve(false)).finally(() => {
+            commit('setFollowListLoading', false)
+          })
+      })
+    },
+    updateMyFollowList({ commit, state }) {
       // 更新我的跟单列表
       return new Promise(resolve => {
         commit('setMyCopyLoading', true)
@@ -42,7 +63,7 @@ export default {
               resolve(false)
             }
           })
-          .catch(() => resolve(false)).finally(()=>{
+          .catch(() => resolve(false)).finally(() => {
             commit('setMyCopyLoading', false)
           })
       })

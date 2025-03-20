@@ -11,17 +11,15 @@
         </div>
 
         <!-- 标题 -->
-        <div class="title" v-if="item.type == 'stock'" @click="openSearch">
+        <div class="title" v-if="item.type == 'stock'">
           <div class="title_name">{{ item.symbol || "--" }}
-            <Icon name="arrow-down" />
           </div>
           <div class=" leading-[0.4rem]" v-if="item.name">
             {{ item.name || "--" }}
           </div>
         </div>
-        <div class="title" v-else @click="openSearch">
+        <div class="title" v-else>
           <div class="title_name">{{ item.name || "--" }}
-            <Icon name="arrow-down" />
           </div>
         </div>
         <!-- 详情 -->
@@ -235,12 +233,6 @@
     </BottomPopup>
 
 
-    <SearchDialog @click="handleClick" :item="item" :activeTab="{
-      'stock': 3,
-      'ai': 3,
-      'spot': 1,
-      'constract': 2
-    }[type]" ref="searchDialogRef" />
   </div>
 
 </template>
@@ -257,14 +249,8 @@ import { _basic, _add, _del } from "@/api/api";
 import BottomPopup from "@/components/BottomPopup.vue";
 import OrderingSpot from "./OrderingSpot.vue"
 import Chart from "./Chart.vue"
-import SearchDialog from "../Trade3/SearchDialog.vue"
 
 
-// 搜索弹窗
-const searchDialogRef = ref()
-const openSearch = () => {
-  searchDialogRef.value && searchDialogRef.value.open()
-}
 
 const props = defineProps({
   type: {

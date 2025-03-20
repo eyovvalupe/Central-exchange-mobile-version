@@ -6,7 +6,7 @@
         :class="[`${' stock_item_' + updownStatus} ${props.page == 'home' ? 'px-[0.2rem]' : 'px-[0.28rem]'}`]"
         @click="goInfo(props.type || props.item.type)" v-if="props.item">
         <div :class="['stock_item']">
-          <div class="size-[0.96rem] mr-[0.2rem] flex justify-center items-center" v-if="showIcon">
+          <div class="size-[0.8rem] mr-[0.2rem] flex justify-center items-center" v-if="showIcon">
             <CryptoIcon :name="item.name.split('/')[0]" />
           </div>
           <div class="td5" :class="{ 'td5--ac': showIcon }">
@@ -49,7 +49,7 @@
             </div>
 
           </div>
-          <div :class="['td2 spark_line_box']" v-if="showSparkLine">
+          <div :class="['td1 spark_line_box']" v-if="showSparkLine">
             <SparkLine :style="['width: 100%; height: 0.6rem;']" v-if="props.item.points" :points="props.item.points"
               :ratio="props.item.ratio" />
           </div>
@@ -299,7 +299,7 @@ const removeStock = (item) => {
   .td5 {
     flex-shrink: 0;
     // width: 3rem;
-    flex: 2.5;
+    flex: 3;
 
     .item_name {
       font-size: 0.28rem;
@@ -322,6 +322,10 @@ const removeStock = (item) => {
 
   .td5--ac {
     // width: 2.3rem;
+  }
+
+  .td1 {
+    flex: 1;
   }
 
   .td2 {
