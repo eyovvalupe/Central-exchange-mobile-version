@@ -778,7 +778,7 @@ export default {
     stock_trade: "股票交易",
     spot_trade: "現貨交易",
     futures_trade: "加密貨幣合約交易",
-    option_trade: "期貨交易",
+    option_trade: "ETF交易",
     forex_trade: "外匯交易",
     commodities_trade: "大宗商品交易",
   },

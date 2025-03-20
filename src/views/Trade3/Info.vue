@@ -189,7 +189,7 @@
               <div style="height: 0.4rem"></div>
             </div>
           </Tab>
-          <Tab :name="3" :title="$t('copy.copy_option')">
+          <Tab :name="3" :title="$t('ETF')">
             <div class="dialog-market-box" v-if="activeTab == 3 && !chartLoading">
               <div class="top-box">
                 <!-- 标题 -->

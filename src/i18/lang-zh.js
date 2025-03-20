@@ -780,7 +780,7 @@ export default {
     stock_trade: "股票交易",
     spot_trade: "现货交易",
     futures_trade: "加密货币合约交易",
-    option_trade: "期货交易",
+    option_trade: "ETF交易",
     forex_trade: "外汇交易",
     commodities_trade: "大宗商品交易",
 

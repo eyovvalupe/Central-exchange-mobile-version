@@ -89,7 +89,7 @@
                                   : subItem == 'futuresTrade'
                                     ? t('trade.futures_trade')
                                     : subItem == 'aiTrade'
-                                      ? t('trade.option_trade')
+                                      ? t('ETF')
                                       : subItem == 'forexTrade'
                                         ? t('trade.forex_trade')
                                         : subItem == 'commoditiesTrade'
