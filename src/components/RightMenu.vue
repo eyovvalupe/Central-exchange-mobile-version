@@ -77,7 +77,7 @@
                       : subItem == 'futures'
                         ? t('common.crypto')
                         : subItem == 'ai'
-                          ? t('common.option')
+                          ? 'ETF'
                           : subItem == 'forex'
                             ? t('assets.over_view_forex')
                             : subItem == 'commodities'

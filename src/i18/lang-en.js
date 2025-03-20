@@ -344,7 +344,7 @@ export default {
     order_title_ipo: "IPO",
     order_current_position: "Positions",
     order_history: "History",
-    assets_center: "Overview",
+    assets_center: "Assets",
 
   },
   topUpCrypto: {
