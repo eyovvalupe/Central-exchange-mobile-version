@@ -831,10 +831,10 @@ export default {
     market_marketinfo_long: "매수",
     market_marketinfo_short: "매도",
     market_marketinfo_open: "오늘 개시",
-    market_marketinfo_high: "최고",
+    market_marketinfo_high: "24h 최고",
     market_marketinfo_amount: "거래량",
     market_marketinfo_close: "어제 종가",
-    market_marketinfo_low: "최저",
+    market_marketinfo_low: "24h 최저",
     market_marketinfo_value: "거래 금액",
 
     market_buy_title1: "빠른 거래 구역",

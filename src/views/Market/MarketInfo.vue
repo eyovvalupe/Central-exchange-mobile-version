@@ -97,15 +97,16 @@
         <div class="flex text-[0.24rem] pt-[0.2rem] gap-[0.2rem]">
           <div class="w-[2.6rem] flex-shrink-0">
             <span class="text-color3">{{
-              t('market.market_marketinfo_value')
+              t('market.market_marketinfo_value') + item.type == 'crypto' ? item.name.split('/')[1] : 'USDT'
             }}</span>
             <span class="text-color ml-[0.12rem]">{{
               _formatNumber(item.amount)
             }}</span>
           </div>
+          {{ console.log(item) }}
           <div class="flex-1">
             <span class="text-color3">{{
-              t('market.market_marketinfo_amount')
+              t('market.market_marketinfo_amount') + item.type == 'crypto' ? item.name.split('/')[0] : item.symbol
             }}</span>
             <span class="text-color ml-[0.12rem]">{{
               _formatNumber(item.volume)
