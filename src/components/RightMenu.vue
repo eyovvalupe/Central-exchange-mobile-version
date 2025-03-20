@@ -172,7 +172,7 @@ const itemMap = [
     },
   },
   {
-    name: 'finance', sub: ['copy', 'borrow', 'stake', 'ipo'], jump: {
+    name: 'finance', sub: ['copy', 'borrow', 'stake'], jump: {
       copy: ["tradeInfo", false, { tradeType: "copy" }],
       borrow: ["tradeInfo", false, { tradeType: "borrow" }],
       stake: ["tradeInfo", false, { tradeType: "stake" }],
