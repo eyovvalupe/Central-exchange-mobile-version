@@ -330,7 +330,6 @@ const form1 = ref({
 });
 
 form1.value.name = route.query.name || ""
-console.error(55555)
 form1.value.symbol = ciper.decrypt(route.query.symbol) || ""
 
 // 缓存

@@ -139,7 +139,7 @@ const handleData = (res, more, tab) => {
     // 这里如果当前没有item的值 就设置下
     if (!props.item.symbol) {
         const obj = arr[0];
-        switch (props.activeTab) {
+        switch (tab) {
             case 1:
                 store.commit('setCurrSpot', obj || {});
                 break;
@@ -252,7 +252,7 @@ const open = () => {
 }
 setTimeout(() => {
     initTabList();
-}, 1000)
+}, 500)
 defineExpose({
     open,
     initTabList,
