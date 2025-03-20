@@ -209,22 +209,7 @@ const handleData = (res, more, tab) => {
             break;
     }
 
-    // 这里如果当前没有item的值 就设置下
-    if (!item.symbol) {
-        const obj = arr[0];
-        switch (activeTab.value) {
-            case 1:
-                store.commit('setCurrSpot', obj || {});
-                break;
-            case 2:
-                store.commit('setCurrConstract', obj || {});
-                break;
-            case 3:
-            case 4:
-                store.commit('setCurrAi', obj || {});
-                break;
-        }
-    }
+
     subs()
 }
 const initTabList = (more) => {

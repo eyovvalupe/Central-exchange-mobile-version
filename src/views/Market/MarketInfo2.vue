@@ -83,7 +83,6 @@
               <span class="num text-white">{{ item.close || '--'
               }}</span>
             </div>
-            {{ console.log(item) }}
             <div class="count_item">
               <span class="text-color3">{{ t('market.market_marketinfo_value') }}</span>
               <span class="num text-white">{{ _formatNumber(item.amount) }}</span>

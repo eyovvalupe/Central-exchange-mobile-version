@@ -372,9 +372,6 @@ export default {
             setCurr('currStockItem', state, data)
         },
         setCurrConstract(state, data) {
-            if (data.symbol) {
-                console.error('设置了？？', data)
-            }
             sessionStorage.setItem('currConstact', JSON.stringify(data))
             setCurr('currConstact', state, data)
         },
@@ -451,7 +448,7 @@ export default {
                     ...proxyKeys,
                     ...state.marketWatchKeys,
                 ]))
-                console.error('订阅', keys)
+                // console.error('订阅', keys)
                 socket && socket.off('realtime')
                 socket && socket.emit('realtime', keys.join(',')) // 价格变化
                 socket && socket.on('realtime', res => {
