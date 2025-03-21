@@ -262,7 +262,7 @@
               padding: 0.1rem 0 0.2rem 0;
               font-weight: bold;
             ">
-            {{ activeTab == 4 ? item.symbol : item.name }}
+            {{ item.type == 'stock' ? item.symbol : item.name }}
           </div>
           <MarketInfo2 :innerPage="true" />
         </div>
