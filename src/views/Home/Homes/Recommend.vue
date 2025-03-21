@@ -15,7 +15,7 @@
                     </div>
                 </div>
             </Tab>
-            <Tab :name="2" :title="$t('common.crypto')">
+            <Tab :name="2" :title="t('common.crypto')">
                 <div :class="['home-tab-box-' + props.from, 'mt-[0.24rem]']" v-if="activeTab == 2">
                     <div style="padding-bottom: 0.2rem;">
                         <StockItem :handleClick="props.innerPage ? handleClick : null"
@@ -26,7 +26,7 @@
                     </div>
                 </div>
             </Tab>
-            <Tab :name="3" :title="'ETF'">
+            <Tab :name="3" :title="t('market.market_header_ai')">
                 <div :class="['home-tab-box-' + props.from, 'mt-[0.24rem]']" v-if="activeTab == 3">
                     <div style="padding-bottom: 0.2rem;">
                         <StockItem :handleClick="props.innerPage ? handleClick : null"

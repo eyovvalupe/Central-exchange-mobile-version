@@ -15,7 +15,7 @@
                 props.item.name
               }}</span>
               <span class="truncate" v-else>{{ props.item.symbol }}</span>
-              <div v-if="(props.page == 'market' || props.page == 'trade') && item.type == 'stock'"
+              <div v-if="item.type == 'stock'"
                 :class="`${marketStyle[props.item.type]
                   } font-normal whitespace-nowrap text-[0.22rem] ml-[0.06rem] flex items-center justify-center rounded-[0.08rem] px-[0.08rem] h-[0.3rem] `">
                 {{
@@ -23,12 +23,12 @@
                 }}
               </div>
             </div>
-            <!-- <div class="item_info" v-show="props.item.type == 'stock'">
+            <div class="item_info" v-if="props.item.type == 'stock'">
               {{ props.item.name || "--" }}
-            </div> -->
+            </div>
 
             <!-- <div v-if="item.type != 'stock'" class="flex items-center"> -->
-            <div class="flex items-center">
+            <div v-if="props.item.type != 'stock'" class="flex items-center">
               <span style=""
                 :class="`${marketStyle[props.item.type]
                   } font-normal whitespace-nowrap text-[0.22rem] rounded-[0.08rem] px-[0.12rem] h-[0.32rem]  flex items-center justify-center ]`">
@@ -299,6 +299,7 @@ const removeStock = (item) => {
     flex-shrink: 0;
     // width: 3rem;
     flex: 3;
+    overflow: hidden;
 
     .item_name {
       font-size: 0.28rem;
@@ -315,7 +316,7 @@ const removeStock = (item) => {
       white-space: nowrap;
       width: 100%;
       overflow: hidden;
-      padding-right: 0.4rem;
+      padding-right: 0.2rem;
     }
   }
 
