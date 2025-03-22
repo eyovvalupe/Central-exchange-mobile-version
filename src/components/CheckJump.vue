@@ -35,6 +35,39 @@ const tradeTypeMap = {
 const arr = ref([])
 const target = ref({})
 const check = item => {
+    let type = ''
+    switch (item.type) {
+        case "spot":
+            type = 'spot'
+            sessionStorage.setItem("currSpot", JSON.stringify(item));
+            store.commit("setCurrSpot", item);
+            break;
+        case 'crypto':
+        case "constract":
+            type = 'constract'
+            sessionStorage.setItem("currConstract", JSON.stringify(item))
+            store.commit('setCurrConstract', item)
+            break
+        case "ai":
+        case "stock":
+            type = 'ai'
+            sessionStorage.setItem("currAi", JSON.stringify(item))
+            store.commit('setCurrAi', item)
+            break
+    }
+    if (type) {
+        router.push({
+            name: 'market_info',
+            query: {
+                symbol: ciper.encrypt(item.symbol),
+                tradeType: type,
+                check: 1
+            }
+        })
+    } else {
+        console.error('未知类型', item)
+    }
+    if (item) return // 下边逻辑不要了
     showLoadingToast({
         duration: 0,
         loadingType: "circular",

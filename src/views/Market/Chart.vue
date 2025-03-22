@@ -98,7 +98,9 @@ import BottomPopup from "@/components/BottomPopup.vue";
 import store from "@/store";
 import { formatTimestamp } from "@/utils/time";
 import { _setTitle } from "@/utils/index"
+import { useRoute } from "vue-router"
 
+const route = useRoute()
 const props = defineProps({
   type: {
     type: String,
@@ -164,6 +166,9 @@ watch(
 
 // 图表信息  Time 1m 5m 10m 15m 30m 1h 4h 1D 1W 1M 1Y
 const timeType = ref("1h");
+if (route.name == 'tradeInfo' && periodType.value == 'ai') {
+  timeType.value = 'Time'
+}
 const showPicker = ref(false); // 时间选择弹窗
 const currMin = ref("1m");
 const minList = computed(() => {

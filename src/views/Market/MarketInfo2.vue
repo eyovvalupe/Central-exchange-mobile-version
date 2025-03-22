@@ -97,35 +97,31 @@
     </div>
 
     <!-- 内容 -->
-    <div :class="[props.innerPage ? 'inner-marketinfo' : '']" style="padding: 0 0.1rem;margin-top: 0.1rem;"
+    <div v-if="item.type == 'crypto' && type != 'ai'" :class="[props.innerPage ? 'inner-marketinfo' : '']"
+      style="padding: 0 0.1rem;margin-top: 0.1rem;"
       :style="{ backgroundColor: props.innerPage ? 'var(--ex-none' : 'var(--ex-bg-color)' }">
       <Tabs :style="{ backgroundColor: props.innerPage ? 'var(--ex-bg-white2)' : 'var(--ex-bg-color3)' }"
         style="border-radius: 0.32rem 0.32rem 0 0;" class="van-tabs--sub_line van-tabs--sub_bg" :sticky="true"
         :color="'var(--ex-primary-color)'" v-model:active="activeTab" animated shrink>
-        <!-- <Tab :name="1" :title="'开仓'">
-          <div class="market-box" style="height: calc(var(--vh) * 100 - 2.2rem);overflow-y: auto;">
-            <Opening :item="item" v-if="tradeType == 'constract'" ref="openingRef" 
-              :from="'trade'" />
-            <OpeningSpot :item="item" v-if="tradeType == 'spot'" ref="openingRef2" 
-              :from="'trade'" />
-          </div>
-        </Tab> -->
         <Tab :name="2" :title="$t('market.market_item_detail')">
           <div class="market-box">
             <Chart ref="chartRef" v-if="!chartLoading" :type="type" />
           </div>
         </Tab>
-        <Tab :name="3" :title="$t('market.market_item_order')" v-if="item.type == 'crypto' && type != 'ai'">
+        <Tab :name="3" :title="$t('market.market_item_order')">
           <div class="market-box">
             <OrderingSpot :tradeType="type" :innerPage="innerPage" v-if="activeTab == 3" :key="'o'" type="nomal" />
           </div>
         </Tab>
-        <Tab :name="4" :title="$t('market.market_item_news')" v-if="item.type == 'crypto' && type != 'ai'">
+        <Tab :name="4" :title="$t('market.market_item_news')">
           <div class="market-box">
             <OrderingSpot :tradeType="type" :innerpage="innerPage" v-if="activeTab == 4" :key="'n'" type="news" />
           </div>
         </Tab>
       </Tabs>
+    </div>
+    <div class="market-box market-box2" v-else>
+      <Chart ref="chartRef" v-if="!chartLoading" :type="type" />
     </div>
 
     <!-- 去交易按钮 -->
@@ -136,7 +132,8 @@
       </div>
       <div style="flex: 1;"></div>
       <div class="data" @click="showInfo = true">{{ $t('market.market_marketinfo_data') }}</div>
-      <div class="btn" :class="{ 'disabled-btn': disabled }" @click="gotrade">{{ $t('market.market_marketinfo_trade') }}
+      <div class="btn" :class="{ 'disabled-btn': isDisabled }" @click="gotrade">{{ $t('market.market_marketinfo_trade')
+      }}
       </div>
     </div>
     <div v-else style="height:0.12rem"></div>
@@ -233,6 +230,13 @@
     </BottomPopup>
 
 
+    <!-- 跳转选择 -->
+    <BottomPopup round :title="'交易类型'" v-model:show="showJumpDialog" position="bottom" closeable teleport="body">
+      <div class="jumps-lists">
+        <div @click="clickJumpItem(item)" class="jumps-item" v-for="item in jumpArr" :key="item">{{ titleMap[item] }}
+        </div>
+      </div>
+    </BottomPopup>
   </div>
 
 </template>
@@ -269,25 +273,53 @@ const token = computed(() => store.state.token);
 const chartRef = ref()
 
 
-const disabled = computed(() => {
-  let val = false
-  if ((type.value == 'ai' || type.value == 'stock') && item.value.aiquant != 1) {
-    val = true
-  }
-  if ((type.value == 'spot') && item.value.trade != 1) {
-    val = true
-  }
-  if ((type.value == 'constract') && item.value.futures != 1) {
-    val = true
-  }
-  return val
-})
 // 跳转交易
+const jumpArr = ref([])
+const showJumpDialog = ref(false)
 const gotrade = () => {
-  if (disabled.value) return showToast('休市中')
+  if (isDisabled.value) return showToast('不可交易')
+  if (route.query.check == '1') {
+    let arr = []
+    for (let key in tradeKeyMap) {
+      if (item.value[tradeKeyMap[key]]) {
+        arr.push(key)
+      }
+    }
+    arr = Array.from(new Set(arr))
+    if (!arr.length) return showToast('不可交易')
+    if (arr.length == 1) {
+      clickJumpItem(arr[0])
+    } else { // 打开选择框
+      jumpArr.value = arr
+      showJumpDialog.value = true
+    }
+  } else {
+    router.push({
+      name: 'tradeInfo',
+      query: route.query
+    })
+  }
+}
+const clickJumpItem = (tt) => {
+  showJumpDialog.value = false
+  switch (tt) {
+    case 'spot':
+      store.commit('setCurrSpot', item.value || {});
+      break;
+    case 'constract':
+      store.commit('setCurrConstract', item.value || {});
+      break;
+    case 'stock':
+    case 'ai':
+      store.commit('setCurrAi', item.value || {});
+      break;
+  }
   router.push({
     name: 'tradeInfo',
-    query: route.query
+    query: {
+      symbol: route.query.symbol,
+      tradeType: tt
+    }
   })
 }
 
@@ -313,7 +345,36 @@ const item = computed(() => {
   }
   return it;
 });
-
+// 检测是否可交易
+const titleMap = {
+  stock: '期货',
+  spot: '现货',
+  constract: '合约',
+  ai: '期货',
+}
+const tradeKeyMap = {
+  'stock': 'aiquant',
+  'spot': 'trade',
+  'constract': 'futures',
+  'ai': 'aiquant',
+}
+const isDisabled = computed(() => {
+  // 如果是未知来源的则判断所有类型
+  if (route.query.check == '1') {
+    let dis = true
+    for (let key in tradeKeyMap) {
+      if (item.value[tradeKeyMap[key]] == 1 || item.value[tradeKeyMap[key]] == 2) {
+        dis = false
+      }
+    }
+    return dis
+  } else { // 否则判断当前tradeType
+    if (item.value[tradeKeyMap[type.value]] == 1 || item.value[tradeKeyMap[type.value]] == 2) {
+      return false
+    }
+    return true
+  }
+})
 
 
 const updown = computed(() => {
@@ -365,9 +426,11 @@ const getBasic = (obj) => {
     }
   });
 }
-if (item.value.symbol) {
-  getBasic(item.value)
-}
+setTimeout(() => {
+  if (item.value.symbol) {
+    getBasic(item.value)
+  }
+}, 200)
 const chartLoading = ref(true)
 onMounted(() => {
   setTimeout(() => {
@@ -447,6 +510,25 @@ const addCollect = () => {
 </script>
 
 <style lang="less" scoped>
+.jumps-lists {
+  padding: 0.6rem 0.32rem;
+
+  .jumps-item {
+    height: 0.92rem;
+    border-radius: 1rem;
+    background-color: var(--ex-bg-white2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 0.32rem;
+    color: var(--ex-white);
+
+    &:active {
+      background-color: var(--ex-primary-color);
+    }
+  }
+}
+
 .search_dialog_trade {
   .lists {
     height: calc(var(--vh) * 60);
@@ -493,7 +575,7 @@ const addCollect = () => {
   background-color: var(--ex-bg-color);
 
   .bottom-box {
-    margin-top: 0.32rem;
+    margin-top: 0.1rem;
     height: 1.4rem;
     background-color: var(--ex-bg-color3);
     border-radius: 0.32rem 0.32rem 0 0;
@@ -555,8 +637,12 @@ const addCollect = () => {
 
   .market-box {
     margin-top: 0.1rem;
-    height: calc(var(--vh) * 100 - 6rem) // border-radius: 0.32rem;
-      // background-color: var(--ex-bg-color3);
+    height: calc(var(--vh) * 100 - 5.58rem)
+  }
+
+  .market-box2 {
+    height: calc(var(--vh) * 100 - 4.6rem);
+    margin: 0.1rem 0.1rem 0 0.1rem;
   }
 
 
@@ -640,9 +726,14 @@ const addCollect = () => {
         color: var(--ex-text-color2);
         font-size: 0.22rem;
         font-weight: 400;
-        line-height: 0.36rem;
+        line-height: 0.24rem;
         width: 50%;
-        margin-top: 0.18rem;
+        height: 0.54rem;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        word-break: break-all;
 
         .num {
           margin-left: 0.1rem;
