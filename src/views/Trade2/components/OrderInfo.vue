@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="padding-bottom: 0.32rem;">
     <Top :title="title" :backFunc="backFunc" />
 
     <div class="scroller">
