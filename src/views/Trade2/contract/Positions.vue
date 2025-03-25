@@ -382,6 +382,7 @@ const goSell = (s) => {
         store.dispatch("updateWallet");
         showToast(t("trade.stock_position_success"));
         showSell.value = false;
+        showInfo.value = false
       }
     })
     .finally(() => {
@@ -439,6 +440,7 @@ const goUpdate = (s) => {
         store.dispatch("updateWallet");
         showToast(t("trade.stock_position_success"));
         showUpdate.value = false;
+        showInfo.value = false
       }
     })
     .finally(() => {
@@ -609,6 +611,7 @@ const cancel = (item) => {
             setTimeout(() => {
               store.dispatch("updateWallet");
               showToast(t("trade.stock_position_success"));
+              showInfo.value = false
             }, 100);
           }
         })
