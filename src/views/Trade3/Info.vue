@@ -61,7 +61,7 @@
                   </div>
                 </div>
               </div>
-              <div class="charts-box" :class="[hideChart ? 'hide-charts-box' : '']" v-if="!showInfoDialog">
+              <div class="charts-box" :class="[hideChart ? 'hide-charts-box' : '']" v-if="!showInfoDialog && !openInfoStatus">
                 <Chart @switch="(e) => (hideChart = e)" :type="'spot'" :mini="true" />
               </div>
               <!-- 内容1 -->
@@ -213,7 +213,7 @@
                   </div>
                 </div>
               </div>
-              <div class="charts-box" :class="[hideChart ? 'hide-charts-box' : '']" v-if="!showInfoDialog">
+              <div class="charts-box" :class="[hideChart ? 'hide-charts-box' : '']" v-if="!showInfoDialog && !openInfoStatus">
                 <Chart @switch="(e) => (hideChart = e)" :type="'ai'" :mini="true" />
               </div>
               <!-- 内容1 -->

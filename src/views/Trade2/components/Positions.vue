@@ -71,7 +71,7 @@
 
     <!-- 订单详情 -->
     <Popup v-model:show="showInfo" position="right" style="width: 100%; height: 100%" teleport="body">
-      <OrderInfo :curr-stock="currStock" @update="update" @sell="sell" @cancel="cancel" @back="showInfo = false" />
+      <OrderInfo :tradeType="'stock'" :curr-stock="currStock" @update="update" @sell="sell" @cancel="cancel" @back="showInfo = false" />
     </Popup>
 
     <!-- 平仓 -->

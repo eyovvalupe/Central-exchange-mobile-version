@@ -73,7 +73,7 @@
 
   <!-- 订单详情 -->
   <Popup v-model:show="showInfo" position="right" style="width: 100%; height: 100%" teleport="body">
-    <OrderInfo type="contract" :curr-stock="currStock" @back="showInfo = false" />
+    <OrderInfo :tradeType="'constract'" type="contract" :curr-stock="currStock" @back="showInfo = false" />
   </Popup>
 
   <UnLogin @loginfinish="loginfinish" v-show="!token" />

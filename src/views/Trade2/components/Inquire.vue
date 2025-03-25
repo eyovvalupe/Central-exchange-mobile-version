@@ -77,7 +77,7 @@
 
   <!-- 订单详情 -->
   <Popup v-model:show="showInfo" position="right" style="width: 100%; height: 100%" teleport="body">
-    <OrderInfo :curr-stock="currStockItem" @back="showInfo = false" />
+    <OrderInfo :tradeType="'stock'" :curr-stock="currStockItem" @back="showInfo = false" />
   </Popup>
 </template>
 

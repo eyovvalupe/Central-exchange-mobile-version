@@ -257,7 +257,7 @@ import Chart from "./Chart.vue"
 
 
 const props = defineProps({
-  type: {
+  tradeType: {
     type: String,
     default: "",
   },
@@ -326,7 +326,7 @@ const clickJumpItem = (tt) => {
 
 const activeTab = ref(2)
 const showInfo = ref(false);
-const type = computed(() => route.query.tradeType || props.type)
+const type = computed(() => props.tradeType || route.query.tradeType)
 
 // 股票信息
 const item = computed(() => {

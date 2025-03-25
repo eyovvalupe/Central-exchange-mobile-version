@@ -53,7 +53,7 @@
 
     <!-- 订单详情 -->
     <Popup v-model:show="showInfo" position="right" style="width: 100%; height: 100%" teleport="body">
-      <OrderInfo type="spot" :curr-stock="currStock" @update="update" @sell="sell" @cancel="cancel"
+      <OrderInfo :tradeType="'spot'" :curr-stock="currStock" @update="update" @sell="sell" @cancel="cancel"
         @back="showInfo = false" />
     </Popup>
 
@@ -348,6 +348,7 @@ const getRatio = (num) => {
 const showInfo = ref(false);
 const currStock = ref({});
 const OpeningForm = (item) => {
+  store.commit('setOpenInfoStatus', true)
   currStock.value = item;
   showInfo.value = true;
 };

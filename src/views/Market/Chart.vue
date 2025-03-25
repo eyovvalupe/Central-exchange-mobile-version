@@ -127,8 +127,7 @@ const switchZipo = () => {
 // 股票信息
 const item = computed(() => {
   let it = {};
-  const type = props.type;
-  switch (type) {
+  switch (periodType.value) {
     case "spot":
       it = store.state.currSpot || {};
       break;
