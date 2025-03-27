@@ -156,7 +156,7 @@
       </div>
       <div class="item_box_right">
         <FormItem :hasScroll="true" :placeholder="'数量'" @blur="volumeF = false"
-          @focus="volumeFocus" v-model="form1.volume" :show-btn="maxStockNum >= 1" btn-show-mode="focus"
+          @focus="volumeFocus" v-model="form1.volume"  btn-show-mode="focus"
           @btnClick="putAll" @change="changePercent" :max="maxStockNum" tip-align="right"
           :tip="maxStockNum >= 1 ? '≤' + maxStockNum + '张' : ''" input-type="digit">
           <!-- <template #lt>
@@ -1014,8 +1014,8 @@ const inputStop = (key) => {
 };
 
 const submit1 = () => {
-  if (!currStock.value.trade)
-    return showToast(t('trade.stock_opening_closed'));
+  // if (!currStock.value.trade)
+  //   return showToast(t('trade.stock_opening_closed'));
   if (!currStock.value.symbol)
     return showToast(t('trade.contract_opening_err_contract'));
   if (!form1.value.volume || form1.value.volume < min.value)
@@ -1344,6 +1344,7 @@ defineExpose({
   // 选择某个股票
   choose: handleClick,
   stockWalletAmount,
+  paramCurrency,
 });
 </script>
 
