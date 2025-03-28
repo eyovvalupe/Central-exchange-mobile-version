@@ -995,8 +995,8 @@ const inputStop = (key) => {
 
 const submit1 = () => {
   // if (!currStock.value.trade) return showToast(t('trade.stock_opening_closed'));
-  if (!form1.value.volume || form1.value.volume < min.value)
-    return showToast('最少交易量：' + min.value);
+  if (!form1.value.volume)
+    return showToast('请输入数量');
   // if (form1.value.volume > maxStockNum.value) return showToast(t("trade.stock_opening_no_balance"))
   // 限价校验
   if (props.activeTab == 1) {
