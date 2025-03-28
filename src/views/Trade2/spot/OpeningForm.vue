@@ -994,10 +994,10 @@ const inputStop = (key) => {
 };
 
 const submit1 = () => {
-  if (!currStock.value.trade) return showToast(t('trade.stock_opening_closed'));
+  // if (!currStock.value.trade) return showToast(t('trade.stock_opening_closed'));
   if (!form1.value.volume || form1.value.volume < min.value)
-    return showToast('请输入数量');
-  if (form1.value.volume > maxStockNum.value) return showToast(t("trade.stock_opening_no_balance"))
+    return showToast('最少交易量：' + min.value);
+  // if (form1.value.volume > maxStockNum.value) return showToast(t("trade.stock_opening_no_balance"))
   // 限价校验
   if (props.activeTab == 1) {
     if (!form1.value.price)
@@ -1068,9 +1068,9 @@ const changeAmount = () => {
   setTimeout(() => {
     if (props.activeTab == 1) { // 限价
       if (!form1.value.price) return form1.value.volume = ''
-      form1.value.volume = new Decimal(form1.value.amount || 0).div(form1.value.price || 1)
+      form1.value.volume = new Decimal(form1.value.amount || 0).div(form1.value.price || 1).toNumber()
     } else { // 市价
-      form1.value.volume = new Decimal(form1.value.amount || 0).div(currStock.value.price || 1)
+      form1.value.volume = new Decimal(form1.value.amount || 0).div(currStock.value.price || 1).toNumber()
     }
   })
 }
@@ -1242,7 +1242,6 @@ const submitFormDialog = () => {
   submitForm(safePass.value)
 };
 const submitForm = (s) => {
-  console.error(params.value)
   if (submitLoading.value) return;
   submitLoading.value = true;
   _spotBuy({

@@ -33,10 +33,7 @@
     <!-- 止盈止损 -->
     <template v-if="props.activeTab == 2">
       <!-- 简单模式 -->
-      <FormItem :placeholder="activeType == 1
-        ? t('trade.stock_opening_take')
-        : t('trade.stock_opening_stop')
-        " class="mb-[0.2rem]" input-type="number" v-model="form1.stop_loss_price" :percent-tags="props.activeType == 1
+      <FormItem :placeholder="t('trade.stock_opening_stop')" class="mb-[0.2rem]" input-type="number" v-model="form1.stop_loss_price" :percent-tags="props.activeType == 1
           ? [
             { label: '-20%', value: 20 },
             { label: '-15%', value: 15 },
