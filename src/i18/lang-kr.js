@@ -35,6 +35,8 @@ export default {
     login_success: "로그인 성공",
     login_failed: "로그인 실패",
     network_error: "네트워크 오류",
+    username_password_error: "사용자 이름 또는 비밀번호가 잘못되었습니다"
+
   },
   forget_pw: {
     title: "비밀번호 찾기",
@@ -101,6 +103,8 @@ export default {
     not_clear: "잘 보이지 않나요? 새로 고침",
     enter_verify_code: "인증 코드를 입력하세요",
     verify_code_error: "인증 코드 받기 오류, 수동으로 새로 고침 해주세요",
+    invite_code_error: "초대 코드가 잘못되었습니다",
+    verify_code_msg: "이미지 인증 코드를 입력해주세요",
   },
   password_level: {
     weak: "약함",
@@ -209,6 +213,9 @@ export default {
     google_input_con: "6자리 코드를 입력하세요",
     google_input_btn_cancel: "취소",
     google_input_btn_confirm: "확인",
+    google_notice: "키를 잃어버리지 않도록 백업해 두세요",
+    google_code: "구글 인증 코드",
+    google_error: "구글 인증 코드 오류",
   },
   service: {
     page_title: "고객 서비스",

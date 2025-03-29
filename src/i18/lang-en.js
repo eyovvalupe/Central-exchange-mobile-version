@@ -35,6 +35,8 @@ export default {
     login_success: "Successfully signed in",
     login_failed: "Login failed",
     network_error: "Network error",
+    username_password_error: "Incorrect username or password"
+
   },
   forget_pw: {
     title: "Forgot Password",
@@ -102,6 +104,8 @@ export default {
     not_clear: "Not clear, change to another",
     enter_verify_code: "Enter verify code",
     verify_code_error: "Errors in getting verify code, please do manually",
+    invite_code_error: "Invitation code is incorrect",
+    verify_code_msg: "Please enter the image verification code",
   },
   password_level: {
     weak: "Weak",
@@ -211,6 +215,9 @@ export default {
     google_input_con: "Enter 6-digit code",
     google_input_btn_cancel: "Cancel",
     google_input_btn_confirm: "Confirm",
+    google_notice: "Please back up your key in case you lose it",
+    google_code: "Google Verification Code",
+    google_error: "Google Verification Code Error",
   },
   service: {
     page_title: "Customer Service",

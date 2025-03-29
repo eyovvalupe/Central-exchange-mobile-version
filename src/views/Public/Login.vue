@@ -324,7 +324,8 @@ const submit = () => {
           verifCodeRef.value.open();
         }, 1000);
       } else {
-        showToast(err.message || t('login.network_error'));
+        if (err.message == 'Username or password error') showToast(t('login.username_password_error'))
+        else showToast(t('login.network_error'));
       }
     })
     .finally(() => {

@@ -72,6 +72,8 @@ export default {
     login_success: "登錄成功",
     login_failed: "登錄異常",
     network_error: "網絡異常",
+    username_password_error: "使用者名稱或密碼錯誤"
+
   },
   forget_pw: {
     title: "忘記密碼",
@@ -139,6 +141,8 @@ export default {
     not_clear: "看不清，換一張",
     enter_verify_code: "輸入驗證碼",
     verify_code_error: "獲取驗證碼異常，請手動刷新",
+    invite_code_error: "邀請碼錯誤",
+    verify_code_msg: "請輸入圖片驗證碼",
   },
   password_level: {
     weak: "弱",
@@ -245,6 +249,9 @@ export default {
     google_input_con: "請輸入6位數代碼",
     google_input_btn_cancel: "取消",
     google_input_btn_confirm: "確認",
+    google_notice: "请备份您的密钥，以防丢失",
+    google_code: "谷歌验证码",
+    google_error: "谷歌验证码错误",
   },
   service: {
     page_title: "網路客服",
