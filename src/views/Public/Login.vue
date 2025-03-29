@@ -332,7 +332,10 @@ const submit = () => {
     .catch((err) => {
       if (err.code == "1001") {
         // 弹出验证码
-        showToast(t("register.verify_code_msg"));
+        if (form.value.verifcode) {
+          // 如果输入了验证码，旧提示验证码错误
+          showToast(t("common.verification_code_error"));
+        } else showToast(t("register.verify_code_msg"));
         setTimeout(() => {
           verifCodeRef.value.open();
         }, 1000);

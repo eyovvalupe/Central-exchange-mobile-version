@@ -15,6 +15,13 @@ export default {
     second: '秒',
     hour: '小时',
     assets: '私の資産',
+    operation_error: "操作エラー",
+    token_invalid: "現在のトークンは無効です。再度ログインしてください",
+    login_first: "最初にログインしてください",
+    trade_pw_error: "取引パスワードが間違っています",
+    server_error: "サーバーエラー",
+    network_error: "ネットワークエラー、再試行してください",
+    verification_code_error: "認証コードが間違っています"
   },
   login: {
     login: 'ログイン',

@@ -15,7 +15,13 @@ export default {
     option: "Option",
     second: "sec",
     assets: "My Assets",
-
+    operation_error: "Operation error",
+    token_invalid: 'Current token has expired, please log in again',
+    login_first: 'Please log in first',
+    trade_pw_error: 'Incorrect trading password',
+    server_error: 'Server error',
+    network_error: 'Network error, please try again',
+    verification_code_error: "Verification code error"
   },
   login: {
     login: "Log In",

@@ -15,6 +15,13 @@ export default {
     second: "초",
     hour: "시간",
     assets: "내 자산",
+    operation_error: "작업 오류",
+    token_invalid: "현재 토큰이 만료되었습니다. 다시 로그인해주세요",
+    login_first: "먼저 로그인해주세요",
+    trade_pw_error: "거래 비밀번호가 잘못되었습니다",
+    server_error: "서버 오류",
+    network_error: "네트워크 오류, 다시 시도해주세요",
+    verification_code_error: "인증 코드 오류"
 
   },
   login: {

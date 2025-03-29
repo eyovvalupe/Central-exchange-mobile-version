@@ -15,6 +15,13 @@ export default {
     option: "期货",
     second: "秒",
     assets: "我的资产",
+    operation_error: "操作错误",
+    token_invalid: "当前 token 已失效，请重新登录",
+    login_first: "请先登录",
+    trade_pw_error: "交易密码错误",
+    server_error: "服务端异常",
+    network_error: "网络异常,请重试",
+    verification_code_error: "验证码错误",
   },
   login: {
     login: "登录",

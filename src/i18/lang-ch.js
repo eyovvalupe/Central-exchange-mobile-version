@@ -15,7 +15,13 @@ export default {
     second: "秒",
     hour: "時",
     assets: "我的資產",
-
+    operation_error: "操作錯誤",
+    verification_code_error: '驗證碼錯誤',
+    token_invalid: '目前的 Token 已失效，請重新登入',
+    login_first: '請先登入',
+    trade_pw_error: '交易密碼錯誤',
+    server_error: '伺服器錯誤',
+    network_error: '網路異常，請重試',
   },
   home: {
     login: "登录",
