@@ -32,6 +32,21 @@ export const _login = (data = {}) => {
     custom: { auth: false, toast: false, retry: false },
   });
 };
+
+// 发送邮件验证码
+export const _emailcode = (data = {})=> {
+  return http.post(`/anon/v1/user/emailcode`, data, {
+    custom: { auth: false, toast: true, retry: false },
+  });
+}
+
+// 邮箱绑定
+export const _emailbind = (data = {})=> {
+  return http.post(`/authc/v1/user/emailbind`, data, {
+    custom: { auth: false, toast: true, retry: false },
+  });
+}
+
 // 退出登录
 export const _logout = (data = {}) => {
   return http.post(`/authc/v1/user/logout`, data, {
@@ -158,7 +173,7 @@ export const _walletBalance = (data = {}) => {
 
 // 修改密码
 export const _updatepw = (data = {}) => {
-  return http.post(`/authc/v1/user/password`, data, {
+  return http.post(`/authc/v101/user/password`, data, {
     custom: { auth: true, toast: true, retry: false },
   });
 };
