@@ -33,10 +33,7 @@
     <!-- 止盈止损 -->
     <template v-if="props.activeTab == 2">
       <!-- 简单模式 -->
-      <FormItem :placeholder="activeType == 1
-        ? t('trade.stock_opening_take')
-        : t('trade.stock_opening_stop')
-        " class="mb-[0.2rem]" input-type="number" v-model="form1.stop_loss_price" :percent-tags="props.activeType == 1
+      <FormItem :placeholder="t('trade.stock_opening_stop')" class="mb-[0.2rem]" input-type="number" v-model="form1.stop_loss_price" :percent-tags="props.activeType == 1
           ? [
             { label: '-20%', value: 20 },
             { label: '-15%', value: 15 },
@@ -156,7 +153,7 @@
       </div>
       <div class="item_box_right">
         <FormItem :hasScroll="true" :placeholder="'数量'" @blur="volumeF = false"
-          @focus="volumeFocus" v-model="form1.volume" :show-btn="maxStockNum >= 1" btn-show-mode="focus"
+          @focus="volumeFocus" v-model="form1.volume"  btn-show-mode="focus"
           @btnClick="putAll" @change="changePercent" :max="maxStockNum" tip-align="right"
           :tip="maxStockNum >= 1 ? '≤' + maxStockNum + '张' : ''" input-type="digit">
           <!-- <template #lt>
@@ -1014,8 +1011,8 @@ const inputStop = (key) => {
 };
 
 const submit1 = () => {
-  if (!currStock.value.trade)
-    return showToast(t('trade.stock_opening_closed'));
+  // if (!currStock.value.trade)
+  //   return showToast(t('trade.stock_opening_closed'));
   if (!currStock.value.symbol)
     return showToast(t('trade.contract_opening_err_contract'));
   if (!form1.value.volume || form1.value.volume < min.value)
@@ -1344,6 +1341,7 @@ defineExpose({
   // 选择某个股票
   choose: handleClick,
   stockWalletAmount,
+  paramCurrency,
 });
 </script>
 

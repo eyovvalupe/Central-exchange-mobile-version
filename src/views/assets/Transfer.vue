@@ -47,7 +47,7 @@
         </div>
         <div class="w-full flex bg-white1 justify-between items-center h-[1.12rem] rounded-[0.32rem] px-[0.28rem] relative border-[0.02rem] transition" :class="{ form_box_active: clickKey == 'from' }">
           <div class="flex-2">
-            <input v-model="form.amount" type="text" class="text-[0.32rem] w-full" :placeholder="$t('trade.stock_position_amount')"
+            <input v-model="form.amount" @input="changeAmount('from')" type="text" class="text-[0.32rem] w-full" :placeholder="$t('trade.stock_position_amount')"
               @focus="clickKey = 'from'" @blur="clickKey = ''" />
           </div>
           <div class="absolute text-white text-[0.28rem] right-[0.28rem]">
@@ -92,7 +92,7 @@
 
         <div class="w-full flex bg-white1 justify-between items-center h-[1.12rem] rounded-[0.32rem] px-[0.28rem] relative border-[0.02rem] transition" :class="{ form_box_active: clickKey == 'to' }">
           <div class="flex-2">
-            <input v-model="form.amount" type="text" class="text-[0.32rem] w-full" :placeholder="$t('trade.stock_position_amount')"
+            <input v-model="toAmount" @input="changeAmount('to')" type="text" class="text-[0.32rem] w-full" :placeholder="$t('trade.stock_position_amount')"
               @focus="clickKey = 'to'" @blur="clickKey = ''" />
           </div>
           <div class="absolute text-white text-[0.28rem] right-[0.28rem]">
@@ -422,6 +422,7 @@ const getRate = () => {
       .then((res) => {
         if (res.code == 200) {
           rate.value = res.data.exchange_rate;
+          changeAmount('from')
         }
       })
       .finally(() => {
@@ -429,6 +430,7 @@ const getRate = () => {
       });
   } else {
     rate.value = 1;
+    changeAmount('from')
     setTimeout(() => {
       rateLoading.value = false;
     }, 100);
@@ -450,12 +452,12 @@ const changeAmount = (val) => {
   if (val == "to") {
     form.value.amount = Number(
       parseFloat(toAmount.value) / parseFloat(rate.value)
-    );
+    ) || '';
   }
   if (val == "from") {
     toAmount.value = Number(
       parseFloat(form.value.amount) * parseFloat(rate.value)
-    );
+    ) || '';
   }
 };
 
