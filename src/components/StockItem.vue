@@ -3,53 +3,47 @@
   <div ref="root" style="overflow: visible;" class="w-full mask-btn-stock ">
     <SwipeCell :class="['stock_item_box']" @touchstart.start="" @touchmove.stop="" @touchend.stop="">
       <div class="stock_item_bg"
-        :class="[`${' stock_item_' + updownStatus} ${props.page == 'home' ? 'px-[0.2rem]' : 'px-[0.28rem]'}`]"
+        :class="[`${' stock_item_' + updownStatus} ${props.page == 'home' ? '' : 'px-[0.28rem]'}`]"
         @click="goInfo(props.type || props.item.type)" v-if="props.item">
         <div :class="['stock_item']">
-          <div class="size-[0.8rem] mr-[0.2rem] flex justify-center items-center" v-if="showIcon">
-            <CryptoIcon :name="item.name.split('/')[0]" />
+          <div class="size-[0.8rem] mr-[0.2rem] flex justify-center items-center"
+            v-if="props.showIcon === true || (props.showIcon !== false && ['crypto', 'forex'].includes(props.item.type))">
+            <CryptoIcon v-if="props.item.type == 'forex'" :name="item.symbol" />
+            <CryptoIcon v-else :name="item.name.split('/')[0]" />
           </div>
           <div class="td5" :class="{ 'td5--ac': showIcon }">
-            <div class="item_name flex items-center gap-1 mb-[0.2rem]">
-              <span class="truncate" v-if="item.type != 'stock'">{{
+            <div class="item_name flex items-center gap-1">
+              <span class="truncate" v-if="props.item.type != 'stock' && props.item.type != 'blocktrade'">{{
                 props.item.name
               }}</span>
-              <span class="truncate" v-else>{{ props.item.symbol }}</span>
-              <div v-if="item.type == 'stock'"
-                :class="`${marketStyle[props.item.type]
-                  } font-normal whitespace-nowrap text-[0.22rem] ml-[0.06rem] flex items-center justify-center rounded-[0.08rem] px-[0.08rem] h-[0.3rem] `">
-                {{
-                  t("market.market_optional_stock")
-                }}
-              </div>
+              <template v-else>
+                <span class="truncate" :class="page == 'home' ? '!text-[0.32rem]' : ''">{{ props.item.symbol }}</span>
+                <span v-if="page != 'home' && marketMap[props.item.type] && !hideMarketTag"
+                  :class="`${marketStyle[props.item.type]
+                    } font-normal whitespace-nowrap text-[0.22rem] rounded-[0.08rem] px-[0.12rem] h-[0.32rem]  flex items-center justify-center ]`">
+                  {{
+                    marketMap[props.item.type]
+                  }}
+                </span>
+              </template>
+
+
             </div>
-            <div class="item_info" v-if="props.item.type == 'stock'">
+            <div class="item_info mt-[0.16rem]" v-if="props.item.type == 'stock' || props.item.type == 'blocktrade'">
               {{ props.item.name || "--" }}
             </div>
-
-            <!-- <div v-if="item.type != 'stock'" class="flex items-center"> -->
-            <div v-if="props.item.type != 'stock'" class="flex items-center">
-              <span style=""
+            <div class="flex items-center mt-[0.16rem]" v-else-if="!hideMarketTag && marketMap[props.item.type]">
+              <span
                 :class="`${marketStyle[props.item.type]
                   } font-normal whitespace-nowrap text-[0.22rem] rounded-[0.08rem] px-[0.12rem] h-[0.32rem]  flex items-center justify-center ]`">
                 {{
-                  item.type == "stock"
-                    ? 'ETF'
-                    : item.type == "crypto"
-                      ? t("market.market_optional_contract")
-                      : item.type == "forex"
-                        ? t("market.market_optional_forex")
-                        : item.type == "blocktrade"
-                          ? t("market.market_optional_blocktrade")
-                          : item.type == "spot"
-                            ? t("market.market_optional_contract")
-                            : ""
+                  marketMap[props.item.type]
                 }}
               </span>
             </div>
 
           </div>
-          <div :class="['td1 spark_line_box']" v-if="showSparkLine">
+          <div style="flex: 1.1;" :class="['spark_line_box']" v-if="showSparkLine">
             <SparkLine :style="['width: 100%; height: 0.6rem;']" v-if="props.item.points" :points="props.item.points"
               :ratio="props.item.ratio" />
           </div>
@@ -71,8 +65,8 @@
                 }}%</span>
                 <span v-else-if="mode == 2">{{
                   props.item.price || 0 > 0
-                    ? "+" + (props.item.price || 0).toFixed(2)
-                    : (props.item.price || 0).toFixed(2)
+                    ? "+" + (props.item.price || 0)
+                    : (props.item.price || 0)
                 }}</span>
                 <span v-else>{{ _formatNumber(props.item.volume) }}</span>
               </div>
@@ -105,17 +99,19 @@ import { useI18n } from "vue-i18n";
 import CryptoIcon from "./CryptoIcon.vue";
 
 const { t } = useI18n();
-const market = {
-  stock: "ETF",
-  crypto: "合约",
-  forex: "外汇",
-};
+const marketMap = ref({
+  stock: t("market.market_optional_stock"),
+  crypto: t("market.market_optional_contract"),
+  forex: t("market.market_optional_forex"),
+  blocktrade: t("market.market_optional_blocktrade"),
+  spot: t("market.market_optional_contract")
+});
 const marketStyle = {
   stock: "tag-stock",
-  crypto: "tag-crypto",
-  forex: "tag-forex",
-  blocktrade: "tag-blocktrade",
-  spot: "tag-spot"
+  crypto: "tag-stock",
+  forex: "tag-stock",
+  blocktrade: "tag-stock",
+  spot: "tag-stock"
 };
 const emits = defineEmits(["remove"]);
 const props = defineProps({
@@ -142,6 +138,9 @@ const props = defineProps({
     type: Function,
     default: null,
   },
+  marketType: {
+    type: String,
+  },
   showSparkLine: {
     type: Boolean,
     default: true,
@@ -155,7 +154,9 @@ const props = defineProps({
     default: false
   },
   showIcon: Boolean,
+  hideMarketTag: Boolean
 });
+
 
 const mode = ref(1);
 const updown = computed(() => {
@@ -182,52 +183,57 @@ watch(price, (newVal, oldVal) => {
 });
 
 const goInfo = (type) => {
-  if (props.handleClick) return props.handleClick(props.item, props.type);
-  if (type == "stock" || type == "ai") {
-    store.commit("setCurrAi", props.item);
-    router.push({
-      name: "market_info",
-      query: {
-        symbol: ciper.encrypt(props.item.symbol),
-        type: "ai",
-        tradeType: 'ai'
-      },
-    });
+  if (props.handleClick) return props.handleClick(props.item, props.menuType);
+  switch (type) {
+    case 'stock': // 股票
+      store.commit("setCurrStockItem", props.item);
+      break
+    case 'spot': // 现货
+      store.commit("setCurrSpot", props.item);
+      break
+    case 'ai': // ai
+      store.commit("setCurrAi", props.item);
+      break;
+    case 'crypto': // 合约
+    case "constract":
+      if (props.item.tradeType == 'ai') { // ai
+        store.commit("setCurrAi", props.item);
+        type = 'ai'
+      } else {
+        store.commit("setCurrConstract", props.item);
+      }
+      break
+    case 'forex': // 外汇
+    case "foreign":
+      store.commit("setCurrForeign", props.item);
+      break
+    case 'blocktrade': // 大宗
+    case "commodities":
+      store.commit("setCurrCommodities", props.item);
+      break
   }
-  if (type == "spot") {
-    store.commit("setCurrSpot", props.item);
-    router.push({
-      name: "market_info",
-      query: {
-        symbol: ciper.encrypt(props.item.symbol),
-        type: "spot",
-        tradeType: 'spot'
-      },
-    });
-  }
-  if (type == "crypto" || type == 'constract') {
-    store.commit("setCurrConstract", props.item);
-    router.push({
-      name: "market_info",
-      query: {
-        symbol: ciper.encrypt(props.item.symbol),
-        type: "constract",
-        tradeType: 'constract'
-      },
-    });
-  }
-  if (props.type === "trade") {
-    const data = [
-      {
-        name: props.item.name,
-        symbol: props.item.symbol,
-      },
-    ];
-    store.commit("setShowLeft", false);
-    store.commit("setChooseSymbol", data);
-    return;
-  }
+  router.push({
+    name: "market_info",
+    query: {
+      symbol: ciper.encrypt(props.item.symbol),
+      tradeType: type,
+      type: type,
+    },
+  });
+  // 左侧菜单点击
+  // if (props.type === "trade") {
+  //   const data = [
+  //     {
+  //       name: props.item.name,
+  //       symbol: props.item.symbol,
+  //     },
+  //   ];
+  //   store.commit("setShowLeft", false);
+  //   store.commit("setChooseSymbol", data);
+  //   return;
+  // }
 };
+
 
 const removeStock = (item) => {
   emits("remove", item);
@@ -284,22 +290,17 @@ const removeStock = (item) => {
 .stock_item {
   display: flex;
   align-items: center;
-  height: 1.44rem;
+  height: 1.34rem;
   // padding: 0 0.3rem;
   position: relative;
   // background-color: var(--ex-bg-white2);
   // border-radius: 0.4rem;
   // margin-top: 0.2rem;
-  // border-bottom: 1px solid var(--ex-bg-white2);
-
-  &:first-child {
-    // border-top: 1px solid var(--ex-bg-white2);
-  }
+  border-bottom: 1px solid var(--ex-bg-white2);
 
   .td5 {
     flex-shrink: 0;
-    // width: 3rem;
-    flex: 3;
+    flex: 3.4;
     overflow: hidden;
 
     .item_name {
@@ -325,10 +326,6 @@ const removeStock = (item) => {
     // width: 2.3rem;
   }
 
-  .td1 {
-    flex: 1;
-  }
-
   .td2 {
     flex-shrink: 0;
     flex: 2;
@@ -342,7 +339,7 @@ const removeStock = (item) => {
     }
 
     .item_info_box {
-      margin-top: 0.18rem;
+      margin-top: 0.12rem;
 
       .item_percent {
         text-align: center;

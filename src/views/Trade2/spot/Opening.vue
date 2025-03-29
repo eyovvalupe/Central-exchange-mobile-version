@@ -15,24 +15,19 @@
     <div class="open_tab_box" :class="{ 'trade-dialog': props.from == 'trade' }">
 
       <div
-        style="border-radius: 0.32rem;background-color: var(--ex-bg-color3);padding: 0.2rem 0.16rem 0.4rem 0.16rem;border-bottom:1px solid var(--ex-bg-white2);">
-        <Tabs animated key="form" class="van-tabs--sub_line van-tabs--sub_bg" @change="(e) => (activeTab = e)"
-          v-model="activeTab" :swipeable="false" :color="'var(--ex-primary-color)'">
+        style="border-radius: 0.32rem;background-color: var(--ex-bg-color3);padding: 0.32rem 0.16rem 0.4rem 0.16rem;border-bottom:1px solid var(--ex-bg-white2);">
+        <Tabs animated key="form" class="van-tabs--sub_line" @change="(e) => (activeTab = e)"
+          v-model="activeTab" :swipeable="false">
           <Tab :title="t('trade.stock_market_price')" name="0">
-            <OpeningForm :tradeType="props.tradeType" :type="props.type" @showNavDialog="showNavDialog"
+            <OpeningForm :tradeType="props.tradeType" :type="props.type" 
               v-if="activeTab == 0" ref="OpeningForm0Ref" :key="0" :activeTab="activeTab" :activeType="activeType"
               @success="emits('success')" />
           </Tab>
           <Tab :title="t('trade.stock_limit_price')" name="1">
-            <OpeningForm :tradeType="props.tradeType" :type="props.type" @showNavDialog="showNavDialog"
+            <OpeningForm :tradeType="props.tradeType" :type="props.type" 
               v-if="activeTab == 1" ref="OpeningForm1Ref" :key="1" :activeTab="activeTab" :activeType="activeType"
               @success="emits('success')" />
           </Tab>
-          <!-- <Tab :title="t('trade.stock_take_stop')" name="2">
-          <OpeningForm :tradeType="props.tradeType" :type="props.type" @showNavDialog="showNavDialog"
-            v-if="activeTab == 2" ref="OpeningForm2Ref" :key="2" :activeTab="activeTab" :activeType="activeType"
-            @success="emits('success')" />
-        </Tab> -->
         </Tabs>
       </div>
 
@@ -62,16 +57,13 @@
     </div>
   </div>
 </template>
-
 <script setup>
-import ciper from "@/utils/ciper.js"
 import { ref, computed } from "vue";
 import { Tab, Tabs } from "vant";
 import { _search, _basic, _stocksPara, _stocksBuy } from "@/api/api";
 import { useRoute } from "vue-router";
 import OpeningForm from "./OpeningForm.vue";
 import { useI18n } from "vue-i18n";
-import { getStaticImgUrl } from "@/utils/index.js"
 import router from "@/router";
 import store from "@/store";
 
@@ -83,6 +75,10 @@ const props = defineProps({
     type: String,
     default: ''
   },
+  mode: { // constract-加密货币 foreign-外汇 commodities-大宗交易
+    type: String,
+    default: 'constract'
+  },
   tradeType: {
     type: [String, Number],
     default: ''
@@ -92,10 +88,7 @@ const props = defineProps({
 })
 
 const { t } = useI18n();
-const emits = defineEmits(["showNavDialog", "success"]);
-const showNavDialog = () => {
-  emits("showNavDialog");
-};
+const emits = defineEmits(["success"]);
 
 const route = useRoute();
 const OpeningForm0Ref = ref();
@@ -114,12 +107,12 @@ const currencyAmount = computed(() => {
   return 0
 })
 
-const activeType = ref(1); // 1-买涨 2-买跌
+const activeType = ref(1); // 1-买入 2-卖出
 // url参数处理
 // if (route.query.symbol) {
 //   activeType.value = route.query.type || 1;
 // }
-const activeTab = ref(0); // 0-市价 1-限价 2-止盈止损
+const activeTab = ref(0); // 0-市价 1-限价 
 
 
 // 选择某个股票
@@ -207,7 +200,6 @@ defineExpose({
   }
 
   .type_tabs {
-    margin-top: 0.24rem;
     display: flex;
     align-items: center;
     height: 0.68rem;
@@ -215,9 +207,9 @@ defineExpose({
     background-color: var(--ex-bg-white1);
     width: 3rem;
     position: absolute;
-    z-index: 9999;
+    z-index: 999;
     left: 0.24rem;
-    top: 0.16rem;
+    top: 0.32rem;
 
     .type_tab {
       flex: 1;
@@ -241,22 +233,38 @@ defineExpose({
     }
   }
 
-
-  :deep(.van-tabs--line-card) {
+  
+  :deep(.van-tabs--sub_line) {
+    --van-tabs-line-height: 0.68rem;
     .van-tabs__wrap {
-      padding-left: 2.6rem;
-
+      display:flex;
+      justify-content: flex-end;
+      height: 0.68rem;
       .van-tabs__nav {
-        display: flex;
-        justify-content: space-between;
+        position: relative;
+        padding-bottom:0px;
+        &::after {
+          content: '';
+          width: 100%;
+          height: 1px;
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          background-color: var(--ex-bg-white2);
+        }
+        .van-tab{
+          flex: inherit;
+          padding:0 0.18rem;
+        }
       }
-    }
-  }
-
-  .trade-dialog {
-    :deep(.van-tabs--line-card) {
-      .van-tabs__wrap {
-        padding: 0 0.6rem;
+      .van-tabs__line{
+        width:0.34rem;
+        height:0.04rem;
+        background-color: var(--ex-white);
+        bottom:0;
+      }
+      .van-tab--active{
+        font-weight:400;
       }
     }
   }

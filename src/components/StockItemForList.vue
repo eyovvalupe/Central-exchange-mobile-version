@@ -175,23 +175,13 @@ watch(price, (newVal, oldVal) => {
 
 const goInfo = (type) => {
   if (props.handleClick) return props.handleClick(props.item);
-  if (type == "spot") {
-    store.commit("setCurrSpot", props.item);
+  if (type == "stock") {
+    store.commit("setCurrStockItem", props.item);
     router.push({
       name: "tradeInfo",
       query: {
         symbol: ciper.encrypt(props.item.symbol),
-        type: "spot",
-      },
-    });
-  }
-  if (type == "ai") {
-    store.commit("setCurrAi", props.item);
-    router.push({
-      name: "tradeInfo",
-      query: {
-        symbol: ciper.encrypt(props.item.symbol),
-        type: "ai",
+        type: "stock",
       },
     });
   }
