@@ -36,7 +36,7 @@
     </div>
     <Button :loading="props.loading" :disabled="!isAllFilled" round color="var(--ex-primary-color)"
       class="submit-button ripple-btn" type="primary" @click="handleSubmit">
-      <span style="color: var(--ex-white);">{{ props.from == "register" ? t('code_input.btn_text1') :
+      <span style="color: var(--ex-white);">{{ btnText ? btnText : props.from == "register" ? t('code_input.btn_text1') :
         t('code_input.btn_text2')
         }}</span>
     </Button>
@@ -71,6 +71,7 @@ const props = defineProps({
     type: String,
     default: "",
   },
+  btnText: String
 });
 const isAllFilled = computed(() => {
   return passwordDigits.value.every((digit) => digit !== "");
@@ -156,8 +157,7 @@ onMounted(() => {
   width: 100%;
   height: 1.12rem;
   font-size: 0.36rem;
-  /* background-color: var(--ex-primary-color); */
-  border-radius: 0.4rem;
+  border-radius: 0.6rem;
   color: var(--ex-text-color--bg-primary);
 }
 

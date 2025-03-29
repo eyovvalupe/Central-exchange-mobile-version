@@ -43,7 +43,7 @@
               class="w-[3.16rem] h-[0.8rem] flex items-center justify-center rounded-[1.3rem] bg-white text-black text-[0.32rem]"
               @click="goBack">{{ t('user_page.message_box_cancel') }}</div>
             <div
-              class="w-[3.16rem] h-[0.8rem] flex items-center justify-center rounded-[1.3rem] bg-primary text-black text-[0.32rem]"
+              class="w-[3.16rem] h-[0.8rem] flex items-center justify-center rounded-[1.3rem] bg-primary text-color text-[0.32rem]"
               @click="jump('kyc')">{{ t('account.no_kyc_confirm') }}</div>
           </div>
         </div>
@@ -58,7 +58,7 @@
               class="w-[3.16rem] h-[0.8rem] flex items-center justify-center rounded-[1.3rem] bg-white text-black text-[0.32rem] ripple-primary"
               @click="goBack">{{ t('user_page.message_box_cancel') }}</div>
             <div
-              class="w-[3.16rem] h-[0.8rem] flex items-center justify-center rounded-[1.3rem] bg-primary text-black text-[0.32rem] ripple-btn"
+              class="w-[3.16rem] h-[0.8rem] flex items-center justify-center rounded-[1.3rem] bg-primary text-color text-[0.32rem] ripple-btn"
               @click="jump('google')">{{ t('account.no_kyc_confirm') }}</div>
           </div>
         </div>

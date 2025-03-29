@@ -3,7 +3,7 @@
   <div class="page page_google">
     <Top :title="t('google_auth.page_title')">
       <template #right v-if="from == 'register'">
-        <span @click="confirmNext" style="color: var(--ex-primary-color); font-weight: 400; font-size: 0.28rem">{{
+        <span @click="confirmNext" class="text-primary text-[0.28rem]">{{
           $t("google_auth.from_register_skip") }}</span>
       </template>
     </Top>

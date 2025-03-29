@@ -12,15 +12,11 @@
         <template #right>
           <div class="flex">
             <div class="server_icon mr-[0.1rem]" @click="goChat">
-              <div class="chat_icon">
                 <img v-lazy="getStaticImgUrl('/static/img/user/server.svg')" />
-              </div>
             </div>
 
             <div class="language_icon_container" @click="goLang">
-              <div class="language_icon">
                 <img v-lazy="getStaticImgUrl('/static/img/user/lang.svg')" alt="">
-              </div>
             </div>
           </div>
         </template>
@@ -49,8 +45,8 @@
         <!-- <div class="form_title" v-show="activeTab == 0">
           {{ $t("register.email") }}
         </div> -->
-        <div class="form_item margin_item" v-show="activeTab == 0" :class="{ err_ipt: errorTip.error1 }">
-          <input maxlength="30" @blur="errorTip.error1 = false" v-model.trim="form.email"
+        <div class="form_item margin_item transition" v-show="activeTab == 0" :class="{ err_ipt: errorTip.error1 }">
+          <input maxlength="35" @blur="errorTip.error1 = false" v-model.trim="form.email"
             :placeholder="t('register.pw_placeholder1')" type="text" class="item_input mask-btn"
             :class="{ err_ipt1: errorTip.error1 }" />
           <div class="form_item_clear" v-show="form.email" @click="form.email = null">
@@ -60,7 +56,7 @@
         <!-- <div class="form_title" v-show="activeTab == 1">
           {{ $t("register.phone_number") }}
         </div> -->
-        <div class="form_item margin_item" v-show="activeTab == 1" :class="{ err_ipt: errorTip.error1 }">
+        <div class="form_item margin_item transition" v-show="activeTab == 1" :class="{ err_ipt: errorTip.error1 }">
           <div class="code" @click="(showDialog = true), (searchStr = '')">
             <span class="flag_icon">
               <img v-lazy="getStaticImgUrl('/static/img/user/flag_hongkong.svg')" alt="" />
@@ -74,7 +70,7 @@
             :placeholder="t('register.pw_placeholder2')" type="text" class="item_input" />
         </div>
         <!-- <div class="form_title">{{ $t("register.login_password") }}</div> -->
-        <div class="form_item margin_item relative" :class="{ err_ipt: errorTip.error2 }">
+        <div class="form_item margin_item relative transition" :class="{ err_ipt: errorTip.error2 }">
           <input maxlength="20" @blur="errorTip.error2 = false" v-model.trim="form.password"
             :placeholder="t('register.pw_placeholder3')" :type="showPass ? 'text' : 'password'" class="item_input" />
           <div class="absolute top-[0.4rem] right-[0.32rem]" @click="showPass = !showPass">
@@ -87,7 +83,7 @@
         <!-- 密码等级 -->
         <PasswordLevel style="position: relative; top: -0.32rem; left: 0.32rem" :password="form.password" />
         <!-- <div class="form_title">{{ $t("register.trade_password") }}</div> -->
-        <div class="form_item margin_item relative" :class="{ err_ipt: errorTip.error3 }">
+        <div class="form_item margin_item relative transition" :class="{ err_ipt: errorTip.error3 }">
           <input maxlength="20" @blur="errorTip.error3 = false" v-model.trim="form.safeword"
             :placeholder="t('register.pw_placeholder5')" :type="showPass2 ? 'text' : 'password'" class="item_input" />
           <div class="absolute top-[0.4rem] right-[0.32rem]" @click="showPass2 = !showPass2">
@@ -98,7 +94,7 @@
           </div>
         </div>
         <!-- <div class="form_title">{{ $t("register.invite_code") }}</div> -->
-        <div class="form_item margin_item">
+        <div class="form_item margin_item transition">
           <input maxlength="20" v-model.trim="form.invateCode" :placeholder="t('register.pw_placeholder6')" type="text"
             class="item_input" />
         </div>
@@ -107,8 +103,7 @@
       <!-- 协议 -->
       <label class="register_doc">
         <div :class="checked ? 'checked_icon_blue' : 'unchecked_icon'" class="mr-[0.2rem]" @click="checked = !checked">
-          <img v-if="checked" v-lazy="getStaticImgUrl('/static/img/user/checked_white.svg')" alt="">
-          <img v-else v-lazy="getStaticImgUrl('/static/img/user/uncheck_primary.svg')" alt="">
+          <img v-if="checked" v-lazy="getStaticImgUrl('/static/img/common/check.svg')" alt="">
         </div>
         {{ $t("register.agree_con1")
         }}<span @click="privacyOpen = true">{{ $t("register.agree_con2") }}</span>{{ $t("register.agree_con3")
@@ -132,7 +127,7 @@
 
     <template v-else>
       <RegisterCodeCheck :type="activeTab == 0 ? 'email' : 'phone'" :value="activeTab == 0 ? form.email : form.phone"
-        @success="registerSuccessNext" />
+        @success="registerSuccessNext" :loading="bindLoading" @submit="submitBind" />
     </template>
 
     <!-- 验证码 -->
@@ -194,16 +189,14 @@ import {
   closeToast,
   Tab,
   Tabs,
-  Popup,
-  List,
-  Cell,
+  Popup
 } from "vant";
 import { ref, computed, onMounted } from "vue";
 import router from "@/router";
 import { useRoute, useRouter } from "vue-router";
 import PasswordLevel from "@/components/PasswordLevel.vue";
 import store from "@/store";
-import { _register, _guestRegister } from "@/api/api";
+import { _register, _guestRegister, _emailbind } from "@/api/api";
 import VerifCode from "@/components/VerifCode.vue";
 import ImgCheck from "@/components/ImgCheck.vue";
 import { areaCode, validateEmail } from "@/utils/index";
@@ -301,10 +294,10 @@ const next = () => {
           setTimeout(() => {
             setTimeout(() => {
               store.commit("setToken", res.data.auth);
-              store.commit("setUserInfo", res.data);
+              store.commit("setGuestUserInfo", res.data);
             }, 100);
             setTimeout(() => {
-              // store.dispatch("updateUserInfo");
+              store.dispatch("updateUserInfo");
               store.dispatch("updateAssets");
               store.dispatch("updateWallet");
               registerSuccessNext();
@@ -405,22 +398,15 @@ const submit = async () => {
     })
     .catch((err) => {
       if (err.code == "1001") {
-       // 弹出验证码
-       if (verifcode.value) {
+        // 弹出验证码
+        if (verifcode.value) {
           // 如果输入了验证码，旧提示验证码错误
-          showToast(err.message);
-        }
-        showToast(t("register.verify_code_msg"));
+          showToast(t("common.verification_code_error"));
+        } else showToast(t("register.verify_code_msg"));
         setTimeout(() => {
           verifCodeRef.value.open();
         }, 1000);
-      } else if (err.code == "1101") {
-          showToast(t("register.user_already_exist"));
-      } else if (err.code == '1102') {
-        showToast(t("register.invite_code_error"));
-      } else {
-        showToast(t("login.network_error"));
-      }
+      } else showToast(err.message);
     })
     .finally(() => {
       getSessionToken();
@@ -456,6 +442,28 @@ const getSessionToken = () => {
   store.dispatch("updateSessionToken");
 };
 getSessionToken();
+
+const bindLoading = ref(false)
+const submitBind = (code)=>{
+  if (bindLoading.value) return;
+  bindLoading.value = true;
+ 
+  if(activeTab.value == 0){
+    _emailbind({
+      verifcode:code
+    }).then(() => {
+      registerSuccessNext()
+    })
+    .finally(() => {
+      bindLoading.value = false;
+    });
+  }else{
+    setTimeout(()=>{
+      registerSuccessNext()
+      bindLoading.value = false;
+    },600)
+  }
+}
 
 // 返回
 const goBack = () => {
@@ -503,72 +511,36 @@ onMounted(() => {
 
 <style lang="less" scoped>
 .page-register {
-  padding-top: 1.12rem;
+  padding-top: 1.32rem;
   height: 100%;
 
   :deep(.van-tabs__nav.van-tabs__nav--card.van-tabs__nav--shrink.van-tabs__nav--complete) {
-    margin: 0 0.6rem;
+    margin: 0 0.32rem;
   }
 
   :deep(button.van-button.van-button--primary.van-button--normal.van-button--round.submit) {
     border-radius: 0.4rem;
   }
 
-  .top_icon_container {
-    position: fixed;
-    width: 7.5rem;
-    justify-content: space-between;
-    padding: 0 0.32rem;
-    height: 1.12rem;
+  .server_icon {
+    width: 0.64rem;
+    height: 0.64rem;
+    border-width: 0.02rem;
+    border-radius: 0.36rem;
     display: flex;
+    justify-content: center;
     align-items: center;
-    top: 0;
-    background-color: var(--ex-bg-color);
+    margin-right: 0.12rem;
+  }
 
-    .top_back_container {
-      .arrow_icon {
-        width: 0.4rem;
-        height: 0.4rem;
-        clip-path: path("M13.4 2L5 10.4L13.4 18.8");
-        background-color: var(--ex-text-color);
-      }
-    }
-
-    .server_icon {
-      width: 0.72rem;
-      height: 0.72rem;
-      border-width: 0.02rem;
-      border-radius: 0.36rem;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      border-color: var(--ex-border-color);
-      margin-right: 0.12rem;
-
-      .chat_icon {
-        width: 0.432rem;
-        height: 0.432rem;
-      }
-    }
-
-    .language_icon_container {
-      width: 0.72rem;
-      height: 0.72rem;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      border-width: 0.02rem;
-      border-color: var(--ex-border-color);
-      border-radius: 0.36rem;
-
-      .language_icon {
-        width: 0.432rem;
-        height: 0.432rem;
-        background-size: contain;
-        background-repeat: no-repeat;
-        background-position: center;
-      }
-    }
+  .language_icon_container {
+    width: 0.64rem;
+    height: 0.64rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-width: 0.02rem;
+    border-radius: 0.36rem;
   }
 
   .tabs {
@@ -625,7 +597,7 @@ onMounted(() => {
   }
 
   .title_box {
-    padding: 0.12rem 0.6rem 0.4rem 0.6rem;
+    padding: 0.12rem 0.6rem 0.6rem 0.6rem;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -671,7 +643,7 @@ onMounted(() => {
   }
 
   .form {
-    padding: 0 0.6rem;
+    padding: 0 0.32rem;
 
     .eye-hidden-icon {
       width: 0.4rem;
@@ -773,7 +745,7 @@ onMounted(() => {
   }
 
   .register_doc {
-    padding-left: 0.6rem;
+    padding-left: 0.32rem;
     overflow: hidden;
     display: flex;
     align-items: center;
@@ -787,22 +759,21 @@ onMounted(() => {
     .checked_icon_blue {
       width: 0.32rem;
       height: 0.32rem;
-      border: 0.02rem solid var(--ex-border-color2);
-      background-size: contain;
+      border: 0.02rem solid var(--ex-primary-color);
       border-radius: 0.08rem;
-      background-repeat: no-repeat;
+      background-color: transparent;
     }
 
     .unchecked_icon {
       width: 0.32rem;
       height: 0.32rem;
       background-color: transparent;
-      border: 0.02rem solid var(--ex-border-color2);
+      border: 0.02rem solid rgba(255, 255, 255, 0.30);
       border-radius: 0.08rem;
     }
 
     .register_doc_check {
-      margin-right: 0.24rem;
+      margin-right: 0.16rem;
     }
 
     >span {
@@ -811,7 +782,7 @@ onMounted(() => {
   }
 
   .submit_box {
-    padding: 0 0.6rem;
+    padding: 0 0.32rem;
     margin-bottom: 0.6rem;
 
     :deep(.van-button__content) {

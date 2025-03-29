@@ -6,10 +6,8 @@
       <Top>
         <template #right>
           <div class="flex gap-1">
-            <div class="language_icon_container" @click="goLang">
-              <div class="language_icon">
+            <div class="size-[0.64rem]" @click="goLang">
                 <img v-lazy="getStaticImgUrl('/static/img/user/lang.svg')" alt="">
-              </div>
             </div>
           </div>
         </template>
@@ -20,7 +18,7 @@
     </div>
     <div class="title">{{ $t("register.success_sign_up") }}</div>
 
-    <Button round color="var(--ex-primary-color)" class="submit ripple-btn" type="primary" @click="next"><span class="text-white">{{
+    <Button round color="var(--ex-primary-color)" class="submit ripple-btn" type="primary" @click="next"><span class="text-[0.32rem] text-white">{{
       $t("register.success_btn")
     }}</span></Button>
     <div @click="back">
@@ -96,33 +94,6 @@ const goChat = () => {
     align-items: center;
     top: 0;
     background-color: var(--ex-bg-color);
-
-    .top_back_container {
-      .arrow_icon {
-        width: 0.4rem;
-        height: 0.4rem;
-        clip-path: path("M13.4 2L5 10.4L13.4 18.8");
-        background-color: var(--ex-text-color);
-      }
-    }
-
-    .server_icon {
-      width: 0.72rem;
-      height: 0.72rem;
-      border-width: 0.02rem;
-      border-radius: 0.36rem;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      border-color: var(--ex-border-color);
-      margin-right: 0.12rem;
-
-      .chat_icon {
-        width: 0.432rem;
-        height: 0.432rem;
-      }
-    }
-
   }
 
   .icon {
@@ -135,18 +106,19 @@ const goChat = () => {
   .title {
     color: var(--ex-text-color);
     font-weight: 400;
-    font-size: 0.3rem;
+    font-size: 0.32rem;
     line-height: 0.42rem;
     margin-bottom: 0.68rem;
   }
 
   .submit {
     width: max-content;
-    height: 0.9rem;
-    padding: 0 0.36rem;
+    width: 4.5rem;
+    height: 0.92rem;
     margin-bottom: 0.6rem;
-    font-size: 0.32rem;
+    font-size: 0.3rem;
     font-weight: 400;
+    color: var(--ex-white);
   }
 
   :deep(.van-button__text) {

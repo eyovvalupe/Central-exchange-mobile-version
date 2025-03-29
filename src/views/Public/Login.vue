@@ -24,14 +24,15 @@
     <!-- 表单 -->
     <div class="form">
       <!-- <div class="form_title" v-show="activeTab == 0">{{ $t("login.email") }}</div> -->
-      <div class="form_item margin_item" v-show="activeTab == 0">
+      <div class="form_item margin_item transition" :style="{ borderColor: emailError ? 'var(--ex-error-color)' : '' }"
+        v-show="activeTab == 0">
         <div class="form_item_user">
           <div class="envelope-icon">
             <img v-lazy="getStaticImgUrl('/static/img/user/envelope.svg')" alt="">
           </div>
         </div>
         <input @change="changeAccount" v-model.trim="form.email" :placeholder="t('login.pw_placeholder1')" type="text"
-          class="item_input" />
+          class="item_input" @focus="emailError = false" />
         <Loading v-if="accountLoading" :size="'0.32rem'" type="circular" />
         <div class="form_item_clear" v-show="form.email" @click="form.email = null">
           <div class="cross-icon">
@@ -41,7 +42,8 @@
       </div>
 
       <!-- <div class="form_title" v-show="activeTab == 1">{{ $t("login.phone_number") }}</div> -->
-      <div class="form_item margin_item" v-show="activeTab == 1">
+      <div class="form_item margin_item transition" :style="{ borderColor: phoneError ? 'var(--ex-error-color)' : '' }"
+        v-show="activeTab == 1">
         <div class="code" @click="
           showDialog = true;
         searchStr = '';
@@ -55,10 +57,10 @@
           </div>
         </div>
         <input maxlength="20" v-model.trim="form.phone" type="text" :placeholder="t('login.pw_placeholder2')"
-          class="item_input" />
+          class="item_input" @focus="phoneError = false" />
       </div>
       <!-- <div class="form_title">{{ $t("login.password") }}</div> -->
-      <div class="form_item">
+      <div class="form_item transition" :style="{ borderColor: pwError ? 'var(--ex-error-color)' : '' }">
         <!-- 显示密码输入时的锁图标 -->
         <div class="form_item_user">
           <div class="lock-icon">
@@ -68,7 +70,7 @@
 
         <!-- 密码输入框，使用 v-if/v-else 优化 -->
         <input maxlength="20" :type="showPass ? 'text' : 'password'" v-model.trim="form.password"
-          :placeholder="t('login.pw_placeholder3')" class="item_input" />
+          :placeholder="t('login.pw_placeholder3')" class="item_input" @focus="pwError = false" />
 
         <!-- 切换显示/隐藏密码的图标 -->
         <div class="form_item_icon" @click="showPass = !showPass">
@@ -85,7 +87,7 @@
 
     <!-- 按钮 -->
     <div class="submit_box " @click="submit">
-      <Button :loading="loading" :disabled="disabled" round class="submit ripple-btn" type="primary">
+      <Button :loading="loading" round class="submit ripple-btn" type="primary">
         <span style="color: var(--ex-white);">{{
           $t("login.login") }}</span></Button>
     </div>
@@ -103,7 +105,7 @@
     <BottomPopup :safe-area-inset-top="true" :safe-area-inset-bottom="true" class="self_van_popup"
       v-model:show="showDialog" position="bottom" teleport="body" closeable>
       <div class="register_accounr_dialog">
-        <div class="text-center my-[0.36rem] text-[0.32rem] text-color">
+        <div class="text-center mb-[0.6rem] mt-[0.06rem] text-[0.32rem] text-color">
           {{ $t("login.country_number") }}
         </div>
         <div class="item search_box">
@@ -119,9 +121,9 @@
           <!-- <List> -->
           <div v-for="item in showAreas">
             <div @click="clickItem(item)"
-              class="flex justify-between h-[1.06rem] items-center border-b-[0.02rem] border-b-color"
+              class="flex justify-between h-[1.06rem] items-center border-b-[0.02rem]" style="border-color:var(--ex-bg-white2);"
               :class="{ transfer_dialog_item_active: form.area == item.code }">
-              <div class="flex h-[1.08rem] items-center">
+              <div class="flex pt-[0.3rem] pb-[0.2rem] items-center">
                 <div style="width: 0.64rem;height: 0.64rem;" class="mr-[0.2rem]">
                   <img v-lazy="getStaticImgUrl('/static/img/user/hk.svg')" alt="">
                 </div>
@@ -152,7 +154,7 @@ import {
   List,
   Cell,
 } from "vant";
-import { ref, computed, onMounted } from "vue";
+import { ref, computed, onMounted, watch } from "vue";
 import router from "@/router";
 import { useRoute } from "vue-router";
 import { _login, _userExist, _watchlist } from "@/api/api";
@@ -248,8 +250,21 @@ const disabled = computed(() => {
   return !form.value.password;
 });
 
+const emailError = ref(false);
+const phoneError = ref(false);
+const pwError = ref(false);
+
 // 提交
 const submit = () => {
+  console.log(activeTab.value == 0 && !form.value.email || activeTab.value == 1 && !form.value.phone || !form.value.password)
+
+  if (activeTab.value == 0 && !form.value.email || activeTab.value == 1 && !form.value.phone || !form.value.password) {
+    if (activeTab.value == 0 && !form.value.email) emailError.value = true;
+    if (activeTab.value == 1 && !form.value.phone) phoneError.value = true;
+    if (!form.value.password) pwError.value = true;
+    console.log('error')
+    return;
+  }
   if (loading.value) return;
   loading.value = true;
   if (activeTab.value == 0) {
@@ -276,6 +291,7 @@ const submit = () => {
           store.dispatch("updateUserInfo");
           store.dispatch("updateAssets");
           store.dispatch("updateWallet");
+          store.dispatch('updateStockWallet');
 
           if (props.successFunc) return props.successFunc();
           // if (route.query.reurl) {
@@ -298,7 +314,7 @@ const submit = () => {
           .then((res) => {
             if (res.code == 200) {
               store.commit("setMarketWatchList", res.data || []);
-
+              console.error('-------', 15)
               store.dispatch("subList", {
                 commitKey: "setMarketWatchList",
                 listKey: "marketWatchList",
@@ -316,16 +332,12 @@ const submit = () => {
     .catch((err) => {
       if (err.code == "1001") {
         // 弹出验证码
-        if (form.value.verifcode) {
-          // 如果输入了验证码，旧提示验证码错误
-          showToast(err.message);
-        }
+        showToast(t("register.verify_code_msg"));
         setTimeout(() => {
           verifCodeRef.value.open();
         }, 1000);
       } else {
-        if (err.message == 'Username or password error') showToast(t('login.username_password_error'))
-        else showToast(t('login.network_error'));
+        showToast(err.message || t('login.network_error'));
       }
     })
     .finally(() => {
@@ -374,6 +386,16 @@ const goRegister = () => {
   });
 };
 
+const cleanError = () => {
+  emailError.value = false;
+  phoneError.value = false;
+  pwError.value = false;
+}
+
+watch(activeTab, (val) => {
+  cleanError();
+})
+
 onMounted(() => {
   Promise.all([
     import("@/views/Public/Register.vue"),
@@ -384,7 +406,7 @@ onMounted(() => {
 
 <style lang="less" scoped>
 .page-login {
-  padding-top: 1rem;
+  padding-top: 1.12rem;
   margin: auto;
 
   :deep(span.van-tab__text) {
@@ -485,7 +507,7 @@ onMounted(() => {
   }
 
   :deep(.van-tabs__nav.van-tabs__nav--card.van-tabs__nav--shrink.van-tabs__nav--complete) {
-    margin: 0 0.6rem;
+    margin: 0 0.32rem;
   }
 
   .top {
@@ -524,7 +546,7 @@ onMounted(() => {
   }
 
   .title_box {
-    padding: 0.3rem 0.6rem 0.8rem 0.6rem;
+    padding: 0.8rem 0.32rem;
 
     .title {
       // height: 0.78rem;
@@ -541,7 +563,7 @@ onMounted(() => {
   }
 
   .form {
-    padding: 0 0.6rem;
+    padding: 0 0.32rem;
 
     .form_title {
       color: var(--ex-text-color);
@@ -630,17 +652,16 @@ onMounted(() => {
   }
 
   .fogot {
-    color: var(--ex-primary-color);
+    color: var(--ex-text-color);
     font-weight: 400;
-    padding-left: 0.6rem;
-    margin: 0.32rem 0 0.8rem 0;
+    margin: 0.32rem 0 0.8rem 0.32rem;
   }
 
   .submit_box {
     display: flex;
     width: 100%;
     height: 1.1rem;
-    padding-inline: 0.6rem;
+    padding-inline: 0.32rem;
     justify-content: center;
     align-items: center;
 
@@ -654,7 +675,7 @@ onMounted(() => {
       font-style: normal;
       font-weight: 500;
       line-height: 100%;
-      border-radius: 0.4rem;
+      border-radius: 0.6rem;
       /* 18px */
     }
   }
@@ -690,8 +711,8 @@ onMounted(() => {
   }
 
   .search_box {
-    height: 0.84rem;
-    background-color: var(--ex-bg-color6);
+    height: 0.9rem;
+    background-color: var(--ex-bg-white1);
     border-radius: 1rem;
     padding-inline: 0.32rem;
     margin-bottom: 0.2rem;

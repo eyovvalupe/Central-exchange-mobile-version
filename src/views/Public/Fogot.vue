@@ -5,67 +5,76 @@
   </div>
   <div v-else class="page page-fogot">
     <!-- 返回和语言 -->
-    <Top>
+    <Top :backFunc="goBack">
       <template #right>
         <div class="flex gap-1">
-          <div class="language_icon_container" @click="goLang">
-            <div class="language_icon">
+          <div class="size-[0.64rem]" @click="goLang">
               <img v-lazy="getStaticImgUrl('/static/img/user/lang.svg')" alt="">
-            </div>
           </div>
         </div>
       </template>
     </Top>
 
-    <!-- 标题 -->
-    <div class="title_box">
-      <div class="title">{{ t('forget_pw.title') }}</div>
-    </div>
-
-    <!-- 表单 -->
-    <div class="form relative">
-      <!-- <div class="form_title">{{ t('forget_pw.email_phone') }}</div> -->
-      <div class="form_item margin_item">
-        <input maxlength="20" v-model.trim="form.username" :placeholder="t('forget_pw.user_name')" type="text"
-          class="item_input" />
-        <div class="form_item_clear" v-show="form.username" @click="form.username = null">
-          <Icon name="cross" size="0.25rem" />
-        </div>
+    <div v-if="step == 1">
+        <!-- 标题 -->
+      <div class="title_box">
+        <div class="title">{{ t('forget_pw.title') }}</div>
       </div>
 
-      <!-- <div class="form_title">{{ t('change_login_pw.new_pw') }}</div> -->
-      <div class="form_item mb-[0.05rem]">
-        <input maxlength="20" v-model.trim="form.password" :type="showPass ? 'text' : 'password'"
-          :placeholder="t('change_login_pw.new_pw_placeholder')" class="item_input" @input="checkPasswordStrength" />
-        <div class="form_item_icon" @click="toggleShowPass">
-          <div :class="showPass ? 'eye-show-icon' : 'eye-hidden-icon'"></div>
+      <!-- 表单 -->
+      <div class="form relative">
+        <!-- <div class="form_title">{{ t('forget_pw.email_phone') }}</div> -->
+        <div class="form_item margin_item transition" :style="{borderColor: idError ? 'var(--ex-error-color)' : ''}">
+          <input maxlength="32" v-model.trim="form.username" :placeholder="t('邮箱/手机号')" type="text"
+            class="item_input" @focus="idError = false"/>
+          <div class="form_item_clear" v-show="form.username" @click="form.username = null">
+            <div class="size-[0.25rem]">
+              <img v-lazy="getStaticImgUrl('static/img/common/mini_close.svg')" alt="" />
+            </div>
+          </div>
         </div>
-      </div>
-      <PasswordLevel class="form_passCheck" :password="form.password" :from="'forgot'" />
 
-      <div class="mb-[0.32rem]"></div>
-      <!-- <div class="form_title">{{ t('change_login_pw.confirm_pw') }}</div> -->
-      <div class="form_item">
-        <input maxlength="20" v-model.trim="form.confirmPassword" :type="showConfirmPass ? 'text' : 'password'"
-          :placeholder="t('change_login_pw.confirm_pw_placeholder')" class="item_input" />
-        <div class="form_item_icon" @click="toggleShowConfirmPass">
-          <div :class="showConfirmPass ? 'eye-show-icon' : 'eye-hidden-icon'">
-            <img v-if="showConfirmPass" v-lazy="getStaticImgUrl('/static/img/common/open_eye.svg')" alt="">
-            <img v-else v-lazy="getStaticImgUrl('/static/img/common/close_eye.svg')" alt="">
+        <!-- <div class="form_title">{{ t('change_login_pw.new_pw') }}</div> -->
+        <div class="form_item mb-[0.05rem] transition" :style="{borderColor: newError ? 'var(--ex-error-color)' : ''}">
+          <input maxlength="20" v-model.trim="form.password" :type="showPass ? 'text' : 'password'"
+            :placeholder="t('change_login_pw.new_pw_placeholder')" class="item_input" @input="checkPasswordStrength" @focus="newError = false"/>
+          <div class="form_item_icon" @click="toggleShowPass">
+            <div :class="showPass ? 'eye-show-icon' : 'eye-hidden-icon'">
+              <img v-if="showPass" v-lazy="getStaticImgUrl('/static/img/common/open_eye.svg')" alt="">
+              <img v-else v-lazy="getStaticImgUrl('/static/img/common/close_eye.svg')" alt="">
+            </div>
+          </div>
+        </div>
+        <PasswordLevel class="form_passCheck" :password="form.password" :from="'forgot'" />
+
+        <div class="mb-[0.32rem]"></div>
+        <!-- <div class="form_title">{{ t('change_login_pw.confirm_pw') }}</div> -->
+        <div class="form_item transition" :style="{borderColor: confirmError ? 'var(--ex-error-color)' : ''}">
+          <input maxlength="20" v-model.trim="form.confirmPassword" :type="showConfirmPass ? 'text' : 'password'"
+            :placeholder="t('change_login_pw.confirm_pw_placeholder')" class="item_input" @focus="confirmError = false"/>
+          <div class="form_item_icon" @click="toggleShowConfirmPass">
+            <div :class="showConfirmPass ? 'eye-show-icon' : 'eye-hidden-icon'">
+              <img v-if="showConfirmPass" v-lazy="getStaticImgUrl('/static/img/common/open_eye.svg')" alt="">
+              <img v-else v-lazy="getStaticImgUrl('/static/img/common/close_eye.svg')" alt="">
+            </div>
           </div>
         </div>
       </div>
-    </div>
 
-    <!-- 按钮 -->
-    <div class="submit_box" @click="submit">
-      <Button :loading="loading" :disabled="disabled" round color="var(--ex-primary-color)" class="submit"
-        type="primary"><span style="color: var(--ex-white);">{{ t('forget_pw.get_back') }}</span></Button>
+      <!-- 按钮 -->
+      <div class="submit_box" @click="submit">
+        <Button :loading="loading" round color="var(--ex-primary-color)" class="submit"
+          type="primary"><span style="color: var(--ex-white);">{{ t('forget_pw.get_back') }}</span></Button>
+      </div>
+      <div class="tologin" @click="router.push({ name: 'login' })">{{ t('register.go_login') }}</div>
     </div>
-    <div class="tologin" @click="router.push({ name: 'login' })">{{ t('register.go_login') }}</div>
+    
+    <CodeCheck :loading="loading" :type="verifyType" :value="form.username" @submit="submitForm" v-else-if="step == 2" />
 
-    <!-- 谷歌 -->
-    <GoogleVerfCode @submit="submitForm" ref="ggRef" />
+    <BottomPopup title="验证方式" round closeable v-model:show="showVerifyType" position="bottom" teleport="body">
+      <SelectVerifyType  @confirm="selectVerifyTypeConfirm" />
+    </BottomPopup>
+
   </div>
 </template>
 
@@ -75,28 +84,35 @@ import { Icon, Button, showToast } from "vant";
 import { ref, computed } from "vue";
 import router from "@/router";
 import { _forgetpw } from "@/api/api";
-import GoogleVerfCode from "@/components/GoogleVerfCode.vue";
+import CodeCheck from "@/components/CodeCheck.vue";
 import store from "@/store";
+import BottomPopup from "@/components/BottomPopup.vue";
 import PasswordLevel from "@/components/PasswordLevel.vue";
 import { useRoute } from "vue-router";
 import ForgotSuccess from "./ForgotSuccess.vue";
 import { useI18n } from "vue-i18n";
 import Top from "@/components/Top.vue";
+import SelectVerifyType from '@/components/SelectVerifyType.vue'
 
 const { t } = useI18n();
-const props = defineProps({
-  backFunc: {
-    type: Function,
-    default: null,
-  },
-});
+const step = ref(1)
+
 // Refs and Variables
-const ggRef = ref();
+const verifyType = ref('google')
+const showVerifyType = ref(false);
 const showPass = ref(false);
 const showConfirmPass = ref(false);
 const svgColor = ref("var(--ex-border-color2)");
 const loading = ref(false);
+const idError = ref(false);
+const newError = ref(false);
+const confirmError = ref(false);
 
+const selectVerifyTypeConfirm = (type)=>{
+  verifyType.value = type
+  showVerifyType.value = false
+  step.value = 2
+}
 // Form data
 const form = ref({
   username: "",
@@ -122,9 +138,21 @@ const toggleShowConfirmPass = () => {
   showConfirmPass.value = !showConfirmPass.value;
 };
 
+
 // Submit form to trigger Google Verification
 const submit = () => {
-  ggRef.value.open();
+  if (!form.value.username || !form.value.password || !form.value.confirmPassword) {
+    if (!form.value.username) idError.value = true;
+    if (!form.value.password) newError.value = true;
+    if (!form.value.confirmPassword) confirmError.value = true;
+    return;
+  }
+  if (form.value.password != form.value.confirmPassword) {
+    newError.value = true;
+    confirmError.value = true;
+    return;
+  }
+  showVerifyType.value = true
 };
 
 // Check password strength logic
@@ -144,14 +172,8 @@ const checkPasswordStrength = () => {
 };
 const route = useRoute();
 const goBack = () => {
-  if (props.backFunc) return props.backFunc();
-  if (route.query.reurl) {
-    router.replace({
-      name: route.query.reurl,
-      query: {
-        redata: route.query.redata,
-      },
-    });
+  if (step.value == 2) {
+    step.value = 1
   } else {
     router.back();
   }
@@ -168,20 +190,13 @@ const changePassSuccess = ref(false);
 const submitForm = (code) => {
   if (loading.value) return;
   loading.value = true;
-  console.log({
-    ...form.value,
-    googlecode: code,
-  })
-  _forgetpw({
-    ...form.value,
-    googlecode: code,
-  })
+  const data = {
+    ...form.value
+  }
+  verifyType.value == 'google' ? data.googlecode = code : data.emailcode = code
+  _forgetpw(data)
     .then((res) => {
       showToast("密码找回成功");
-      //   setTimeout(() => {
-      //     router.replace({ name: "user" });
-      //     store.commit("setIsLoginOpen", true);
-      //   }, 300);
       changePassSuccess.value = true;
     })
     .finally(() => {
@@ -192,67 +207,10 @@ const submitForm = (code) => {
 
 <style lang="less" scoped>
 .page-fogot {
-  padding-top: 1.12rem;
-
-  .top_icon_container {
-    position: fixed;
-    width: 7.5rem;
-    justify-content: space-between;
-    padding: 0 0.32rem;
-    height: 1.12rem;
-    display: flex;
-    align-items: center;
-    top: 0;
-    background-color: var(--ex-bg-color);
-
-    .top_back_container {
-      .arrow_icon {
-        width: 0.4rem;
-        height: 0.4rem;
-        clip-path: path("M13.4 2L5 10.4L13.4 18.8");
-        background-color: var(--ex-text-color);
-      }
-    }
-
-    .server_icon {
-      width: 0.72rem;
-      height: 0.72rem;
-      border-width: 0.02rem;
-      border-radius: 0.36rem;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      border-color: var(--ex-border-color);
-      margin-right: 0.12rem;
-
-      .chat_icon {
-        width: 0.432rem;
-        height: 0.432rem;
-      }
-    }
-
-    .language_icon_container {
-      width: 0.72rem;
-      height: 0.72rem;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      border-width: 0.02rem;
-      border-color: var(--ex-border-color);
-      border-radius: 0.36rem;
-
-      .language_icon {
-        width: 0.432rem;
-        height: 0.432rem;
-        background-size: contain;
-        background-repeat: no-repeat;
-        background-position: center;
-      }
-    }
-  }
+  padding-top: 0.88rem;
 
   .title_box {
-    padding: 0.32rem 0.6rem 0.84rem 0.6rem;
+    padding: 0.4rem 0.32rem 0.8rem 0.32rem;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -279,7 +237,7 @@ const submitForm = (code) => {
   }
 
   .form {
-    padding: 0 0.6rem;
+    padding: 0 0.32rem;
 
     .form_title {
       color: var(--ex-text-color);
@@ -302,6 +260,7 @@ const submitForm = (code) => {
       height: 1.12rem;
       border-radius: 0.32rem;
       padding: 0 0.2rem;
+      border-width: 0.02rem;
 
       .item_input {
         flex: 1;
@@ -351,15 +310,15 @@ const submitForm = (code) => {
   }
 
   .submit_box {
-    padding: 0 0.6rem;
-    margin-top: 0.6rem;
+    padding: 0 0.32rem;
+    margin-top: 0.8rem;
     margin-bottom: 0.6rem;
 
     .submit {
       width: 100%;
       height: 1.12rem;
       font-size: 0.36rem;
-      border-radius: 0.4rem;
+      border-radius: 0.6rem;
     }
   }
 

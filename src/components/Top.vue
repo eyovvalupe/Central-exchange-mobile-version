@@ -111,7 +111,6 @@ const clickLeft = () => {
   .right {
     position: absolute;
     right: 0.32rem;
-    border-radius: 50%;
   }
 }
 </style>
