@@ -755,10 +755,12 @@ watch(() => store.state.isLoginOpen, (v) => {
       .charts-box {
         padding: 0 0.1rem;
         height: 5rem;
+        transition: all ease .2s;
       }
 
       .hide-charts-box {
         height: 1rem;
+        overflow: hidden;
       }
 
       .dialog-market-bg {

@@ -122,6 +122,10 @@ const zipo = ref(false) // 折叠状态
 const switchZipo = () => {
   zipo.value = !zipo.value
   emits('switch', zipo.value)
+  setTimeout(() => {
+    if (KlineChartRef.value) KlineChartRef.value.resetSize();
+    if (AreaChartRef.value) AreaChartRef.value.resetSize();
+  }, 300)
 }
 
 // 股票信息
