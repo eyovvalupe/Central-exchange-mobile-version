@@ -4,7 +4,7 @@
   <div class="code_check_box">
    
     <div class="title">
-      {{ titleMap[props.type] }}
+      {{ props.type == 'email' ? t("safety.email_verify") : props.type == 'google' ? t("user_page.google_verification") : '' }}
     </div>
     <div class="info flex flex-col">
       <div class="flex mb-[0.6rem] text-[0.28rem]" v-if="type == 'email'">
