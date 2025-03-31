@@ -15,6 +15,13 @@ export default {
     option: "期货",
     second: "秒",
     assets: "我的资产",
+
+    verify_title: '模拟账户操作通知',
+    verify_con: '模拟账号不能进行该操作，去升级？',
+    insufficient_con1: '您的账户',
+    insufficient_con2: '余额不足',
+    insufficient_con3: '，请先充值/划转再继续交易',
+
     operation_error: "操作错误",
     token_invalid: "当前 token 已失效，请重新登录",
     login_first: "请先登录",
@@ -373,7 +380,8 @@ export default {
     over_view_forex: "外汇",
     over_view_trade: "大宗商品",
     wallet_header_cash: "现金账户",
-    wallet_header_stock: "ETF账户",
+    wallet_header_stock: "股票账户",
+    wallet_header_etf: "ETF账户",
     wallet_header_contract: "合约账户",
     wallet_header_forex: "外汇账户",
     wallet_header_trade: "大宗账户",

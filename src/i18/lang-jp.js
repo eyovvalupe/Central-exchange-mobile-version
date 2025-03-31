@@ -15,6 +15,13 @@ export default {
     second: '秒',
     hour: '小时',
     assets: '私の資産',
+
+    verify_title: 'デモアカウント通知',
+    verify_con: 'デモアカウントでは実行できません。アップグレードしますか？',
+    insufficient_con1: 'あなたのアカウント残高は',
+    insufficient_con2: '不足しています',
+    insufficient_con3: ',取引を続けるには、入金/振替をしてください',
+    
     operation_error: '操作エラー',
     token_invalid: '現在のトークンは無効です。再度ログインしてください',
     login_first: '最初にログインしてください',
@@ -370,6 +377,7 @@ export default {
     over_view_trade: '商品取引',
     wallet_header_cash: '現金アカウント',
     wallet_header_stock: '株式アカウント',
+    wallet_header_etf: "ETF口座",
     wallet_header_contract: '契約アカウント',
     wallet_header_forex: '外国為替アカウント',
     wallet_header_trade: '商品アカウント',

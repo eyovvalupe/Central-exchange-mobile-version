@@ -12,7 +12,7 @@ export const _accountMap = {
 };
 export const _accountMapList = [
   { key: "money", value: t('assets.wallet_header_cash') },
-  { key: "stock", value: t('assets.wallet_header_stock') },
+  { key: "stock", value: t('assets.wallet_header_etf') },
   { key: "futures", value: t('assets.wallet_header_contract') },
   // { key: "forex", value: t('assets.wallet_header_forex') },
 ];

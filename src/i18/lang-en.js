@@ -15,6 +15,13 @@ export default {
     option: 'Option',
     second: 'sec',
     assets: 'My Assets',
+
+    verify_title: 'Demo Account Notification',
+    verify_con: "This action can't be done with a demo account. Upgrade?",
+    insufficient_con1: 'Your account balance is ',
+    insufficient_con2: 'insufficient',
+    insufficient_con3: ', please deposit/transfer funds to continue trading',
+
     operation_error: 'Operation error',
     token_invalid: 'Current token has expired, please log in again',
     login_first: 'Please log in first',
@@ -337,6 +344,7 @@ export default {
     over_view_trade: 'Block Trade',
     wallet_header_cash: 'Cash',
     wallet_header_stock: 'Stock',
+    wallet_header_etf: "ETF",
     wallet_header_contract: 'Futures',
     wallet_header_forex: 'Forex',
     wallet_header_trade: 'Block Trade',

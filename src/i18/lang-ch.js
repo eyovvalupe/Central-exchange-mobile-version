@@ -15,6 +15,13 @@ export default {
     second: '秒',
     hour: '時',
     assets: '我的資產',
+
+    verify_title: '模擬帳號操作通知',
+    verify_con: '模擬帳號不能進行該操作，去升級？',
+    insufficient_con1: '您的帳戶',
+    insufficient_con2: '餘額不足',
+    insufficient_con3: '，請先充值/劃轉再繼續交易',
+
     operation_error: '操作錯誤',
     verification_code_error: '驗證碼錯誤',
     token_invalid: '目前的 Token 已失效，請重新登入',
@@ -371,7 +378,8 @@ export default {
     over_view_forex: '外匯',
     over_view_trade: '大宗商品',
     wallet_header_cash: '現金帳戶',
-    wallet_header_stock: 'ETF帳戶',
+    wallet_header_stock: '股票賬戶',
+    wallet_header_etf: "ETF帳戶",
     wallet_header_contract: '合約帳戶',
     wallet_header_forex: '外匯帳戶',
     wallet_header_trade: '大宗帳戶',

@@ -15,6 +15,14 @@ export default {
     second: '초',
     hour: '시간',
     assets: '내 자산',
+
+    verify_title: '시뮬레이션 계정 알림',
+    verify_con:
+      '시뮬레이션 계정에서는 수행할 수 없습니다. 업그레이드 하시겠습니까?',
+    insufficient_con1: '계좌 잔액이 ',
+    insufficient_con2: '부족합니다',
+    insufficient_con3: '. 거래를 계속 진행하려면 입금/이체를 먼저 해주세요',
+    
     operation_error: '작업 오류',
     token_invalid: '현재 토큰이 만료되었습니다. 다시 로그인해주세요',
     login_first: '먼저 로그인해주세요',
@@ -370,6 +378,7 @@ export default {
     over_view_trade: '원자재',
     wallet_header_cash: '현금 계좌',
     wallet_header_stock: '주식 계좌',
+    wallet_header_etf: "ETF 계좌",
     wallet_header_contract: '계약 계좌',
     wallet_header_forex: '외환 계좌',
     wallet_header_trade: '원자재 계좌',

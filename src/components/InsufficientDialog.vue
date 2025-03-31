@@ -1,25 +1,25 @@
 <!-- 余额不足弹窗 -->
 <template>
-    <BottomPopup closeable v-model:show="visible" :title="'充值/划转'">
+    <BottomPopup closeable v-model:show="visible" :title="t('assets.recharge')+'/'+t('assets.transfer')">
         <div class="insufficient-dialog">
             <div class="tip">
                 <div class="tip-icon">
                     <img :src="getStaticImgUrl('/static/img/common/warning.svg')" alt="img">
                 </div>
                 <div class="tip-con">
-                    您的账户<span>余额不足</span>，请先充值/划转再继续交易
+                    {{ t('common.insufficient_con1') }}<span>{{ t('common.insufficient_con2') }}</span>{{ t('common.insufficient_con3') }}
                 </div>
             </div>
             <div class="account-box">
-                <div class="title">{{ typeMap[type] || '--' }}</div>
+                <div class="title">{{ type == 'stock' ? t('assets.wallet_header_etf') : type == 'spot' ? t('assets.wallet_header_cash') : type == 'crypto' ? t('assets.wallet_header_contract') : '--' }}</div>
                 <div class="account-item">
-                    <span>可用余额</span>
+                    <span>{{ t('market.market_faster_available') }}</span>
                     <span><span class="amount">{{ amount }}</span> {{ currency }}</span>
                 </div>
             </div>
             <div class="btns">
-                <div class="btn" @click="jump('transfer')">划转</div>
-                <div class="btn" @click="jump('topUpCrypto')">充值</div>
+                <div class="btn" @click="jump('transfer')">{{ t('assets.transfer') }}</div>
+                <div class="btn" @click="jump('topUpCrypto')">{{ t('assets.recharge') }}</div>
             </div>
         </div>
     </BottomPopup>
@@ -31,7 +31,9 @@ import BottomPopup from "./BottomPopup.vue"
 import { getStaticImgUrl } from "@/utils/index.js"
 import router from "@/router";
 import eventBus from "@/utils/eventBus.js"
+import { useI18n } from "vue-i18n";
 
+const {t} = useI18n();
 const visible = ref(false)
 const jump = name => {
     visible.value = false
