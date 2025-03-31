@@ -95,7 +95,15 @@ import { ref, computed } from "vue"
 import store from '@/store';
 import router from '@/router';
 import { getStaticImgUrl } from "@/utils/index.js"
+import { useI18n } from 'vue-i18n';
 
+const { t } = useI18n();
+const props = defineProps({
+    from: {
+        type: String,
+        default: ''
+    }
+})
 // store.dispatch("updateOrderHint")
 const userInfo = computed(() => store.state.userInfo || {})
 const loanNum = computed(() => store.state.loanNum || 0)
@@ -130,14 +138,15 @@ const check = () => {
     //     }, 400)
     //     return false
     // }
-    if (!userInfo.value.googlebind) {
-        console.error('弹窗')
+    if (!['kyc', 'withdraw', 'topUpCrypto'].includes(props.from) && !userInfo.value.googlebind) {
         setTimeout(() => {
             showConfirmDialog({
-                title: '谷歌验证器',
+                title: t('user_page.google_verification'),
                 message:
-                    '谷歌验证器未绑定，去绑定？',
-                theme: 'round-button'
+                t('common.no_link_google'),
+                theme: 'round-button',
+                cancelButtonText: t('user_page.message_box_cancel'),
+                confirmButtonText: t('user_page.message_box_confirm')
             })
                 .then(() => {
                     router.push({ name: 'google' })
@@ -148,13 +157,15 @@ const check = () => {
         }, 400)
         return false
     }
-    if (userInfo.value.kycl2 != 2) {
+    if (!['kyc', 'safety'].includes(props.from) && userInfo.value.kycl2 != 2) {
         setTimeout(() => {
             showConfirmDialog({
-                title: '实名认证',
+                title: t('common.kyc_verify_title'),
                 message:
-                    '实名认证未通过，去认证？',
-                theme: 'round-button'
+                    t('common.kyc_verify_con'),
+                theme: 'round-button',
+                cancelButtonText: t('user_page.message_box_cancel'),
+                confirmButtonText: t('user_page.message_box_confirm')
             })
                 .then(() => {
                     router.push({ name: 'kyc' })

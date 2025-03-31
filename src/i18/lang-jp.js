@@ -15,13 +15,17 @@ export default {
     second: '秒',
     hour: '小时',
     assets: '私の資産',
-    operation_error: "操作エラー",
-    token_invalid: "現在のトークンは無効です。再度ログインしてください",
-    login_first: "最初にログインしてください",
-    trade_pw_error: "取引パスワードが間違っています",
-    server_error: "サーバーエラー",
-    network_error: "ネットワークエラー、再試行してください",
-    verification_code_error: "認証コードが間違っています"
+    operation_error: '操作エラー',
+    token_invalid: '現在のトークンは無効です。再度ログインしてください',
+    login_first: '最初にログインしてください',
+    trade_pw_error: '取引パスワードが間違っています',
+    server_error: 'サーバーエラー',
+    network_error: 'ネットワークエラー、再試行してください',
+    verification_code_error: '認証コードが間違っています',
+
+    no_link_google: 'Google認証アプリが未リンクです。リンクしますか？',
+    kyc_verify_title: '実名認証',
+    kyc_verify_con: "実名認証が通過していません。認証しますか？"
   },
   login: {
     login: 'ログイン',
@@ -50,8 +54,7 @@ export default {
     back: 'ログイン画面に戻る',
     get_back: 'パスワードを取得',
 
-    google_verify: "{method}認証"
-
+    google_verify: '{method}認証',
   },
   register: {
     security: 'セキュリティ確認',
@@ -221,9 +224,9 @@ export default {
     google_input_con: '6桁のコードを入力してください',
     google_input_btn_cancel: 'キャンセル',
     google_input_btn_confirm: '確認',
-    google_notice: "キーを失くさないようにバックアップを取ってください",
-    google_code: "Google認証コード",
-    google_error: "Google認証コードが間違っています",
+    google_notice: 'キーを失くさないようにバックアップを取ってください',
+    google_code: 'Google認証コード',
+    google_error: 'Google認証コードが間違っています',
   },
   service: {
     page_title: 'オンラインサポート',
@@ -245,14 +248,14 @@ export default {
     no_google_dialog_con: 'まだGoogle認証器を設定していません。設定しますか？',
     success_title: '操作成功',
     success_btn: '閉じる',
-    verify_method: "認証方法",
-    google_verify: "Google認証",
-    email_verify: "メール認証",
-    reset_trade_pw: "取引パスワードはリセットされました",
-    reset_login_pw: "ログインパスワードがリセットされました",
-    verify_code_msg: "6桁のメール認証コードを入力してください",
-    new_trade_pw: "新しい取引パスワード",
-    confirm_new_trade_pw: "新しい取引パスワードを確認",
+    verify_method: '認証方法',
+    google_verify: 'Google認証',
+    email_verify: 'メール認証',
+    reset_trade_pw: '取引パスワードはリセットされました',
+    reset_login_pw: 'ログインパスワードがリセットされました',
+    verify_code_msg: '6桁のメール認証コードを入力してください',
+    new_trade_pw: '新しい取引パスワード',
+    confirm_new_trade_pw: '新しい取引パスワードを確認',
   },
   change_login_pw: {
     page_title: 'ログインパスワードの変更',

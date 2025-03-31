@@ -17,14 +17,17 @@
       </template>
     </Top>
     <div class="title">
-      {{ titleMap[props.type] }}{{ $t("register.code_verify") }}
+      {{ $t("register.code_verify", {
+        method: props.type == 'email' ? t('register.code_email') :
+          props.type == 'phone' ? t('register.code_phone') : t('user_page.google_verification')
+      }) }}
     </div>
     <div class="info flex flex-col">
       <div class="flex mb-[0.8rem] text-[0.28rem]">
-        <span>{{ $t("register.code_con1", {
-          method: props.type == "email" ?
-            t('register.email') : t('register.phone')
-        }) }}</span>
+        {{ t("register.code_con1", {
+          method: props.type == 'email' ? t('register.code_email') :
+            props.type == 'phone' ? t('register.code_phone') : t('user_page.google_verification')
+        }) }}
       </div>
       <div class="flex flex-row justify-between items-center mb-[0.6rem]">
         <span class="text-[0.32rem] text-color !font-normal">{{ $t('register.code_con2') }}</span>

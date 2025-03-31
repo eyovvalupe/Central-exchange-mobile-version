@@ -22,6 +22,11 @@ export default {
     server_error: "服务端异常",
     network_error: "网络异常,请重试",
     verification_code_error: "验证码错误",
+
+    no_link_google: "谷歌验证器未绑定，去绑定？",
+    kyc_verify_title: "实名认证",
+    kyc_verify_con: "实名认证未通过，去认证？",
+
   },
   login: {
     login: "登录",
