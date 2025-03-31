@@ -89,7 +89,7 @@ export default {
     code_email: "电子邮件",
     code_phone: "手机",
     code_verify: "验证",
-    code_con1: "我们已将验证码发送至您的",
+    code_con1: "我们已将验证码发送至您的{method}",
     code_con2: "请输入6位数代码",
     code_jump: "跳过验证",
     code_again: "再次发送",

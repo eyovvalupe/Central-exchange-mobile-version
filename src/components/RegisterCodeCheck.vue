@@ -11,7 +11,7 @@
           </div>
 
           <div class="language_icon_container" @click="goLang">
-              <img v-lazy="getStaticImgUrl('/static/img/user/lang.svg')" alt="">
+            <img v-lazy="getStaticImgUrl('/static/img/user/lang.svg')" alt="">
           </div>
         </div>
       </template>
@@ -21,9 +21,10 @@
     </div>
     <div class="info flex flex-col">
       <div class="flex mb-[0.8rem] text-[0.28rem]">
-        <span>{{ $t("register.code_con1") }}</span>
-        <span>{{ props.type == "email" ?
-          t('register.email') : t('register.phone') }}</span>
+        <span>{{ $t("register.code_con1", {
+          method: props.type == "email" ?
+            t('register.email') : t('register.phone')
+        }) }}</span>
       </div>
       <div class="flex flex-row justify-between items-center mb-[0.6rem]">
         <span class="text-[0.32rem] text-color !font-normal">{{ $t('register.code_con2') }}</span>
@@ -53,15 +54,14 @@
       </div>
     </BottomPopup>
     <!-- 验证码 -->
-    <VerifCode :type="type" :value="value" @submit="submitCode" to="body"
-      ref="verifCodeRef" />
+    <VerifCode :type="type" :value="value" @submit="submitCode" to="body" ref="verifCodeRef" />
 
   </div>
 </template>
 
 <script setup>
 import { getStaticImgUrl } from "@/utils/index.js"
-import { ref,  onMounted, onBeforeUnmount } from "vue";
+import { ref, onMounted, onBeforeUnmount } from "vue";
 import router from "@/router";
 import CodeInput from "./CodeInput.vue";
 import { useI18n } from "vue-i18n";
@@ -84,14 +84,14 @@ const props = defineProps({
     type: String,
     default: "",
   },
-  loading:Boolean
+  loading: Boolean
 });
 const titleMap = ref({
   email: t("register.code_email"),
   phone: t("register.code_phone"),
 });
 
-const emit = defineEmits(["success","submit"]);
+const emit = defineEmits(["success", "submit"]);
 
 const confirmRef = ref(false);
 
@@ -110,8 +110,8 @@ const next = () => {
   timeInterval && clearInterval(timeInterval);
 }
 
-const submit = (code)=>{
-  emit('submit',code)
+const submit = (code) => {
+  emit('submit', code)
 }
 
 // sessionToken
@@ -119,7 +119,7 @@ const sessionToken = computed(() => store.state.sessionToken || '')
 
 let timeInterval = null;
 const s = ref(0);
-const start = ()=>{
+const start = () => {
   s.value = 119;
   timeInterval = setInterval(() => {
     s.value--;
@@ -130,21 +130,21 @@ const start = ()=>{
 }
 const send = async () => {
   if (s.value) return;
-  if(props.type == 'email'){
+  if (props.type == 'email') {
     await store.dispatch("updateSessionToken")
     _emailcode({
-      email:props.value,
-      token:sessionToken.value,
-      verifcode:verifcode.value || ''
-    }).then(()=>{
+      email: props.value,
+      token: sessionToken.value,
+      verifcode: verifcode.value || ''
+    }).then(() => {
       start()
-    }).catch((err)=>{
-      if(err.code == 1001){
+    }).catch((err) => {
+      if (err.code == 1001) {
         verifCodeRef.value.open();
       }
     })
     verifcode.value = ''
-  }else{
+  } else {
     start()
   }
 };
@@ -172,8 +172,8 @@ onMounted(() => {
   send();
 });
 
-onBeforeUnmount(()=>{
-  if(timeInterval){
+onBeforeUnmount(() => {
+  if (timeInterval) {
     clearInterval(timeInterval)
   }
 })
@@ -213,7 +213,8 @@ onBeforeUnmount(()=>{
   justify-content: center;
   color: var(--ex-text-color);
   font-size: 0.32rem;
-  span{
+
+  span {
     padding: 0.2rem;
   }
 }

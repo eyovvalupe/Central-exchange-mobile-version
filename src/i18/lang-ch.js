@@ -127,7 +127,7 @@ export default {
     code_email: "電子郵件",
     code_phone: "手機",
     code_verify: "驗證",
-    code_con1: "我們已將驗證碼發送至您的",
+    code_con1: "我們已將驗證碼發送至您的{method}",
     code_con2: "請輸入6位數代碼",
     code_jump: "跳過驗證",
     code_again: "再次發送",

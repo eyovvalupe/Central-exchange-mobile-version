@@ -8,8 +8,7 @@
     </div>
     <div class="info flex flex-col">
       <div class="flex mb-[0.6rem] text-[0.28rem]" v-if="type == 'email'">
-        <span>{{ $t("register.code_con1") }}</span>
-        <span>{{ t('register.email')}}</span>
+        <span>{{ $t("register.code_con1", {method: t('register.email')}) }}</span>
       </div>
       <div class="h-[0.4rem] mb-[0.6rem]" v-else></div>
       <div class="flex flex-row justify-between items-center mb-[0.6rem]" >

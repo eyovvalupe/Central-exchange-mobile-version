@@ -90,7 +90,7 @@ export default {
     code_email: "Email",
     code_phone: "Phone",
     code_verify: "Verification",
-    code_con1: "Verification code sent to your",
+    code_con1: "Verification code sent to your {method}",
     code_con2: "Enter the 6-digit code",
     code_jump: "Skip verification",
     code_again: "Resend code",
@@ -255,7 +255,7 @@ export default {
     email_verify: "Email Verification",
     reset_trade_pw: "Trade password reset successful",
     reset_login_pw: "Login password reset successful",
-    verify_code_msg: "Please enter the 6-digit email verification code",
+    verify_code_msg: "6-digit email verification code",
   },
   change_login_pw: {
     page_title: "Change Login Password",
