@@ -50,7 +50,9 @@ export default {
     success: "密码已重置",
     back: "返回登录",
     get_back: "找回密码",
-    user_name: "您的用户名"
+    user_name: "您的用户名",
+
+    google_verify: "{method}验证"
   },
   register: {
     security: "安全验证",
@@ -241,6 +243,15 @@ export default {
     no_google_dialog_con: "你还未绑定谷歌验证器，是否去绑定",
     success_title: "操作成功",
     success_btn: "关闭",
+
+    verify_method: "验证方式",
+    google_verify: "谷歌验证",
+    email_verify: "邮箱验证",
+
+    reset_trade_pw: "交易密码已重置",
+    reset_login_pw: "登录密码已重置",
+    verify_code_msg: "请输入6位邮箱验证码",
+    
   },
   change_login_pw: {
     page_title: "修改登录密码",

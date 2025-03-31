@@ -51,6 +51,9 @@ export default {
     back: "Back to Login",
     get_back: "Recover Password",
     user_name: "Your User Name",
+
+    google_verify: "{method} Verification"
+
   },
   register: {
     security: "Security Check",
@@ -246,6 +249,13 @@ export default {
       "You haven't bound Google Authenticator. Set it up now?",
     success_title: "Success",
     success_btn: "Close",
+
+    verify_method: "Verification Method",
+    google_verify: "Google Verification",
+    email_verify: "Email Verification",
+    reset_trade_pw: "Trade password reset successful",
+    reset_login_pw: "Login password reset successful",
+    verify_code_msg: "Please enter the 6-digit email verification code",
   },
   change_login_pw: {
     page_title: "Change Login Password",

@@ -49,6 +49,9 @@ export default {
     success: 'パスワードがリセットされました',
     back: 'ログイン画面に戻る',
     get_back: 'パスワードを取得',
+
+    google_verify: "{method}認証"
+
   },
   register: {
     security: 'セキュリティ確認',
@@ -242,6 +245,12 @@ export default {
     no_google_dialog_con: 'まだGoogle認証器を設定していません。設定しますか？',
     success_title: '操作成功',
     success_btn: '閉じる',
+    verify_method: "認証方法",
+    google_verify: "Google認証",
+    email_verify: "メール認証",
+    reset_trade_pw: "取引パスワードはリセットされました",
+    reset_login_pw: "ログインパスワードがリセットされました",
+    verify_code_msg: "6桁のメール認証コードを入力してください",
   },
   change_login_pw: {
     page_title: 'ログインパスワードの変更',

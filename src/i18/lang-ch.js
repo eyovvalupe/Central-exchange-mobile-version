@@ -88,6 +88,9 @@ export default {
     back: "返回登錄",
     get_back: "找回密碼",
     user_name: "您的用戶名",
+
+    google_verify: "{method}驗證"
+
   },
   register: {
     security: "安全驗證",
@@ -279,6 +282,13 @@ export default {
     no_google_dialog_con: "你還未綁定谷歌驗證器，是否去綁定",
     success_title: "操作成功",
     success_btn: "關閉",
+
+    verify_method: "驗證方式",
+    google_verify: "谷歌驗證",
+    email_verify: "郵箱驗證",
+    reset_trade_pw: "交易密碼已重置",
+    reset_login_pw: "登入密碼已重置",
+    verify_code_msg: "請輸入6位郵箱驗證碼",
   },
   change_login_pw: {
     page_title: "修改登入密碼",

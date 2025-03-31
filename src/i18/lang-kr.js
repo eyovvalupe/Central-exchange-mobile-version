@@ -51,6 +51,9 @@ export default {
     success: "비밀번호가 재설정되었습니다",
     back: "로그인 화면으로 돌아가기",
     get_back: "비밀번호 찾기",
+
+    google_verify: "{method} 인증"
+
   },
   register: {
     security: "보안 인증",
@@ -245,6 +248,12 @@ export default {
       "구글 인증기를 아직 연결하지 않으셨습니다. 연결하시겠습니까?",
     success_title: "작업 성공",
     success_btn: "닫기",
+    verify_method: "인증 방법",
+    google_verify: "구글 인증",
+    email_verify: "이메일 인증",
+    reset_trade_pw: "거래 비밀번호가 재설정되었습니다",
+    reset_login_pw: "로그인 비밀번호가 재설정되었습니다",
+    verify_code_msg: "6자리 이메일 인증 코드를 입력해주세요",
   },
   change_login_pw: {
     page_title: "로그인 비밀번호 변경",

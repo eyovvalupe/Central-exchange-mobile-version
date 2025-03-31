@@ -15,7 +15,7 @@
 
     <slot name="title" v-if="slots['title']" />
     <span v-else>{{ props.title }}</span>
-    <div class="right mask-btn">
+    <div class="right">
       <slot name="right" />
     </div>
   </div>

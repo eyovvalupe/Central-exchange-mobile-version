@@ -25,7 +25,7 @@
       <div class="form relative">
         <!-- <div class="form_title">{{ t('forget_pw.email_phone') }}</div> -->
         <div class="form_item margin_item transition" :style="{borderColor: idError ? 'var(--ex-error-color)' : ''}">
-          <input maxlength="32" v-model.trim="form.username" :placeholder="t('邮箱/手机号')" type="text"
+          <input maxlength="32" v-model.trim="form.username" :placeholder="t('forget_pw.email_phone')" type="text"
             class="item_input" @focus="idError = false"/>
           <div class="form_item_clear" v-show="form.username" @click="form.username = null">
             <div class="size-[0.25rem]">
@@ -71,7 +71,7 @@
     
     <CodeCheck :loading="loading" :type="verifyType" :value="form.username" @submit="submitForm" v-else-if="step == 2" />
 
-    <BottomPopup title="验证方式" round closeable v-model:show="showVerifyType" position="bottom" teleport="body">
+    <BottomPopup :title="t('safety.verify_method')" round closeable v-model:show="showVerifyType" position="bottom" teleport="body">
       <SelectVerifyType  @confirm="selectVerifyTypeConfirm" />
     </BottomPopup>
 

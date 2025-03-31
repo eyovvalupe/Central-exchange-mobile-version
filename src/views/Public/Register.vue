@@ -11,11 +11,11 @@
       <Top>
         <template #right>
           <div class="flex">
-            <div class="server_icon mr-[0.1rem]" @click="goChat">
+            <div class="server_icon mr-[0.1rem] mask-btn" @click="goChat">
                 <img v-lazy="getStaticImgUrl('/static/img/user/server.svg')" />
             </div>
 
-            <div class="language_icon_container" @click="goLang">
+            <div class="language_icon_container mask-btn" @click="goLang">
                 <img v-lazy="getStaticImgUrl('/static/img/user/lang.svg')" alt="">
             </div>
           </div>

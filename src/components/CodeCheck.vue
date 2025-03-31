@@ -4,7 +4,7 @@
   <div class="code_check_box">
    
     <div class="title">
-      {{ titleMap[props.type] }}{{ $t("register.code_verify") }}
+      {{ titleMap[props.type] }}
     </div>
     <div class="info flex flex-col">
       <div class="flex mb-[0.6rem] text-[0.28rem]" v-if="type == 'email'">
@@ -13,14 +13,14 @@
       </div>
       <div class="h-[0.4rem] mb-[0.6rem]" v-else></div>
       <div class="flex flex-row justify-between items-center mb-[0.6rem]" >
-        <span class="text-[0.32rem] text-color !font-normal">{{ type == 'email' ? '请输入6位邮箱验证码' : $t('register.code_con2') }}</span>
+        <span class="text-[0.32rem] text-color !font-normal">{{ type == 'email' ? $t('safety.verify_code_msg') : $t('register.code_con2') }}</span>
         <div class="timer_container" @click="send" v-if="type == 'email'">
           {{ s ? s + "s" : t('register.code_again') }}
         </div>
       </div>
     </div>
     <div class="w-full px-[0.32rem] mb-[0.4rem]">
-      <CodeInput from="register" :loading="loading" btnText="确定" @submit="submit" />
+      <CodeInput from="register" :loading="loading" :btnText="$t('withdraw.confirm')" @submit="submit" />
     </div>
      <!-- 验证码 -->
      <VerifCode :type="type" :value="value" @submit="submitCode" to="body"
@@ -53,8 +53,8 @@ const props = defineProps({
   loading:Boolean
 });
 const titleMap = ref({
-  email: t("邮箱验证"),
-  google: t("谷歌验证器"),
+  email: t("safety.email_verify"),
+  google: t("user_page.google_verification"),
 });
 
 const emit = defineEmits(["submit"]);
