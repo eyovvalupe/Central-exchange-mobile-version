@@ -9,7 +9,7 @@
         <div class="form_item margin_item mb-[0.05rem] transition"
           :style="{ borderColor: newError ? 'var(--ex-error-color)' : '' }">
           <input maxlength="20" v-model.trim="form.password" :type="showPass ? 'text' : 'password'" class="item_input"
-            :placeholder="$t('新交易密码')" @focus="newError = false" />
+            :placeholder="$t('safety.new_trade_pw')" @focus="newError = false" />
           <div class="form_item_icon" @click="showPass = !showPass">
             <div :class="showPass ? 'eye-show-icon' : 'eye-hidden-icon'">
               <img v-if="showPass" v-lazy="getStaticImgUrl('/static/img/common/open_eye.svg')" alt="" />
@@ -23,7 +23,7 @@
         <div class="form_item margin_item transition"
           :style="{ borderColor: confirmError ? 'var(--ex-error-color)' : '' }">
           <input maxlength="20" v-model.trim="form.password2" :type="showPass2 ? 'text' : 'password'" class="item_input"
-            :placeholder="$t('确认新交易密码')" @focus="confirmError = false" />
+            :placeholder="$t('safety.confirm_new_trade_pw')" @focus="confirmError = false" />
           <div class="form_item_icon" @click="showPass2 = !showPass2">
             <div :class="showPass2 ? 'eye-show-icon' : 'eye-hidden-icon'">
               <img v-if="showPass2" v-lazy="getStaticImgUrl('/static/img/common/open_eye.svg')" alt="" />
@@ -45,7 +45,7 @@
     <CodeCheck :loading="loading" :type="verifyType" :value="userInfo.username" @submit="submitForm" v-else-if="step == 2" />
 
 
-    <BottomPopup title="验证方式" round closeable v-model:show="showVerifyType" position="bottom" teleport="body">
+    <BottomPopup :title="$t('safety.verify_method')" round closeable v-model:show="showVerifyType" position="bottom" teleport="body">
       <SelectVerifyType  @confirm="selectVerifyTypeConfirm" />
     </BottomPopup>
 
@@ -137,7 +137,7 @@ const submitForm = (code) => {
         // store.commit('setShowSuccessToast', true);
         setTimeout(() => {
           router.replace({
-            name: 'success',
+            name: 'success1',
           });
         }, 1000);
       }

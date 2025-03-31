@@ -251,6 +251,9 @@ export default {
     reset_trade_pw: "交易密码已重置",
     reset_login_pw: "登录密码已重置",
     verify_code_msg: "请输入6位邮箱验证码",
+
+    new_trade_pw: "新交易密码",
+    confirm_new_trade_pw: "确认新交易密码",
     
   },
   change_login_pw: {

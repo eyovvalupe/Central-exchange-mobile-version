@@ -251,6 +251,8 @@ export default {
     reset_trade_pw: "取引パスワードはリセットされました",
     reset_login_pw: "ログインパスワードがリセットされました",
     verify_code_msg: "6桁のメール認証コードを入力してください",
+    new_trade_pw: "新しい取引パスワード",
+    confirm_new_trade_pw: "新しい取引パスワードを確認",
   },
   change_login_pw: {
     page_title: 'ログインパスワードの変更',

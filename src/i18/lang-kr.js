@@ -254,6 +254,9 @@ export default {
     reset_trade_pw: "거래 비밀번호가 재설정되었습니다",
     reset_login_pw: "로그인 비밀번호가 재설정되었습니다",
     verify_code_msg: "6자리 이메일 인증 코드를 입력해주세요",
+
+    new_trade_pw: "새 거래 비밀번호",
+    confirm_new_trade_pw: "새 거래 비밀번호 확인",
   },
   change_login_pw: {
     page_title: "로그인 비밀번호 변경",

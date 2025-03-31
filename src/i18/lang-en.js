@@ -256,6 +256,8 @@ export default {
     reset_trade_pw: "Trade password reset successful",
     reset_login_pw: "Login password reset successful",
     verify_code_msg: "6-digit email verification code",
+    new_trade_pw: "New Transaction Password",
+    confirm_new_trade_pw: "Confirm New Transaction Password",
   },
   change_login_pw: {
     page_title: "Change Login Password",

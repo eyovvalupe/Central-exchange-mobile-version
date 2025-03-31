@@ -289,6 +289,8 @@ export default {
     reset_trade_pw: "交易密碼已重置",
     reset_login_pw: "登入密碼已重置",
     verify_code_msg: "請輸入6位郵箱驗證碼",
+    new_trade_pw: "新交易密碼",
+    confirm_new_trade_pw: "確認新交易密碼",
   },
   change_login_pw: {
     page_title: "修改登入密碼",

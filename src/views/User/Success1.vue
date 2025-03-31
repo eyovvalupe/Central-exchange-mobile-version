@@ -4,7 +4,7 @@
     <div class="icon">
       <img v-lazy="getStaticImgUrl('/static/img/user/success.svg')" alt="√" />
     </div>
-    <div class="title">{{ $t("safety.reset_login_pw") }}</div>
+    <div class="title">{{ $t("safety.reset_trade_pw") }}</div>
 
     <Button @click="router.back()" round color="var(--ex-primary-color)" class="submit ripple-btn" type="primary">
       <span style="color: var(--ex-white);">{{ $t("safety.success_btn")

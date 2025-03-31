@@ -113,6 +113,18 @@ const routes = [
     },
   },
   {
+    // 操作成功
+    path: "/success1",
+    name: "success1",
+    component: () => import("../views/User/Success1.vue"),
+    meta: {
+      keepAlive: false,
+      pageType: "child",
+      pageDeep: 2,
+      title: '成功'
+    },
+  },
+  {
     // 谷歌验证码绑定
     path: "/google",
     name: "google",
