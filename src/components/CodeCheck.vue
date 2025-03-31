@@ -19,7 +19,7 @@
       </div>
     </div>
     <div class="w-full px-[0.32rem] mb-[0.4rem]">
-      <CodeInput from="register" :loading="loading" :btnText="$t('withdraw.confirm')" @submit="submit" />
+      <CodeInput from="register" :loading="loading" :btnText="$t('register.code_jump_confirm')" @submit="submit" />
     </div>
      <!-- 验证码 -->
      <VerifCode :type="type" :value="value" @submit="submitCode" to="body"
